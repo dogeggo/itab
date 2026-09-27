@@ -1,35 +1,44 @@
 import { esc, icon, modal, closeModal, toast } from "./ui.js";
-import { widgetCatalog } from "./model.js";
+import { nativeFrameURL, flushNativeCards } from "./native-bridge.js";
 import {
   fetchOriginalCatalog,
   newOriginalWidget,
   originalWidgetURL,
+  parseCatalog,
+  hasNativeCard,
 } from "./original-widgets.js";
 
 let catalog;
+let catalogOffline = false;
+let openingNative = false;
 export function openWidgetStore(addOriginal) {
   const dialog = modal(
     "添加组件",
-    `<div class="widget-store-tabs" role="tablist" aria-label="组件来源">
-    <button role="tab" aria-selected="true" data-source="local">本地组件</button>
-    <button role="tab" aria-selected="false" data-source="original">原版组件仓库</button>
-    </div><section id="widget-store-content"></section>`,
+    `<section id="widget-store-content"></section>`,
     { wide: true },
   );
   const content = dialog.querySelector("#widget-store-content");
   let request = 0;
-  function local() {
-    request++;
-    content.innerHTML = `<div class="widget-catalog">${widgetCatalog.map((w) => `<button data-action="create-widget" data-type="${w.type}"><span class="catalog-icon">${icon(w.icon, 28)}</span><div><strong>${w.name}</strong><small>${w.description}</small></div><span class="catalog-add">＋</span></button>`).join("")}</div>`;
-  }
   async function original(reload = false) {
     const current = ++request;
     content.innerHTML =
       '<p class="muted" role="status">正在读取原版组件仓库…</p>';
     try {
-      if (!catalog || reload) catalog = await fetchOriginalCatalog();
+      let offline = catalogOffline;
+      if (!catalog || reload) {
+        try {
+          catalog = await fetchOriginalCatalog();
+          catalogOffline = offline = false;
+        } catch {
+          catalog = parseCatalog({
+            code: 200,
+            data: await (await fetch("./assets/native-catalog.json")).json(),
+          });
+          catalogOffline = offline = true;
+        }
+      }
       if (current !== request || !content.isConnected || !dialog.open) return;
-      content.innerHTML = `<p class="store-note">来自 iTab 原版仓库。在线组件可直接添加；原版内置组件需要适配后才能使用。</p>
+      content.innerHTML = `<p class="store-note">${offline ? "原版仓库暂不可达，显示随包提供的免费组件。" : "来自 NewTab 原版仓库，显示已审核的免费组件。"}内置组件使用原版界面并保存到主页备份，在线组件由原站运行。</p>
         <div class="store-filter"><input type="search" aria-label="搜索原版组件" placeholder="搜索原版组件"><label><input type="checkbox" aria-label="只看可直接使用">只看可直接使用</label><button type="button" class="store-refresh">刷新</button></div>
         <p class="store-count" role="status"></p><div class="widget-catalog original-catalog"></div>`;
       const search = content.querySelector('input[type="search"]');
@@ -50,7 +59,7 @@ export function openWidgetStore(addOriginal) {
           rows
             .map(
               (w) =>
-                `<button type="button" data-component="${esc(w.component)}" ${w.available ? "" : "disabled"}><span class="catalog-icon">${w.image ? `<img src="${esc(w.image)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : icon("grid", 28)}</span><div><strong>${esc(w.name)}</strong><small>${esc(w.description || "原版小组件")}</small><em>${w.available ? "原版在线组件" : "原版内置组件 · 待适配"}</em></div><span class="catalog-add">${w.available ? "＋" : "—"}</span></button>`,
+                `<button type="button" data-component="${esc(w.component)}" ${w.available ? "" : "disabled"}><span class="catalog-icon">${w.image ? `<img src="${esc(w.image)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : icon("grid", 28)}</span><div><strong>${esc(w.name)}</strong><small>${esc(w.description || "原版小组件")}</small><em>${w.runtime === "native" ? "原版内置组件" : w.available ? "原版在线组件" : "暂不可用"}</em></div><span class="catalog-add">${w.available ? "＋" : "—"}</span></button>`,
             )
             .join("") || '<p class="muted">没有找到匹配的组件</p>';
       }
@@ -70,23 +79,36 @@ export function openWidgetStore(addOriginal) {
       draw();
     } catch (error) {
       if (current !== request || !content.isConnected) return;
-      content.innerHTML = `<p class="store-note" role="alert">${esc(error.message)}。请检查网络后重试，本地组件仍可使用。</p><button type="button" class="store-retry">重试</button>`;
+      content.innerHTML = `<p class="store-note" role="alert">${esc(error.message)}。请检查网络后重试。</p><button type="button" class="store-retry">重试</button>`;
       content.querySelector(".store-retry").onclick = () => original(true);
     }
   }
-  dialog.querySelectorAll("[data-source]").forEach((button) => {
-    button.onclick = () => {
-      dialog
-        .querySelectorAll("[data-source]")
-        .forEach((b) => b.setAttribute("aria-selected", String(b === button)));
-      if (button.dataset.source === "original") original();
-      else local();
-    };
-  });
-  local();
+  original();
 }
 
-export function openOriginalWidget(item) {
+export async function openOriginalWidget(item) {
+  if (item.type === "native") {
+    // 随包内置组件依赖同源宿主桥接；scripts + same-origin 无法提供沙箱隔离。
+    // 仅远程在线组件使用下方的 sandbox。
+    // 保留卡片及其运行状态，先保存当前组件尚未提交的编辑。
+    if (openingNative) return;
+    openingNative = true;
+    try {
+      await flushNativeCards(item.config.component);
+      const dialog = modal(
+        item.name,
+        `<iframe class="original-widget-frame native-widget-dialog" data-native-id="${esc(item.id)}" title="${esc(item.name)}原版组件" src="${esc(nativeFrameURL(item, "dialog"))}" allow="clipboard-write; fullscreen; camera; microphone; display-capture"></iframe>`,
+        { wide: true },
+      );
+      const frame = dialog.querySelector("iframe");
+      dialog.addEventListener("close", () => frame.remove(), { once: true });
+    } catch (error) {
+      toast("原版组件打开失败：" + error.message, true);
+    } finally {
+      openingNative = false;
+    }
+    return;
+  }
   const url = originalWidgetURL(
     item.config.component,
     document.documentElement.dataset.theme,
@@ -99,4 +121,14 @@ export function openOriginalWidget(item) {
   const frame = dialog.querySelector("iframe");
   // 关闭弹窗时结束第三方页面及音视频，保留同源存储供下次打开使用。
   dialog.addEventListener("close", () => frame.remove(), { once: true });
+}
+
+export function widgetHTML(item) {
+  if(hasNativeCard(item)) {
+      return `<iframe class="native-widget-card" data-native-id="${esc(item.id)}" title="${esc(item.name)}原版卡片" src="${esc(nativeFrameURL(item))}" loading="lazy"></iframe>`;
+  }
+  if(item.type === "original") {
+      return `<div class="original-widget-icon">${item.image ? `<img src="${esc(item.image)}" alt="" draggable="false" referrerpolicy="no-referrer">` : icon("grid", 30)}</div>`;
+  }
+  throw new Error("未知原版组件");
 }

@@ -1,26 +1,39 @@
 {
   "manifest_version": 3,
-  "name": "iTab Local · 新标签页",
-  "version": "1.0.1",
+  "name": "NewTab · 新标签页",
+  "version": "2.1.0",
   "description": "本地优先的新标签页：网站图标、搜索、时钟、壁纸、实用组件和 Google Drive 备份。",
-  "permissions": ["storage", "identity", "unlimitedStorage"],
+  "permissions": [
+    "storage",
+    "identity",
+    "unlimitedStorage",
+    "bookmarks",
+    "favicon"
+  ],
+  "optional_permissions": [
+    "notifications",
+    "tabs"
+  ],
   "host_permissions": [
     "https://base.itab.link/*",
-    "https://www.googleapis.com/*",
-    "https://api.open-meteo.com/*",
-    "https://geocoding-api.open-meteo.com/*",
-    "https://hn.algolia.com/*",
-    "https://top.baidu.com/*"
+    "https://www.googleapis.com/*"
   ],
-  "chrome_url_overrides": { "newtab": "index.html" },
-  "background": { "service_worker": "src/background.js", "type": "module" },
-  "action": { "default_title": "打开 iTab Local" },
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "background": {
+    "service_worker": "src/background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "打开 NewTab"
+  },
   "icons": {
     "32": "assets/icon/icon_32.png",
     "48": "assets/icon/icon_48.png",
     "128": "assets/icon/icon_128.png"
   },
   "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'; base-uri 'none'; frame-src https://widget.itab.link"
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; worker-src 'self'; object-src 'self'; base-uri 'none'; frame-src 'self' https://widget.itab.link https://*.itab.link https://*.67tool.com"
   }
 }

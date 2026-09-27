@@ -1,11 +1,13 @@
 import {
   defaults,
   clone,
-  widgetCatalog,
   makeBackup,
   parseBackup,
   normalizeURL,
+  validateState,
 } from "./model.js";
+import { toAppearance, applyAppearance } from "./appearance-model.js";
+import { prepareBackupImport } from "./backup-import.js";
 import {
   esc,
   icon,
@@ -33,6 +35,69 @@ let api,
   cloudConnected = false;
 export function initSettings(callbacks) {
   api = callbacks;
+  window.addEventListener("native-widget-saved", () => {
+    if (activeTab === "wallpaper" && document.querySelector("#settings").open)
+      renderSettings();
+  });
+  window.__itabAppearance = {
+    connect(frameWindow, panel) {
+      const frame = document.querySelector("#appearance-frame");
+      if (!frame || frame.contentWindow !== frameWindow || panel !== activeTab)
+        throw new Error("设置会话无效");
+      const current = api.getState();
+      const live = () =>
+        frame.isConnected &&
+        frame.contentWindow === frameWindow &&
+        current === api.getState();
+      return {
+        read() {
+          const value = toAppearance(current.settings);
+          if (current.settings.wallpaper.type === "image")
+            value.wallpaper.thumb = new URL(
+              value.wallpaper.src,
+              location.href,
+            ).href;
+          return value;
+        },
+        save(value) {
+          if (!live()) return;
+          try {
+            const next = clone(current);
+            applyAppearance(next.settings, panel, value);
+            validateState(next);
+            current.settings = next.settings;
+            api.appearance();
+            void api.save();
+          } catch (error) {
+            toast(error.message, true);
+          }
+        },
+        action(name) {
+          if (!live()) return;
+          if (name === "wallpaper") api.wallpaperPicker();
+          else if (name === "download-wallpaper") {
+            const a = document.createElement("a");
+            a.href = current.settings.wallpaper.src;
+            a.download = current.settings.wallpaper.name || "wallpaper";
+            a.target = "_blank";
+            a.rel = "noopener";
+            a.click();
+          }
+        },
+        close() {
+          if (live()) document.querySelector("#settings").close();
+        },
+        resize(height) {
+          if (
+            live() &&
+            ["search", "sidebar", "wallpaper"].includes(panel) &&
+            Number.isFinite(height)
+          )
+            frame.style.height = Math.max(180, Math.min(1500, height)) + "px";
+        },
+      };
+    },
+  };
 }
 const tabs = [
   ["open", "打开方式", "图标、搜索结果的打开方式"],
@@ -44,22 +109,8 @@ const tabs = [
   ["sidebar", "侧边栏", "位置、透明度和导航分组"],
   ["backup", "备份与恢复", "Google Drive 与本机历史备份"],
   ["reset", "重置设置", "恢复初始样式或重置主页"],
+  ["about", "关于", "NewTab · 原版界面"],
 ];
-function get(path) {
-  return path.split(".").reduce((v, k) => v[k], api.getState().settings);
-}
-function toggle(path, label, help = "") {
-  return `<label class="setting-row"><span>${label}${help ? `<small>${help}</small>` : ""}</span><input type="checkbox" role="switch" class="switch" data-setting="${path}" ${get(path) ? "checked" : ""}></label>`;
-}
-function range(path, label, min, max, step = 1, unit = "px") {
-  return `<label class="setting-row range-row"><span>${label}</span><input type="range" data-setting="${path}" min="${min}" max="${max}" step="${step}" value="${get(path)}" aria-label="${label}"><output>${get(path)}${unit}</output></label>`;
-}
-function color(path, label) {
-  return `<label class="setting-row"><span>${label}</span><input type="color" data-setting="${path}" value="${get(path)}" aria-label="${label}"></label>`;
-}
-function select(path, label, options) {
-  return `<label class="setting-row"><span>${label}</span><select data-setting="${path}" aria-label="${label}">${options.map(([v, n]) => `<option value="${v}" ${String(get(path)) === String(v) ? "selected" : ""}>${n}</option>`).join("")}</select></label>`;
-}
 const panel = (content) => `<div class="setting-panel">${content}</div>`;
 const heading = (text) => `<h3 class="setting-section-title">${text}</h3>`;
 export function openSettings(tab = "icon") {
@@ -68,134 +119,71 @@ export function openSettings(tab = "icon") {
   const d = document.querySelector("#settings");
   if (!d.open) d.showModal();
 }
+
+const nativeTabs = new Set([
+  "open",
+  "search",
+  "icon",
+  "time",
+  "wallpaper",
+  "layout",
+  "sidebar",
+]);
+function nativeContent(tab) {
+  const s = api.getState().settings;
+  let extras = "";
+  if (tab === "search")
+    extras =
+      heading("搜索引擎") +
+      panel(
+        `<div class="engine-settings">${s.engines.map((e) => `<div><span class="engine-mark">${esc(e.mark || e.name[0])}</span><span>${esc(e.name)}</span><button data-engine-default="${esc(e.id)}" class="${e.id === s.search.engine ? "selected" : ""}">${e.id === s.search.engine ? "默认" : "设为默认"}</button>${s.engines.length > 1 ? `<button data-engine-remove="${esc(e.id)}" aria-label="删除 ${esc(e.name)}">${icon("trash", 15)}</button>` : ""}</div>`).join("")}</div><button data-settings-action="add-engine" class="text-btn">＋ 添加搜索引擎</button><button data-settings-action="clear-history" class="text-btn">清空搜索历史</button>`,
+      );
+  if (tab === "sidebar")
+    extras =
+      heading("导航分组") +
+      panel(
+        api
+          .getState()
+          .groups.map(
+            (g) =>
+              `<div class="group-setting"><span>${icon(g.icon, 18)} ${esc(g.name)}</span><button data-edit-group="${esc(g.id)}">编辑</button></div>`,
+          )
+          .join("") +
+          '<button data-settings-action="add-group" class="text-btn">＋ 添加分组</button>',
+      );
+  if (tab === "wallpaper")
+    extras =
+      heading("自定义壁纸") +
+      panel(
+        '<div class="wallpaper-actions"><label class="button">本地图片<input id="wallpaper-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden></label><button data-settings-action="wallpaper-url">图片网址</button><button data-wallpaper="default">恢复默认壁纸</button></div>',
+      );
+  return `<iframe id="appearance-frame" title="${tabs.find((t) => t[0] === tab)[1]}原版设置" src="original/appearance/host.html?panel=${tab}"></iframe>${extras ? '<div class="settings-extra">' + extras + "</div>" : ""}`;
+}
+
 function content() {
   const s = api.getState().settings;
   switch (activeTab) {
     case "open":
-      return (
-        panel(toggle("open.searchBlank", "新标签页打开搜索结果")) +
-        panel(toggle("open.iconBlank", "新标签页打开图标"))
-      );
+      return nativeContent("open");
+
     case "icon":
-      return (
-        panel(
-          `<div class="icon-presets"><button data-preset="default"><span class="preview-icons"><i></i><i></i><i></i><i></i></span>默认</button><button data-preset="round"><span class="preview-icons round"><i></i><i></i><i></i><i></i></span>圆形</button></div>${range("icon.size", "图标大小", 30, 100)}${range("icon.radius", "图标圆角", 0, 60)}${range("icon.opacity", "不透明度", 0.1, 1, 0.05, "")}`,
-        ) +
-        heading("间距") +
-        panel(
-          toggle("icon.syncGap", "同步间距") +
-            range("icon.gapX", "X 间距", 10, 80) +
-            range("icon.gapY", "Y 间距", 10, 80),
-        ) +
-        heading("名称") +
-        panel(
-          toggle("icon.name", "图标名称") +
-            range("icon.nameSize", "文字大小", 10, 20) +
-            color("icon.nameColor", "名称颜色"),
-        ) +
-        heading("图标最大宽度") +
-        panel(
-          range("icon.width", "最大宽度", 320, 2400, 10) +
-            toggle("icon.autoSort", "自动紧凑排列"),
-        ) +
-        `<p class="muted">拖动图标可以调整顺序；右键图标可以编辑、移动或删除。</p>`
-      );
+      return nativeContent("icon");
+
     case "search":
-      return (
-        panel(
-          toggle("search.show", "显示搜索栏") +
-            range("search.height", "搜索栏高度", 36, 60) +
-            range("search.radius", "搜索栏圆角", 0, 50) +
-            range("search.opacity", "搜索栏透明度", 0.1, 1, 0.05, "") +
-            range("search.width", "搜索栏宽度", 300, 1000, 10),
-        ) +
-        panel(
-          toggle("search.history", "搜索历史", "仅在本机保存最近 30 条") +
-            `<button data-settings-action="clear-history" class="text-btn">清空搜索历史</button>`,
-        ) +
-        heading("搜索引擎") +
-        panel(
-          `<div class="engine-settings">${s.engines.map((e) => `<div><span class="engine-mark">${esc(e.mark || e.name[0])}</span><span>${esc(e.name)}</span><button data-engine-default="${esc(e.id)}" class="${e.id === s.search.engine ? "selected" : ""}">${e.id === s.search.engine ? "默认" : "设为默认"}</button>${s.engines.length > 1 ? `<button data-engine-remove="${esc(e.id)}" title="删除 ${esc(e.name)}">${icon("trash", 15)}</button>` : ""}</div>`).join("")}</div><button data-settings-action="add-engine" class="text-btn">＋ 添加搜索引擎</button>`,
-        )
-      );
+      return nativeContent("search");
+
     case "time":
-      return panel(
-        toggle("time.show", "显示时间") +
-          `<div class="time-toggles">${[
-            ["time.month", "月日"],
-            ["time.week", "星期"],
-            ["time.lunar", "农历"],
-            ["time.hour24", "24 小时"],
-            ["time.sec", "秒"],
-            ["time.bold", "粗体"],
-          ]
-            .map(
-              ([p, l]) =>
-                `<label><input type="checkbox" data-setting="${p}" ${get(p) ? "checked" : ""}><span>${l}</span></label>`,
-            )
-            .join("")}</div>` +
-          range("time.size", "时间大小", 30, 130) +
-          select("time.font", "字体", [
-            ["HarmonyOS_Sans", "HarmonyOS Sans"],
-            ["MiSans", "MiSans"],
-            ["JetBrains", "JetBrains Mono"],
-            ["dsdigi", "数码时钟"],
-            ["Oswald", "Oswald"],
-            ["Orbitron", "Orbitron"],
-            ["Arial", "Arial"],
-          ]) +
-          color("time.color", "时间颜色") +
-          toggle("time.weekBegin1", "日历从周一开始"),
-      );
+      return nativeContent("time");
+
     case "wallpaper":
-      return (
-        panel(
-          toggle("theme.system", "跟随系统主题") +
-            select("theme.mode", "主题模式", [
-              ["light", "浅色"],
-              ["dark", "深色"],
-            ]) +
-            color("theme.color", "主题颜色"),
-        ) +
-        heading("壁纸") +
-        panel(
-          `<div class="wallpaper-gallery"><button class="wallpaper-choice original-wallpaper" data-wallpaper="default" title="默认壁纸"><span>默认壁纸</span></button><button class="wallpaper-choice dusk" data-wallpaper="dusk"><span>暮色</span></button><button class="wallpaper-choice forest" data-wallpaper="forest"><span>森林</span></button><button class="wallpaper-choice ocean" data-wallpaper="ocean"><span>海洋</span></button></div><div class="wallpaper-actions"><label class="button">${icon("upload", 16)} 本地图片<input id="wallpaper-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden></label><button data-settings-action="wallpaper-url">图片网址</button><label class="color-choice">纯色<input id="wallpaper-color" type="color" value="${s.wallpaper.type === "color" ? esc(s.wallpaper.src) : "#253d5b"}"></label></div><p class="muted">当前：${esc(s.wallpaper.name)} · 本地图片最多 8 MB</p>${range("wallpaper.blur", "模糊程度", 0, 40)}${range("wallpaper.mask", "深色遮罩", 0, 0.9, 0.05, "")}`,
-        )
-      );
+      return nativeContent("wallpaper");
+
     case "layout":
-      return (
-        panel(
-          `<p>点击桌面时间也可以快速切换极简模式</p><div class="layout-choices"><button data-layout="widget" class="${s.layout.view === "widget" ? "selected" : ""}"><span class="layout-demo"><b>12:30</b><i></i><em>▪ ▪ ▪ ▪<br>▪ ▪ ▪ ▪</em></span>组件</button><button data-layout="simple" class="${s.layout.view === "simple" ? "selected" : ""}"><span class="layout-demo simple-demo"><b>12:30</b><i></i></span>极简</button></div>`,
-        ) +
-        panel(toggle("layout.quote", "底部显示一言")) +
-        heading("主页组件") +
-        panel(
-          `<div class="settings-widget-list">${widgetCatalog.map((w) => `<button data-add-widget="${w.type}">${icon(w.icon, 22)}<span>${w.name}</span>${icon("plus", 16)}</button>`).join("")}</div>`,
-        )
-      );
+      return nativeContent("layout");
+
     case "sidebar":
-      return (
-        panel(
-          select("sidebar.placement", "侧边栏位置", [
-            ["left", "左侧"],
-            ["right", "右侧"],
-            ["hidden", "隐藏"],
-          ]) +
-            toggle("sidebar.autoHide", "自动隐藏") +
-            range("sidebar.opacity", "背景透明度", 0, 1, 0.05, ""),
-        ) +
-        heading("导航分组") +
-        panel(
-          api
-            .getState()
-            .groups.map(
-              (g) =>
-                `<div class="group-setting"><span>${icon(g.icon, 18)} ${esc(g.name)}</span><button data-edit-group="${esc(g.id)}">编辑</button></div>`,
-            )
-            .join("") +
-            '<button data-settings-action="add-group" class="text-btn">＋ 添加分组</button>',
-        )
-      );
+      return nativeContent("sidebar");
+
     case "backup":
       return (
         `<div class="drive-card"><div class="drive-logo">${icon("cloud", 32)}</div><div><h3>Google Drive 备份</h3><p>让你的主页，跟随你。</p></div><span class="badge">应用专属空间</span></div>` +
@@ -204,12 +192,16 @@ function content() {
         ) +
         heading("本地备份") +
         panel(
-          `<div class="backup-buttons"><button data-settings-action="export">${icon("download", 17)} 导出本地数据</button><label class="button">${icon("upload", 17)} 导入备份数据<input id="backup-file" type="file" accept="application/json,.json" hidden></label></div><p class="muted">JSON 格式 · 最多 25 MB · 不包含 Google 授权令牌</p>`,
+          `<div class="backup-buttons"><button data-settings-action="export">${icon("download", 17)} 导出本地数据</button><label class="button">${icon("upload", 17)} 导入备份数据<input id="backup-file" type="file" accept="application/json,.json,.itabdata" hidden></label></div><p class="muted">支持本项目 JSON 和原版 .itabdata 备份 · 最多 25 MB</p>`,
         ) +
         heading("本机历史节点（最近 5 个）") +
         panel(
           '<button data-settings-action="snapshot" class="text-btn">＋ 创建本机快照</button><div id="local-snapshots">加载中…</div>',
         )
+      );
+    case "about":
+      return panel(
+        '<div class="about-brand"><img src="original/icon/logo.svg" alt="NewTab"><h3>NewTab</h3><p>原版界面 · 自由定制</p></div><p class="muted">界面与组件资源来自原版 2.3.13。主页数据保存在本机，可通过 JSON 和 Google Drive 备份恢复。</p>',
       );
     case "reset":
       return (
@@ -233,78 +225,14 @@ function renderSettings() {
   const tab = tabs.find((t) => t[0] === activeTab) || tabs[2];
   activeTab = tab[0];
   const d = document.querySelector("#settings");
-  d.innerHTML = `<header class="settings-header"><div><h2 id="settings-title">${tab[1]}</h2><p>${tab[2]}</p></div>${button("close-settings", "关闭设置", "close", "icon-btn")}</header><div class="settings-shell"><nav class="settings-nav"><button class="settings-account" data-tab="backup"><span class="avatar">${icon("user", 24)}</span><strong>本地空间</strong><small>Google Drive 备份</small></button>${tabs.map((t) => `<button data-tab="${t[0]}" class="${t[0] === activeTab ? "active" : ""}"><img src="assets/setting/icon_${t[0] === "wallpaper" ? "theme" : t[0]}.svg" alt="">${t[1]}</button>`).join("")}<span class="settings-version">iTab Local · 1.0.1</span></nav><div class="settings-content">${content()}</div></div>`;
+  d.dataset.tab = activeTab;
+  d.innerHTML = `<header class="settings-header"><img class="settings-logo" src="original/icon/logo.svg" alt="NewTab"><div><h2 id="settings-title">${tab[1]}</h2><p>${tab[2]}</p></div></header>${button("close-settings", "关闭设置", "close", "settings-close")}<div class="settings-shell"><nav class="settings-nav"><button class="settings-account" data-tab="backup">${icon("cloud", 16)}<span>数据备份</span></button>${tabs.map((t) => `<button data-tab="${t[0]}" class="${t[0] === activeTab ? "active" : ""}" aria-current="${t[0] === activeTab ? "page" : "false"}"><img src="assets/setting/icon_${t[0] === "wallpaper" ? "theme" : t[0]}.svg" alt="">${t[1]}</button>`).join("")}</nav><div class="settings-content ${nativeTabs.has(activeTab) ? "has-native-panel" : ""}">${content()}</div></div>`;
+
   d.querySelectorAll("[data-tab]").forEach(
     (btn) =>
       (btn.onclick = () => {
         activeTab = btn.dataset.tab;
         renderSettings();
-      }),
-  );
-  d.querySelectorAll("[data-setting]").forEach((input) => {
-    input.oninput = () => {
-      const keys = input.dataset.setting.split(".");
-      const target = keys
-        .slice(0, -1)
-        .reduce((v, k) => v[k], api.getState().settings);
-      target[keys.at(-1)] =
-        input.type === "checkbox"
-          ? input.checked
-          : ["range", "number"].includes(input.type)
-            ? Number(input.value)
-            : input.value;
-      if (input.type === "range")
-        input.nextElementSibling.value =
-          input.value +
-          (input.dataset.setting.includes("opacity") ||
-          input.dataset.setting === "wallpaper.mask"
-            ? ""
-            : "px");
-      const s = api.getState().settings;
-      if (input.dataset.setting === "icon.gapX" && s.icon.syncGap) {
-        s.icon.gapY = s.icon.gapX;
-        const y = d.querySelector('[data-setting="icon.gapY"]');
-        if (y) {
-          y.value = s.icon.gapY;
-          y.nextElementSibling.value = y.value + "px";
-        }
-      }
-      if (input.dataset.setting === "icon.gapY" && s.icon.syncGap) {
-        s.icon.gapX = s.icon.gapY;
-        const x = d.querySelector('[data-setting="icon.gapX"]');
-        if (x) {
-          x.value = s.icon.gapX;
-          x.nextElementSibling.value = x.value + "px";
-        }
-      }
-      api.save();
-      api.render();
-    };
-  });
-  d.querySelectorAll("[data-preset]").forEach(
-    (btn) =>
-      (btn.onclick = () => {
-        api.getState().settings.icon.radius =
-          btn.dataset.preset === "round" ? 60 : 18;
-        api.save();
-        api.render();
-        renderSettings();
-      }),
-  );
-  d.querySelectorAll("[data-layout]").forEach(
-    (btn) =>
-      (btn.onclick = () => {
-        api.getState().settings.layout.view = btn.dataset.layout;
-        api.save();
-        api.render();
-        renderSettings();
-      }),
-  );
-  d.querySelectorAll("[data-add-widget]").forEach(
-    (btn) =>
-      (btn.onclick = () => {
-        api.addWidget(btn.dataset.addWidget);
-        toast("组件已添加到当前分组");
       }),
   );
   d.querySelectorAll("[data-edit-group]").forEach(
@@ -381,8 +309,13 @@ function renderSettings() {
     try {
       if (!file) return;
       if (file.size > 25 * 1024 * 1024) throw new Error("备份不能超过 25 MB");
-      const next = parseBackup(await file.text());
-      restorePrompt(next);
+      const text = await file.text();
+      const imported = prepareBackupImport(text, api.getState());
+      restorePrompt(imported.state, {
+        ...imported,
+        // 用户确认时再合并缺失类别，保留预览期间组件保存的最新数据。
+        prepare: () => prepareBackupImport(text, api.getState()).state,
+      });
     } catch (err) {
       toast(err.message, true);
     } finally {
@@ -457,12 +390,12 @@ async function renderSnapshots() {
       }),
   );
 }
-function restorePrompt(next) {
+function restorePrompt(next, imported) {
   confirmDialog(
-    "恢复备份",
-    `将恢复 ${next.groups.length} 个分组和 ${next.groups.reduce((n, g) => n + g.items.length, 0)} 个图标/组件，并覆盖当前主页。当前数据会自动保存为本机历史节点。`,
+    imported?.format === "original" ? "导入原版 备份" : "恢复备份",
+    imported?.summary || `将恢复 ${next.groups.length} 个分组和 ${next.groups.reduce((n, g) => n + g.items.length, 0)} 个图标/组件，并覆盖当前主页。当前数据会自动保存为本机历史节点。`,
     async () => {
-      await api.restore(next);
+      await api.restore(imported?.format === "original" ? imported.prepare() : next);
       renderSettings();
       toast("备份恢复成功");
     },
@@ -544,7 +477,7 @@ async function action(name) {
     case "export":
       downloadJSON(
         makeBackup(state),
-        `itab-local-${new Date().toISOString().slice(0, 10)}.json`,
+        `NewTab-${new Date().toISOString().slice(0, 10)}.json`,
       );
       toast("本地备份已导出");
       break;

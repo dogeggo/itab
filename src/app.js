@@ -3,11 +3,8 @@ import {
   validateState,
   clone,
   uid,
-  normalizeURL,
   safeURL,
   searchURL,
-  newWidget,
-  widgetCatalog,
   moveItem,
 } from "./model.js";
 import {
@@ -26,17 +23,20 @@ import {
   modal,
   closeModal,
   confirmDialog,
-  fileAsDataURL,
 } from "./ui.js";
-import {
-  clockParts,
-  widgetHTML,
-  hydrateWidgets,
-  tickWidgets,
-  openWidget,
-} from "./widgets.js";
+import { siteFace, fitSiteText } from "./site-icon.js";
+import { openIconEditor } from "./icon-editor.js";
+import { clockParts } from "./clock.js";
+import { widgetHTML } from "./widget-store.js";
 import { initSettings, openSettings, setWallpaper } from "./settings.js";
 import { openWidgetStore } from "./widget-store.js";
+import {
+  initNativeBridge,
+  refreshNativeThemes,
+  nativeUtility,
+} from "./native-bridge.js";
+import { timeFonts } from "./appearance-model.js";
+import { openOriginalWidget } from "./widget-store.js";
 let state,
   seed,
   editing = false,
@@ -51,15 +51,7 @@ const quotes = [
   "心有山海，静而不争。",
   "每一个不曾起舞的日子，都是对生命的辜负。",
 ];
-const fonts = new Set([
-  "HarmonyOS_Sans",
-  "MiSans",
-  "JetBrains",
-  "dsdigi",
-  "Oswald",
-  "Orbitron",
-  "Arial",
-]);
+const fonts = new Set(timeFonts);
 const currentGroup = () =>
   state.groups.find((g) => g.id === state.activeGroup) || state.groups[0];
 function findItem(id) {
@@ -105,8 +97,14 @@ function applyTheme() {
     "--time-size": s.time.size + "px",
     "--time-color": s.time.color,
     "--time-weight": s.time.bold ? 600 : 400,
-    "--time-font": fonts.has(s.time.font) ? s.time.font : "HarmonyOS_Sans",
+    "--time-font":
+      s.time.font === "Arial"
+        ? "iTabArial"
+        : fonts.has(s.time.font)
+          ? s.time.font
+          : "HarmonyOS_Sans",
     "--sidebar-opacity": s.sidebar.opacity,
+    "--sidebar-width": s.sidebar.width + "px",
   };
   for (const [k, v] of Object.entries(vars)) root.style.setProperty(k, v);
   root.dataset.layout = s.layout.view;
@@ -114,6 +112,20 @@ function applyTheme() {
   root.dataset.sidebar = s.sidebar.placement;
   root.dataset.autoHide = String(s.sidebar.autoHide);
   const wallpaper = $("#wallpaper");
+  let video = wallpaper.querySelector("video");
+  if (s.wallpaper.type === "video") {
+    if (!video) {
+      video = document.createElement("video");
+      video.muted = true;
+      video.loop = true;
+      video.autoplay = true;
+      video.playsInline = true;
+      wallpaper.append(video);
+    }
+    if (video.getAttribute("src") !== s.wallpaper.src)
+      video.src = s.wallpaper.src;
+    video.play().catch(() => {});
+  } else video?.remove();
   if (s.wallpaper.type === "image") {
     wallpaper.style.backgroundImage = `url(${JSON.stringify(s.wallpaper.src)})`;
     wallpaper.style.backgroundColor = "#172535";
@@ -129,6 +141,7 @@ function applyTheme() {
   $("#clock").hidden = !s.time.show;
   $("#search").hidden = !s.search.show;
   $("#quote").hidden = !s.layout.quote;
+  refreshNativeThemes();
 }
 function updateClock() {
   if (!state) return;
@@ -140,7 +153,6 @@ function updateClock() {
   const date = clockParts(state.settings.time);
   $("#clock-time").textContent = date.time;
   $("#clock-date").textContent = date.date;
-  tickWidgets(state, save);
 }
 function renderSidebar() {
   $("#sidebar").innerHTML =
@@ -228,10 +240,6 @@ function openURL(url, blank = state.settings.open.iconBlank) {
   if (blank) window.open(valid, "_blank", "noopener,noreferrer");
   else location.assign(valid);
 }
-function siteFace(item) {
-  const bg = /^#[\da-f]{3,8}$/i.test(item.color || "") ? item.color : "#ffffff";
-  return `<span class="site-face" style="background:${bg}">${item.image ? `<img src="${esc(item.image)}" alt="" draggable="false">` : `<span class="letter-icon">${esc((item.name || "?").slice(0, 2))}</span>`}${item.badge ? `<span class="site-badge">${esc(item.badge)}</span>` : ""}</span>`;
-}
 function itemHTML(item) {
   const [w, h] = (item.size || "1x1").split("x").map(Number);
   let face, action;
@@ -261,13 +269,36 @@ function renderGrid() {
     group.items.map(itemHTML).join("") +
     `<article class="desktop-item add-item"><button class="tile add-tile" data-action="add" aria-label="添加图标">${icon("plus", 28)}</button><span class="item-label">添加图标</span></article>`;
   $("#grid").classList.toggle("sparse", !state.settings.icon.autoSort);
+  fitSiteText();
   sizeGrid();
-  hydrateWidgets(state);
+}
+function syncNativeGrid() {
+  // 组件弹窗只会更新配置/名称或添加项目，保留已有节点，避免 iframe 被卸载。
+  const grid = $("#grid");
+  const existing = new Map([...grid.querySelectorAll(":scope > [data-item-id]")]
+    .map((element) => [element.dataset.itemId, element]));
+  for (const item of currentGroup().items) {
+    const element = existing.get(item.id);
+    if (!element) {
+      grid.querySelector(".add-item").insertAdjacentHTML("beforebegin", itemHTML(item));
+      continue;
+    }
+    element.querySelector(".item-label").textContent = item.name;
+    element.querySelector(".tile").setAttribute("aria-label", item.name);
+    const edit = element.querySelector(".item-edit");
+    edit.title = `编辑 ${item.name}`;
+    edit.setAttribute("aria-label", edit.title);
+  }
+  sizeGrid();
 }
 function sizeGrid() {
   if (!state) return;
   const s = state.settings.icon;
-  const available = Math.min(window.innerWidth - 100, s.width - 100);
+  const maxWidth =
+    s.widthUnit === "%"
+      ? (window.innerWidth * (s.widthPercent || 72)) / 100
+      : s.width;
+  const available = Math.min(window.innerWidth - 100, maxWidth - 100);
   const cols = Math.max(
     2,
     Math.floor((available + s.gapX) / (s.size + s.gapX)),
@@ -286,6 +317,11 @@ function render() {
   updateClock();
   $("#quote").innerHTML =
     `<button data-action="next-quote" title="点击切换一言">「 ${quotes[quoteIndex % quotes.length]} 」</button>`;
+}
+function renderAppearance() {
+  applyTheme();
+  sizeGrid();
+  updateClock();
 }
 function popover(html, x, y) {
   const root = $("#popover-root");
@@ -332,71 +368,26 @@ function widgetPicker() {
     render();
   });
 }
-function addWidget(type) {
-  const item = newWidget(type);
-  currentGroup().items.push(item);
-  save();
-  render();
-  return item;
-}
 function editSite(id) {
-  const found = id ? findItem(id) : null,
-    item = found?.item;
-  const d = modal(
-    item ? "编辑图标" : "添加网址",
-    `<form id="site-form"><div class="site-editor-preview">${item ? siteFace(item) : '<span class="new-site-icon">' + icon("external", 32) + "</span>"}</div><label class="field">名称<input name="name" required maxlength="40" value="${esc(item?.name || "")}" placeholder="网站名称"></label><label class="field">网址<input name="url" required value="${esc(item?.url || "")}" placeholder="https://example.com"></label><div class="form-columns"><label class="field">背景颜色<input name="color" type="color" value="${/^#[\da-f]{6}$/i.test(item?.color || "") ? item.color : "#1890ff"}"></label><label class="field">所属分组<select name="group">${state.groups.map((g) => `<option value="${esc(g.id)}" ${g.id === (found?.group.id || state.activeGroup) ? "selected" : ""}>${esc(g.name)}</option>`).join("")}</select></label></div><label class="field">图标图片网址（可选）<input name="image" value="${esc(item?.image?.startsWith("http") ? item.image : "")}" placeholder="留空使用本地图标或名称"></label><label class="button upload-icon-label">${icon("upload", 16)} 上传自定义图标<input id="site-icon-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden></label><div class="form-actions"><button type="button" data-action="close-modal">取消</button><button class="primary">保存</button></div></form>`,
-  );
-  let uploaded = null;
-  d.querySelector("#site-icon-file").onchange = async (e) => {
-    try {
-      uploaded = await fileAsDataURL(e.target.files[0]);
-      const img = document.createElement("img");
-      img.src = uploaded;
-      d.querySelector(".site-editor-preview").replaceChildren(img);
-    } catch (err) {
-      toast(err.message, true);
-    }
-  };
-  d.querySelector("form").onsubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const f = Object.fromEntries(new FormData(e.target));
-      const url = normalizeURL(f.url);
-      let image = uploaded || item?.image || "";
-      if (f.image) {
-        image = safeURL(f.image, { image: true });
-        if (!image) throw new Error("图标地址无效");
+  const found = id ? findItem(id) : null;
+  // 编辑保留当前分组/文件夹位置，分组移动继续使用右键菜单。
+  const list = found?.list || currentGroup().items;
+  openIconEditor({
+    item: found?.item,
+    async onSave(next) {
+      const index = found ? list.indexOf(found.item) : list.length;
+      if (found && index < 0) throw new Error("图标已被移除，请重新打开编辑器");
+      if (found) list.splice(index, 1, next);
+      else list.push(next);
+      try { await save(); }
+      catch (error) {
+        if (found) list.splice(index, 1, found.item);
+        else list.splice(index, 1);
+        throw error;
       }
-      const next = {
-        ...item,
-        id: item?.id || uid(),
-        kind: "site",
-        name: f.name.trim(),
-        url,
-        color: f.color,
-        image,
-        size: item?.size || "1x1",
-      };
-      if (!next.name) throw new Error("请输入名称");
-      if (found) {
-        const index = found.list.indexOf(item);
-        if (found.group.id === f.group) found.list.splice(index, 1, next);
-        else {
-          found.list.splice(index, 1);
-          state.groups.find((g) => g.id === f.group).items.push(next);
-        }
-      } else
-        currentGroup().id === f.group
-          ? currentGroup().items.push(next)
-          : state.groups.find((g) => g.id === f.group).items.push(next);
-      await save();
       render();
-      closeModal();
-      toast("图标已保存");
-    } catch (err) {
-      toast(err.message, true);
-    }
-  };
+    },
+  });
 }
 function editGroup(id) {
   const group = state.groups.find((g) => g.id === id);
@@ -480,11 +471,12 @@ function editFolder(id) {
   };
 }
 function openFolder(item) {
-  modal(
+  const d = modal(
     item.name,
     `<div class="folder-grid">${item.children.map((i) => `<button data-action="folder-site" data-id="${esc(i.id)}" title="右键可以编辑">${siteFace(i)}<span>${esc(i.name)}</span></button>`).join("") || '<p class="empty">文件夹是空的。右键网站图标，选择“移动到分组 / 文件夹”。</p>'}</div>`,
     { wide: true },
   );
+  fitSiteText(d);
 }
 function moveDialog(id) {
   const f = findItem(id);
@@ -532,7 +524,6 @@ function resizeDialog(id) {
       }),
   );
 }
-const widgetCallbacks = { save, render, settings: openSettings };
 document.addEventListener("click", async (e) => {
   if (!state) return;
   const target = e.target.closest("[data-action]");
@@ -589,11 +580,6 @@ document.addEventListener("click", async (e) => {
       case "add-widget":
         widgetPicker();
         break;
-      case "create-widget":
-        addWidget(target.dataset.type);
-        closeModal();
-        toast("组件已添加");
-        break;
       case "toggle-edit":
         editing = !editing;
         render();
@@ -631,7 +617,11 @@ document.addEventListener("click", async (e) => {
           );
         break;
       case "folder-site":
-        if (item) openURL(item.url);
+        if (item?.kind === "widget") openOriginalWidget(item);
+        else if (item?.kind === "action") {
+          if (item.action === "settings") openSettings();
+          else widgetPicker();
+        } else if (item) openURL(item.url);
         break;
       case "open-url":
         openURL(target.dataset.url);
@@ -650,7 +640,7 @@ document.addEventListener("click", async (e) => {
       }
       case "edit-item":
         closePopover();
-        if (item.kind === "widget") openWidget(item, state, widgetCallbacks);
+        if (item.kind === "widget") openOriginalWidget(item);
         else if (item.kind === "folder") editFolder(id);
         else if (item.kind === "site") editSite(id);
         else toast("该入口无需配置");
@@ -672,57 +662,14 @@ document.addEventListener("click", async (e) => {
             found.list.splice(found.list.indexOf(item), 1);
             if (item.kind === "folder")
               found.group.items.push(...item.children);
-            delete state.widgetData[item.id];
             await save();
             render();
           },
         );
         break;
       case "widget-open":
-        if (item) openWidget(item, state, widgetCallbacks);
+        if (item) openOriginalWidget(item);
         break;
-      case "hot-tab": {
-        const data = (state.widgetData[id] ??= {});
-        data.source = target.dataset.source;
-        save();
-        renderGrid();
-        break;
-      }
-      case "todo-toggle": {
-        const task = state.widgetData[id]?.todos?.find(
-          (t) => t.id === target.dataset.todo,
-        );
-        if (task) {
-          task.done = target.checked;
-          save();
-          renderGrid();
-        }
-        break;
-      }
-      case "pomodoro-toggle": {
-        const d = (state.widgetData[id] ??= {});
-        if (d.running) {
-          d.remaining = Math.max(0, Math.ceil((d.endAt - Date.now()) / 1000));
-          d.running = false;
-        } else {
-          const remaining =
-            d.remaining > 0 ? d.remaining : (d.minutes || 25) * 60;
-          d.endAt = Date.now() + remaining * 1000;
-          d.running = true;
-        }
-        save();
-        renderGrid();
-        break;
-      }
-      case "water-add": {
-        const d = (state.widgetData[id] ??= {});
-        const today = new Date().toLocaleDateString();
-        d.cups = (d.date === today ? d.cups || 0 : 0) + 1;
-        d.date = today;
-        save();
-        renderGrid();
-        break;
-      }
     }
   } catch (err) {
     toast(err.message, true);
@@ -814,6 +761,31 @@ $("#clock").onclick = () => {
   save();
   render();
 };
+let lastGroupWheel = 0;
+$("#sidebar").addEventListener(
+  "wheel",
+  (e) => {
+    if (
+      !state ||
+      state.settings.sidebar.mouseGroup === false ||
+      $("dialog[open]") ||
+      Math.abs(e.deltaY) < 8
+    )
+      return;
+    e.preventDefault();
+    if (Date.now() - lastGroupWheel < 300) return;
+    lastGroupWheel = Date.now();
+    const current = state.groups.findIndex((g) => g.id === state.activeGroup);
+    state.activeGroup =
+      state.groups[
+        (current + (e.deltaY > 0 ? 1 : -1) + state.groups.length) %
+          state.groups.length
+      ].id;
+    save();
+    render();
+  },
+  { passive: false },
+);
 for (const d of document.querySelectorAll("dialog"))
   d.addEventListener("click", (e) => {
     if (e.target === d) {
@@ -824,7 +796,7 @@ for (const d of document.querySelectorAll("dialog"))
         e.clientY < r.top ||
         e.clientY > r.bottom
       )
-        d.close();
+        d.id === "modal" ? void closeModal() : d.close();
     }
   });
 addEventListener("resize", () => {
@@ -855,6 +827,7 @@ document.addEventListener(
   true,
 );
 async function initialize() {
+  window.addEventListener("native-widget-saved", syncNativeGrid);
   seed = await (await fetch("./assets/seed.json")).json();
   const stored = await read("state");
   let recovered = false;
@@ -867,11 +840,21 @@ async function initialize() {
     toast("本机数据格式异常，已保留原始数据并加载默认主页", true);
   }
   validateState(state);
+  initNativeBridge({
+    getState: () => state,
+    save,
+    render,
+    applyTheme,
+    open: openOriginalWidget,
+    close: closeModal,
+  });
   initSettings({
     getState: () => state,
     save,
     render,
-    addWidget,
+    appearance: renderAppearance,
+    wallpaperPicker: () => openOriginalWidget(nativeUtility("wallpaper")),
+    widgetPicker,
     editGroup,
     restore: async (next) => {
       state = await restoreState(state, next);
@@ -882,8 +865,20 @@ async function initialize() {
       render();
     },
   });
+  if (state.settings.sidebar.lastGroup === false)
+    state.activeGroup = state.groups[0].id;
   render();
   if (!stored || recovered) await save();
+  const nativeId = new URLSearchParams(location.search).get("native");
+  if (nativeId) {
+    const item = state.groups
+      .flatMap((g) =>
+        g.items.flatMap((i) => (i.kind === "folder" ? i.children : [i])),
+      )
+      .find((i) => i.id === nativeId && i.type === "native");
+    if (item) openOriginalWidget(item);
+    else toast("该原版组件已被删除", true);
+  }
   onExternalChange(async () => {
     if (
       $("dialog[open]") ||
@@ -900,7 +895,6 @@ async function initialize() {
     }
   });
   setInterval(updateClock, 1000);
-  setInterval(() => hydrateWidgets(state), 10 * 60 * 1000);
 }
 initialize().catch((e) => {
   console.error(e);

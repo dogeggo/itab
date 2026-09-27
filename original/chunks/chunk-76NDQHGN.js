@@ -1,0 +1,16 @@
+import {
+  r
+} from "./chunk-ZBQAVDN7.js";
+
+// output/native-current/IconPlayerPause-BkZa0pHz.js
+var e = r("outline", "player-pause", "PlayerPause", [["path", { d: "M6 6a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v12a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1l0 -12", key: "svg-0" }], ["path", { d: "M14 6a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v12a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1l0 -12", key: "svg-1" }]]);
+
+export {
+  e
+};
+/**
+ * @license @tabler/icons-vue v3.46.0 - MIT
+ *
+ * This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory of this source tree.
+ */

@@ -1,17 +1,23 @@
 {
-  "name": "itab-local-replica",
-  "version": "1.0.1",
+  "name": "newtab",
+  "version": "2.1.0",
   "private": true,
   "type": "module",
-  "description": "独立的 iTab 主页复刻扩展，支持 Google Drive 备份",
+  "description": "独立的 NewTab 主页复刻扩展，支持 Google Drive 备份",
   "scripts": {
     "dev": "node scripts/serve.mjs",
     "build": "node scripts/build.mjs",
     "check": "node scripts/check.mjs",
     "test": "node --test tests/*.test.mjs",
-    "configure:google": "node scripts/configure-google.mjs"
+    "configure:google": "node scripts/configure-google.mjs",
+    "prepare:appearance": "node scripts/prepare-appearance.mjs",
+    "prepare:icon-editor": "node scripts/prepare-icon-editor.mjs"
   },
   "engines": {
     "node": ">=20"
+  },
+  "devDependencies": {
+    "acorn": "^8.18.0",
+    "esbuild": "^0.28.2"
   }
 }

@@ -1,8 +1,23 @@
+import { timeFonts } from "./appearance-model.js";
 import { originalWidgetURL } from "./original-widgets.js";
+import { nativeComponents } from "../original/registry.js";
+import { validateNativeData } from "./native-data.js";
 export const APP_ID = "itab-local";
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
 export const uid = () => globalThis.crypto.randomUUID();
 export const clone = (value) => structuredClone(value);
+export function safeGradient(value) {
+  const color = "(?:#[\\da-f]{3,8}|rgba?\\([\\d.,%\\s]+\\))";
+  const stop = `${color}(?:\\s+[\\d.]+%)?`;
+  return (
+    typeof value === "string" &&
+    value.length < 1500 &&
+    new RegExp(
+      `^linear-gradient\\((?:[-\\d.]+deg|to (?:right|left|top|bottom)(?: (?:right|left|top|bottom))?),\\s*${stop}(?:,\\s*${stop})+\\)$`,
+      "i",
+    ).test(value)
+  );
+}
 export const defaults = {
   theme: { mode: "light", system: true, color: "#1890ff" },
   sidebar: { placement: "left", autoHide: false, width: 50, opacity: 0.4 },
@@ -33,7 +48,7 @@ export const defaults = {
     opacity: 0.5,
     width: 600,
     history: false,
-    engine: "baidu",
+    engine: "google",
   },
   engines: [
     {
@@ -58,11 +73,11 @@ export const defaults = {
       color: "#4285f4",
     },
     {
-      id: "360",
-      name: "360搜索",
-      url: "https://www.so.com/s?q={query}",
-      mark: "360",
-      color: "#19b955",
+      id: "duckduckgo",
+      name: "DuckDuckGo",
+      url: "https://duckduckgo.com/?q={query}",
+      mark: "D",
+      color: "#de5833",
     },
   ],
   open: { searchBlank: true, iconBlank: true },
@@ -81,117 +96,6 @@ export const defaults = {
   },
   layout: { view: "widget", quote: true },
 };
-export const widgetCatalog = [
-  {
-    type: "weather",
-    name: "天气",
-    size: "2x2",
-    icon: "cloud",
-    description: "实时天气 · 城市搜索",
-  },
-  {
-    type: "calendar",
-    name: "日历",
-    size: "2x2",
-    icon: "calendar",
-    description: "公历农历 · 月历翻页",
-  },
-  {
-    type: "hotlist",
-    name: "热搜榜",
-    size: "4x2",
-    icon: "trending",
-    description: "热榜入口 · Hacker News 实时榜",
-  },
-  {
-    type: "days",
-    name: "倒数日",
-    size: "2x2",
-    icon: "heart",
-    description: "纪念日 · 自动计算天数",
-  },
-  {
-    type: "notes",
-    name: "备忘录",
-    size: "2x2",
-    icon: "note",
-    description: "随手记录 · 自动保存",
-  },
-  {
-    type: "todo",
-    name: "待办事项",
-    size: "2x2",
-    icon: "check",
-    description: "添加任务 · 勾选完成",
-  },
-  {
-    type: "offwork",
-    name: "下班倒计时",
-    size: "4x2",
-    icon: "coffee",
-    description: "工作时间 · 周末倒计时",
-  },
-  {
-    type: "movie",
-    name: "电影日历",
-    size: "2x2",
-    icon: "film",
-    description: "每日电影卡片 · 自定义片单",
-  },
-  {
-    type: "calculator",
-    name: "计算器",
-    size: "2x2",
-    icon: "calculator",
-    description: "四则运算 · 括号与百分数",
-  },
-  {
-    type: "pomodoro",
-    name: "番茄钟",
-    size: "2x2",
-    icon: "timer",
-    description: "专注计时 · 暂停与重置",
-  },
-  {
-    type: "water",
-    name: "喝水提醒",
-    size: "2x2",
-    icon: "water",
-    description: "记录饮水 · 每日进度",
-  },
-  {
-    type: "wallpaper",
-    name: "壁纸",
-    size: "1x1",
-    icon: "image",
-    description: "快速切换主题壁纸",
-  },
-];
-export function newWidget(type) {
-  const w = widgetCatalog.find((w) => w.type === type);
-  if (!w) throw new Error("未知组件");
-  return {
-    id: uid(),
-    kind: "widget",
-    type,
-    name: w.name,
-    size: w.size,
-    config:
-      type === "days"
-        ? { title: "你在世界已经", date: "1997-10-01", countUp: true }
-        : type === "offwork"
-          ? { time: "18:00", start: "09:00" }
-          : type === "weather"
-            ? { city: "北京", latitude: 39.9, longitude: 116.4 }
-            : type === "movie"
-              ? {
-                  title: "肖申克的救赎",
-                  quote: "希望是美好的，也许是人间至善。",
-                  year: "1994",
-                }
-              : {},
-  };
-}
 export function createState(groups = []) {
   return {
     schemaVersion: SCHEMA_VERSION,
@@ -199,7 +103,7 @@ export function createState(groups = []) {
     groups,
     activeGroup: groups[0]?.id || "home",
     history: [],
-    widgetData: {},
+    nativeData: { local: {}, stores: {} },
     updatedAt: new Date().toISOString(),
   };
 }
@@ -208,7 +112,7 @@ export function safeURL(value, { internal = false, image = false } = {}) {
     return "";
   if (
     image &&
-    /^(assets\/[\w/.-]+|data:image\/(png|jpeg|webp|gif);base64,[A-Za-z\d+/=]+)$/.test(
+    /^(assets\/[\w/.-]+|data:image\/(png|jpeg|webp|gif|svg\+xml);base64,[A-Za-z\d+/=]+)$/.test(
       value,
     )
   )
@@ -269,6 +173,8 @@ export function validateState(input) {
     input.groups.length > 100
   )
     throw new Error("导航分组格式错误");
+  if (Object.hasOwn(input, "widgetData"))
+    throw new Error("不接受旧组件数据格式");
   const s = input.settings;
   if (!s || typeof s !== "object") throw new Error("备份缺少设置");
   for (const key of Object.keys(defaults))
@@ -276,8 +182,8 @@ export function validateState(input) {
   for (const [key, min, max] of [
     ["size", 30, 100],
     ["radius", 0, 60],
-    ["gapX", 10, 80],
-    ["gapY", 10, 80],
+    ["gapX", 0, 100],
+    ["gapY", 0, 100],
     ["width", 320, 2400],
     ["nameSize", 10, 20],
     ["opacity", 0.1, 1],
@@ -293,7 +199,7 @@ export function validateState(input) {
   if (
     !["light", "dark"].includes(s.theme.mode) ||
     !["widget", "simple"].includes(s.layout.view) ||
-    !["image", "color", "gradient"].includes(s.wallpaper.type) ||
+    !["image", "color", "gradient", "video"].includes(s.wallpaper.type) ||
     !["left", "right", "hidden"].includes(s.sidebar.placement)
   )
     throw new Error("设置类型无效");
@@ -319,19 +225,15 @@ export function validateState(input) {
       if (typeof s[section][key] !== "boolean")
         throw new Error("开关设置类型无效");
   numberRange(s.sidebar.opacity, 0, 1, "侧边栏透明度");
-  numberRange(s.sidebar.width, 30, 100, "侧边栏宽度");
-  if (
-    ![
-      "HarmonyOS_Sans",
-      "MiSans",
-      "JetBrains",
-      "dsdigi",
-      "Oswald",
-      "Orbitron",
-      "Arial",
-    ].includes(s.time.font)
-  )
-    throw new Error("不支持的时间字体");
+  numberRange(s.sidebar.width, 30, 120, "侧边栏宽度");
+  if (s.icon.widthUnit !== undefined && !["px", "%"].includes(s.icon.widthUnit))
+    throw new Error("图标宽度单位无效");
+  if (s.icon.widthPercent !== undefined)
+    numberRange(s.icon.widthPercent, 40, 100, "图标宽度百分比");
+  for (const key of ["lastGroup", "mouseGroup"])
+    if (s.sidebar[key] !== undefined && typeof s.sidebar[key] !== "boolean")
+      throw new Error("侧边栏开关无效");
+  if (!timeFonts.includes(s.time.font)) throw new Error("不支持的时间字体");
   if (
     !/^#[0-9a-f]{6}$/i.test(s.theme.color) ||
     !/^#[0-9a-f]{6}$/i.test(s.time.color) ||
@@ -362,12 +264,9 @@ export function validateState(input) {
     throw new Error("壁纸地址无效");
   if (s.wallpaper.type === "color" && !/^#[\da-f]{6}$/i.test(s.wallpaper.src))
     throw new Error("壁纸颜色无效");
-  if (
-    s.wallpaper.type === "gradient" &&
-    !/^linear-gradient\([\d.]+deg,\s*#[\da-f]{6},\s*#[\da-f]{6}\)$/i.test(
-      s.wallpaper.src,
-    )
-  )
+  if (s.wallpaper.type === "video" && !safeURL(s.wallpaper.src))
+    throw new Error("动态壁纸地址无效");
+  if (s.wallpaper.type === "gradient" && !safeGradient(s.wallpaper.src))
     throw new Error("渐变格式无效");
   const ids = new Set();
   let count = 0;
@@ -389,14 +288,16 @@ export function validateState(input) {
         throw new Error("图标尺寸无效");
       if (i.kind === "site" && !safeURL(i.url, { internal: true }))
         throw new Error("网站地址无效");
-      if (
-        i.kind === "widget" &&
-        i.type !== "original" &&
-        !widgetCatalog.some((w) => w.type === i.type)
-      )
+      if (i.kind === "widget" && !["original", "native"].includes(i.type))
         throw new Error("组件类型无效");
       if (i.kind === "widget" && i.type === "original")
         originalWidgetURL(i.config?.component);
+      if (
+        i.kind === "widget" &&
+        i.type === "native" &&
+        !nativeComponents.has(i.config?.component)
+      )
+        throw new Error("原版内置组件类型无效");
       if (i.image && !safeURL(i.image, { image: true }))
         throw new Error("图标图片无效");
       if (i.kind === "folder") items(i.children, depth + 1);
@@ -422,30 +323,6 @@ export function validateState(input) {
       const c = i.config;
       if (!c || typeof c !== "object" || Array.isArray(c))
         throw new Error("组件配置无效");
-      if (i.type === "weather") {
-        if (c.latitude !== undefined) numberRange(c.latitude, -90, 90, "纬度");
-        if (c.longitude !== undefined)
-          numberRange(c.longitude, -180, 180, "经度");
-        if (c.city !== undefined && typeof c.city !== "string")
-          throw new Error("城市无效");
-      }
-      if (i.type === "offwork")
-        for (const key of ["time", "start"])
-          if (c[key] !== undefined && !/^([01]\d|2[0-3]):[0-5]\d$/.test(c[key]))
-            throw new Error("上下班时间无效");
-      if (
-        i.type === "days" &&
-        c.date !== undefined &&
-        (!/^\d{4}-\d{2}-\d{2}$/.test(c.date) ||
-          !Number.isFinite(new Date(c.date).getTime()))
-      )
-        throw new Error("倒数日日期无效");
-      for (const key of ["title", "quote", "year"])
-        if (
-          c[key] !== undefined &&
-          (typeof c[key] !== "string" || c[key].length > 1000)
-        )
-          throw new Error("组件文本无效");
     }
   if (!groupIds.has(input.activeGroup)) throw new Error("当前分组无效");
   if (
@@ -454,34 +331,7 @@ export function validateState(input) {
     input.history.some((x) => typeof x !== "string" || x.length > 500)
   )
     throw new Error("搜索历史格式错误");
-  if (
-    !input.widgetData ||
-    typeof input.widgetData !== "object" ||
-    Array.isArray(input.widgetData)
-  )
-    throw new Error("组件数据无效");
-  for (const d of Object.values(input.widgetData)) {
-    if (!d || typeof d !== "object" || Array.isArray(d))
-      throw new Error("组件数据格式错误");
-    if (
-      d.text !== undefined &&
-      (typeof d.text !== "string" || d.text.length > 100000)
-    )
-      throw new Error("便签内容过长");
-    if (
-      d.todos !== undefined &&
-      (!Array.isArray(d.todos) ||
-        d.todos.length > 1000 ||
-        d.todos.some(
-          (t) =>
-            !t ||
-            typeof t.id !== "string" ||
-            typeof t.text !== "string" ||
-            typeof t.done !== "boolean",
-        ))
-    )
-      throw new Error("待办数据无效");
-  }
+  validateNativeData(input.nativeData);
   return clone(input);
 }
 export function makeBackup(state) {
@@ -492,7 +342,7 @@ export function makeBackup(state) {
     state: validateState(state),
   };
 }
-export function parseBackup(text) {
+export function parseBackupJSON(text) {
   if (
     typeof text !== "string" ||
     new TextEncoder().encode(text).length > 25 * 1024 * 1024
@@ -500,12 +350,19 @@ export function parseBackup(text) {
     throw new Error("备份不能超过 25 MB");
   let data;
   try {
-    data = JSON.parse(text);
+    data = JSON.parse(text.replace(/^\uFEFF/, ""));
   } catch {
     throw new Error("不是有效的 JSON 文件");
   }
+  assertPlain(data);
+  if (!data || typeof data !== "object" || Array.isArray(data))
+    throw new Error("备份格式错误");
+  return data;
+}
+export function parseBackup(text) {
+  const data = parseBackupJSON(text);
   if (data.app !== APP_ID || data.version !== SCHEMA_VERSION)
-    throw new Error("这不是 iTab Local 备份文件");
+    throw new Error("这不是 NewTab 备份文件");
   return validateState(data.state);
 }
 export function moveItem(items, source, target) {
@@ -515,73 +372,4 @@ export function moveItem(items, source, target) {
   const [item] = items.splice(a, 1);
   items.splice(b, 0, item);
   return true;
-}
-export function daysBetween(date, now = new Date()) {
-  const d = new Date(date + "T12:00:00");
-  if (!Number.isFinite(d.getTime())) return 0;
-  return Math.round(
-    (Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) -
-      Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())) /
-      86400000,
-  );
-}
-// 递归下降解析器：不使用 eval / Function，符合扩展 CSP。
-export function calculate(expression) {
-  const input = String(expression)
-    .replace(/\s/g, "")
-    .replace(/×/g, "*")
-    .replace(/÷/g, "/")
-    .replace(/−/g, "-");
-  if (input.length > 200 || !/^[\d.+\-*/()%]+$/.test(input))
-    throw new Error("请输入有效算式");
-  let p = 0;
-  function atom() {
-    let v;
-    if (input[p] === "+") {
-      p++;
-      return atom();
-    }
-    if (input[p] === "-") {
-      p++;
-      return -atom();
-    }
-    if (input[p] === "(") {
-      p++;
-      v = sum();
-      if (input[p++] !== ")") throw new Error("括号不匹配");
-    } else {
-      const m = input.slice(p).match(/^(\d+(?:\.\d*)?|\.\d+)/);
-      if (!m) throw new Error("算式不完整");
-      p += m[0].length;
-      v = Number(m[0]);
-    }
-    while (input[p] === "%") {
-      v /= 100;
-      p++;
-    }
-    return v;
-  }
-  function product() {
-    let v = atom();
-    while (input[p] === "*" || input[p] === "/") {
-      const op = input[p++],
-        rhs = atom();
-      if (op === "/" && rhs === 0) throw new Error("不能除以零");
-      v = op === "*" ? v * rhs : v / rhs;
-    }
-    return v;
-  }
-  function sum() {
-    let v = product();
-    while (input[p] === "+" || input[p] === "-") {
-      const op = input[p++],
-        rhs = product();
-      v = op === "+" ? v + rhs : v - rhs;
-    }
-    return v;
-  }
-  const result = sum();
-  if (p !== input.length || !Number.isFinite(result))
-    throw new Error("算式无效");
-  return Number(result.toPrecision(12));
 }

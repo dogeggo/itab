@@ -11,7 +11,7 @@ if (
   throw new Error("构建目录不在工程内");
 await fs.rm(dist, { recursive: true, force: true });
 await fs.mkdir(dist, { recursive: true });
-for (const name of ["index.html", "src", "assets"])
+for (const name of ["index.html", "src", "assets", "original"])
   await fs.cp(path.join(root, name), path.join(dist, name), {
     recursive: true,
     force: true,

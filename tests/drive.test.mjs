@@ -39,6 +39,9 @@ test("授权后只读取 appDataFolder，不访问用户普通云盘文件", asy
   mockChrome(log);
   globalThis.fetch = async (url, options) => {
     assert.equal(new URL(url).searchParams.get("spaces"), "appDataFolder");
+    const query = new URL(url).searchParams.get("q");
+    assert.match(query, /name contains 'NewTab-'/);
+    assert.match(query, /or name contains 'itab-local-'/);
     assert.equal(options.headers.Authorization, "Bearer mock-token");
     return Response.json({ files: [{ id: "backup1" }] });
   };
@@ -78,6 +81,7 @@ test("上传采用 multipart，父目录固定为 appDataFolder", async () => {
     assert.equal(options.method, "POST");
     assert.match(options.headers["Content-Type"], /multipart\/related/);
     assert.match(options.body, /"parents":\["appDataFolder"\]/);
+    assert.match(options.body, /"name":"NewTab-[^"\r\n]+\.json"/);
     assert.match(options.body, /"app":"itab-local"/);
     return Response.json({ id: "backup2" });
   };

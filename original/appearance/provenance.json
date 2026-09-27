@@ -1,0 +1,50 @@
+{
+  "version": "2.3.13",
+  "components": {
+    "icon": "icon-CRwW-IH5",
+    "time": "time-BSnPnxuW",
+    "open": "open-CPcHO033",
+    "layout": "layout-V2nQcA5Q",
+    "sidebar": "sidebar-B5-VRzgW",
+    "search": "search-SQmPP6kd",
+    "wallpaper": "wallpaper-Bybn0iTt"
+  },
+  "styles": [
+    "tailwind-rIhkj3gK",
+    "vendor-element-plus-WnleHQiG",
+    "element-plus-DNgMbf21",
+    "common-_lU6m7G0",
+    "d-switch-r9qL2m8j",
+    "d-slider-X3LUascn",
+    "d-color-DJInpebV",
+    "d-radio-XXFjz9-C",
+    "time-f-lNG0WR",
+    "layout-CCfD7i1C",
+    "sidebar-BBpwaCb4",
+    "wallpaper-CxbhOO31"
+  ],
+  "inputs": [
+    "vendor-vue-BG-CQRtu.js",
+    "stocksCache-CNvbf2yR.js",
+    "preload-helper-Bj79fh9f.js",
+    "vendor-vueuse-BuArpzIG.js",
+    "vendor-lodash-DCeD6L6s.js",
+    "vendor-dayjs-D25YbOr3.js",
+    "vendor-element-plus-CRt18gND.js",
+    "tailwind-S0oaxdkI.js",
+    "d-switch-Cm757Crr.js",
+    "d-slider-DN8xmDqB.js",
+    "d-color-DVejX7gp.js",
+    "d-radio-3Eqwjp-a.js",
+    "icon-CRwW-IH5.js",
+    "d-font-family-G8Tq3WWS.js",
+    "time-BSnPnxuW.js",
+    "open-CPcHO033.js",
+    "layout-V2nQcA5Q.js",
+    "sidebar-B5-VRzgW.js",
+    "search-SQmPP6kd.js",
+    "index-Bz0MuV5X.js",
+    "wallpaper-Bybn0iTt.js",
+    "appearance-entry.js"
+  ]
+}

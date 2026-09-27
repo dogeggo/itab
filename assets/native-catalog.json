@@ -1,0 +1,331 @@
+[
+  {
+    "_id": "62be6cbdca845f0884da1140",
+    "component": "daysMatter",
+    "description": "倒数日是一个帮你记录生活中重要日子的小工具，例如:恋人生日还有多少天？还信用卡还有多少天？发工资还有多少天？宝宝出生已经多少天？距离世界末日还有多少天？倒数日等一系列功能",
+    "downloadCount": 227522,
+    "insetType": "",
+    "name": "倒数日",
+    "src": "https://files.itab.link/icons/daysMatter.svg",
+    "type": "component",
+    "config": {
+      "name": "纪念日日",
+      "title": "你在世界已经",
+      "target": "1997-10-1",
+      "repeat": "",
+      "bgColor": "#eee1d9",
+      "textColor": "#8e726f",
+      "family": "",
+      "icon": ""
+    },
+    "backgroundColor": "#ff9429"
+  },
+  {
+    "_id": "62fc5a6f185000003a0048b2",
+    "component": "todayShici",
+    "description": "每天一句诗词名句，也可以查看名句的出处，以及全文释义",
+    "downloadCount": 218288,
+    "name": "今日诗词",
+    "src": "https://files.itab.link/icons/todayShici.svg",
+    "type": "component",
+    "backgroundColor": "#093744"
+  },
+  {
+    "_id": "62c7db89b6460000b70030d2",
+    "name": "每日一言",
+    "component": "yiyan",
+    "type": "component",
+    "insetType": "",
+    "src": "https://files.itab.link/icons/yiyan.svg",
+    "backgroundColor": "#011211",
+    "description": "曾经迷惘的心中，是你牵引我走出寂寞。",
+    "downloadCount": 201120
+  },
+  {
+    "_id": "64b7e532965c0000c8004962",
+    "component": "muyu",
+    "description": "敲电子木鱼,攒赛博功德,见机械佛祖",
+    "downloadCount": 187697,
+    "insetType": "",
+    "name": "电子木鱼",
+    "type": "component",
+    "backgroundColor": "",
+    "src": "https://files.itab.link/icons/muyu.jpg"
+  },
+  {
+    "_id": "63fcba9cfe08000068006a04",
+    "component": "games",
+    "description": "上班无聊了怎么办。当然是来玩摸鱼小游戏啦！",
+    "downloadCount": 171829,
+    "insetType": "",
+    "name": "小游戏",
+    "type": "component",
+    "backgroundColor": "",
+    "src": "https://files.itab.link/icons/games.svg"
+  },
+  {
+    "_id": "62c8f5e7d94c0000ca004ca2",
+    "name": "时钟",
+    "component": "clock",
+    "type": "component",
+    "insetType": "",
+    "src": "https://files.itab.link/icons/clock.svg",
+    "description": "可以全屏当作屏保的时钟组件，F11实现一键全屏",
+    "downloadCount": 165604,
+    "backgroundColor": "#000000"
+  },
+  {
+    "_id": "62e733bc1c2f0000b1007dd4",
+    "name": "今日英语",
+    "component": "todayEnglish",
+    "type": "component",
+    "insetType": "",
+    "src": "https://files.itab.link/icons/todayEnglish.svg",
+    "description": "每天一句英语句子",
+    "downloadCount": 165307,
+    "backgroundColor": "#fff"
+  },
+  {
+    "_id": "62be6cbeca845f0884da1169",
+    "component": "wallpaper",
+    "description": "汇集各个平台的免费壁纸，超过10万+壁纸供你选择与使用",
+    "downloadCount": 156538,
+    "insetType": "",
+    "name": "壁纸",
+    "src": "https://files.itab.link/icons/wallpaper.svg",
+    "type": "component",
+    "backgroundColor": ""
+  },
+  {
+    "_id": "62c30a083f390000260078d2",
+    "name": "今天吃什么",
+    "component": "eat",
+    "type": "component",
+    "insetType": "",
+    "src": "https://files.itab.link/icons/eat.svg",
+    "description": "不知道今天吃什么? 那我来帮你选吧!。",
+    "downloadCount": 147637,
+    "backgroundColor": "#ffe448"
+  },
+  {
+    "_id": "62be6cbeca845f0884da115b",
+    "component": "todo",
+    "description": "待办事项，让您更轻松的计划每一天",
+    "downloadCount": 139473,
+    "insetType": "",
+    "name": "待办事项",
+    "type": "component",
+    "backgroundColor": "#0069e0",
+    "src": "https://files.itab.link/icons/todo.svg"
+  },
+  {
+    "_id": "62be6cbeca845f0884da1144",
+    "component": "stock",
+    "description": "'股市'可让您轻松关注股票和股市的动态，在自定的列表中查看股票和每日行情，轻点任意代码来查看交互式走势图及关键数据",
+    "downloadCount": 132525,
+    "insetType": "",
+    "name": "股市",
+    "src": "https://files.itab.link/icons/stock.svg",
+    "type": "component",
+    "backgroundColor": "#f10707"
+  },
+  {
+    "_id": "62be6cbeca845f0884da114c",
+    "component": "weather",
+    "description": "准确预报全球近10000多个地区的一周天气预报，包括国内县级和县级以上全部城市",
+    "downloadCount": 109136,
+    "insetType": "",
+    "name": "天气",
+    "src": "https://files.itab.link/icons/weather.svg",
+    "type": "component",
+    "backgroundColor": ""
+  },
+  {
+    "_id": "637a581cfc770000b3002512",
+    "component": "countdown",
+    "description": "下班倒计时，打工人的必备神器。",
+    "downloadCount": 103478,
+    "name": "下班倒计时",
+    "src": "https://files.itab.link/icons/countdown.svg",
+    "type": "component",
+    "backgroundColor": ""
+  },
+  {
+    "_id": "62be6cbeca845f0884da1155",
+    "component": "calendar",
+    "description": "日历是一款日期展示工具,小伙伴们可以通过农历日历软件了解当天的月、日、节日等信息。还有一些实用的日期小工具，自然日计算，工作日计算，假期大全等功能",
+    "downloadCount": 102664,
+    "insetType": "",
+    "name": "日历",
+    "type": "component",
+    "backgroundColor": "",
+    "src": "https://files.itab.link/icons/calendar.svg"
+  },
+  {
+    "_id": "62be6cbeca845f0884da1161",
+    "component": "topsearch",
+    "description": "热搜榜提供各站热榜聚合：微信、今日头条、百度、知乎、V2EX、微博、贴吧、豆瓣、天涯、虎扑、Github、抖音...追踪全网热点、简单高效阅读",
+    "downloadCount": 101620,
+    "insetType": "",
+    "name": "热搜榜",
+    "type": "component",
+    "backgroundColor": "#f10c09",
+    "src": "https://files.itab.link/icons/topsearch.svg"
+  },
+  {
+    "_id": "63fcb99afe08000068006a03",
+    "component": "exchangerate",
+    "description": "实时查看汇率的小组件，提供全球一百多个国家和地区的货币换算和汇率走势行情",
+    "downloadCount": 100001,
+    "insetType": "",
+    "name": "汇率",
+    "type": "component",
+    "backgroundColor": "#34a54d",
+    "src": "https://files.itab.link/icons/exchangerate.svg"
+  },
+  {
+    "_id": "62cf6a958e420000330019b2",
+    "name": "录屏",
+    "component": "lusun",
+    "type": "component",
+    "insetType": "",
+    "src": "https://files.itab.link/tools-icon/lusun.svg",
+    "description": "录屏是一款极简的录屏分享工具，支持窗口、屏幕+人像同时录制",
+    "downloadCount": 86740
+  },
+  {
+    "_id": "62be6cbdca845f0884da113b",
+    "component": "habit",
+    "description": "养成新习惯和提升自我",
+    "downloadCount": 78189,
+    "insetType": "",
+    "name": "习惯养成",
+    "src": "https://files.itab.link/icons/habit.svg",
+    "type": "component",
+    "config": {
+      "title": "每天8杯水",
+      "target": 8,
+      "current": 0,
+      "reset": "1"
+    },
+    "backgroundColor": "#ff5979"
+  },
+  {
+    "_id": "62be6cbeca845f0884da115e",
+    "component": "notes",
+    "description": "备忘录是一款便利的和易用的备忘录工具软件。能帮您把任务贴在标签页桌面上,一目了然",
+    "downloadCount": 77073,
+    "insetType": "",
+    "name": "备忘录",
+    "type": "component",
+    "backgroundColor": "#fff",
+    "src": "https://files.itab.link/icons/notes.svg"
+  },
+  {
+    "_id": "62be6cbeca845f0884da116e",
+    "component": "bookmarks",
+    "description": "NewTab书签管理，更高效的管理您的书签，方便您的使用",
+    "downloadCount": 74298,
+    "insetType": "",
+    "name": "书签管理",
+    "src": "https://files.itab.link/icons/bookmarks.svg",
+    "type": "icon",
+    "backgroundColor": "#fe5f23"
+  },
+  {
+    "_id": "659c9ed8c31872aa66069301",
+    "component": "tomato",
+    "description": "白噪音专注计时器，帮助您专注于当前的工作和学习，待办任务清单结合番茄钟计时器，绝佳的时间管理效率工具，帮助提高自律，摆脱拖延。",
+    "downloadCount": 68229,
+    "insetType": "",
+    "name": "番茄时钟",
+    "type": "component",
+    "backgroundColor": "",
+    "src": "https://files.itab.link/icons/tomato.svg"
+  },
+  {
+    "_id": "62e733101c2f0000b1007dd2",
+    "name": "电影日历",
+    "component": "movieCalendar",
+    "type": "component",
+    "insetType": "",
+    "src": "https://files.itab.link/tools-icon/movieCalendar.svg",
+    "description": "电影日历, 每天一部优秀电影",
+    "downloadCount": 66945
+  },
+  {
+    "_id": "637a58b8fc770000b3002513",
+    "component": "sport",
+    "description": "关注运动最新资讯和赛程，球迷的福利",
+    "downloadCount": 65110,
+    "name": "体育",
+    "src": "https://files.itab.link/icons/sport.svg",
+    "type": "component",
+    "backgroundColor": "#6f51ff"
+  },
+  {
+    "_id": "62e733861c2f0000b1007dd3",
+    "name": "世界时钟",
+    "component": "worldClock",
+    "type": "component",
+    "insetType": "",
+    "src": "https://files.itab.link/icons/worldClock.svg",
+    "description": "你可以把多个世界的时钟放在浏览器主页上",
+    "downloadCount": 53846,
+    "backgroundColor": ""
+  },
+  {
+    "_id": "632183fa4524000074007652",
+    "component": "vgn",
+    "description": "游戏资讯、游戏折扣、今日限免等多功能与一体，为玩家服务！",
+    "downloadCount": 48599,
+    "name": "游戏资讯",
+    "src": "https://files.itab.link/icons/vgn.svg",
+    "type": "component",
+    "backgroundColor": "#131415"
+  },
+  {
+    "_id": "683526003595f12f5f092fa1",
+    "component": "calculator",
+    "description": "一款集计算器、房贷计算、个人所得税、长度换算、质量转换和面积换算的全能计算工具。",
+    "downloadCount": 38783,
+    "insetType": "",
+    "name": "换算器",
+    "type": "component",
+    "backgroundColor": "#16171b",
+    "src": "https://files.itab.link/icons/calculator.jpg"
+  },
+  {
+    "_id": "6a698a83c5b45de0d80b0901",
+    "component": "translate",
+    "description": "海量语种覆盖，译文自然地道。",
+    "insetType": "",
+    "name": "翻译",
+    "src": "https://files.itab.link/icons/translate.svg",
+    "type": "component",
+    "backgroundColor": "#fff",
+    "downloadCount": 9267
+  },
+  {
+    "_id": "69e036a7d283ae92ee044de1",
+    "description": "SBTI（Silly Big Personality Test），直译''傻乎乎人格测试'，由B站UP主创作，核心定位是纯娱乐化精神状态自测工具，无专业心理学依据",
+    "downloadCount": 3153,
+    "insetType": "",
+    "name": "SBTI人格测试",
+    "component": "sbti",
+    "type": "component",
+    "backgroundColor": "",
+    "src": "https://files.itab.link/icons/sbti.svg"
+  },
+  {
+    "_id": "6a96b42f2b4b846d9d3810ce",
+    "name": "媒体工具箱",
+    "component": "mediaBox",
+    "type": "component",
+    "insetType": "",
+    "src": "",
+    "description": "重磅升级，视频转换、视频剪辑、音频转换、音频剪辑四大组件整合为媒体工具箱，媒体处理能力全面增强",
+    "downloadCount": 636,
+    "backgroundColor": ""
+  }
+]

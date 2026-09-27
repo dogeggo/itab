@@ -3,7 +3,6 @@ async (page) => {
   const checks=[];const assert=(ok,label)=>{if(!ok)throw new Error(label);checks.push(label);};
   await page.reload();
   await page.locator('#topbar').getByRole('button',{name:'添加组件',exact:true}).click();
-  await page.getByRole('tab',{name:'原版组件仓库',exact:true}).click();
   await page.getByRole('searchbox',{name:'搜索原版组件'}).fill('数字大写');
   await page.locator('.original-catalog button').click();
   await page.getByRole('button',{name:'数字大写转换',exact:true}).last().click();
@@ -17,7 +16,6 @@ async (page) => {
   await page.getByRole('button',{name:'关闭',exact:true}).click();
   await page.setViewportSize({width:390,height:844});
   await page.locator('#topbar').getByRole('button',{name:'添加组件',exact:true}).click();
-  await page.getByRole('tab',{name:'原版组件仓库',exact:true}).click();
   await page.locator('.original-catalog button').first().waitFor();
   assert(await page.evaluate(()=>{const d=document.querySelector('#modal');return d.scrollWidth<=d.clientWidth+1;}),'390px 原版仓库无横向溢出');
   await page.screenshot({path:'output/playwright/mobile-original-store.png'});

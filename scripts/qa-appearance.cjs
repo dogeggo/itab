@@ -1,0 +1,70 @@
+async page => {
+  page.setDefaultTimeout(15000);
+  const checks=[], errors=[];
+  page.on('pageerror',e=>errors.push(e.message));
+  const assert=(ok,label)=>{if(!ok)throw Error(label);checks.push(label);};
+  const state=()=>page.evaluate(async()=>{const s=await import('./src/storage.js');await s.flush();return s.read('state');});
+  const settings=async tab=>{
+    if(!await page.locator('#settings[open]').count())await page.locator('#sidebar [data-action="settings"]').click();
+    await page.locator(`#settings [data-tab="${tab}"]`).last().click();
+    const f=page.frameLocator('#appearance-frame');
+    if(['icon','open','search','time','wallpaper','layout','sidebar'].includes(tab))await f.locator('html[data-ready="true"]').waitFor();
+    return f;
+  };
+  try {
+    await page.evaluate(async()=>{const{createState}=await import('./src/model.js'),{write}=await import('./src/storage.js');await write('state',createState(await(await fetch('./assets/seed.json')).json()));});
+    await page.reload();await page.setViewportSize({width:1440,height:900});
+    await page.emulateMedia({colorScheme:'light'});
+    let f=await settings('icon');
+    const box=await page.locator('#settings').boundingBox();
+    assert(box.x===990&&box.width===450&&box.height===900,'设置使用原版 450px 全高右侧抽屉');
+    assert(await f.locator('.d-slider').count()===6,'图标页使用原版 Vue 滑块、颜色和预设控件');
+    await page.screenshot({animations:"disabled",path:'output/playwright/appearance-settings.png'});
+    const size=f.locator('.d-slider').filter({hasText:'图标大小'}).getByRole('spinbutton');
+    await size.fill('68');await size.press('Tab');
+    await page.waitForFunction(()=>document.documentElement.style.getPropertyValue('--icon-size')==='68px');
+    assert((await state()).settings.icon.size===68,'原版控件修改立即应用并保存到当前主页');
+    await page.getByRole('button',{name:'关闭设置',exact:true}).click();await page.reload();
+    assert((await state()).settings.icon.size===68,'刷新后原版设置仍保留');
+    f=await settings('icon');await f.getByText('重置图标布局',{exact:true}).click();
+    await page.waitForFunction(()=>document.documentElement.style.getPropertyValue('--icon-size')==='60px');
+    assert((await state()).settings.icon.size===60,'原版重置图标布局可用');
+    f=await settings('time');await f.locator('.el-select__wrapper').click();await f.getByRole('option',{name:/Orbitron/}).click();
+    await page.waitForFunction(()=>document.documentElement.style.getPropertyValue('--time-font')==='Orbitron');
+    assert((await state()).settings.time.font==='Orbitron','原版字体下拉预览和时间字体切换可用');
+    await page.screenshot({animations:"disabled",path:'output/playwright/appearance-time.png'});
+    f=await settings('open');await f.locator('.el-switch__core').first().click();
+    assert((await state()).settings.open.searchBlank===false,'原版打开方式开关写回当前设置');
+    f=await settings('search');await f.locator('.d-slider').filter({hasText:'搜索栏高度'}).getByRole('spinbutton').fill('50');await f.locator('.d-slider').filter({hasText:'搜索栏高度'}).getByRole('spinbutton').press('Tab');
+    assert((await state()).settings.search.height===50,'原版搜索页滑块生效');
+    f=await settings('sidebar');await f.getByText('右侧',{exact:true}).click();await f.locator('.d-slider').filter({hasText:'宽度'}).getByRole('spinbutton').fill('64');await f.locator('.d-slider').filter({hasText:'宽度'}).getByRole('spinbutton').press('Tab');
+    assert((await page.locator('#sidebar').boundingBox()).width===64,'原版侧边栏位置和宽度生效');
+    f=await settings('layout');await f.getByText('极简',{exact:true}).click();await page.waitForFunction(()=>document.documentElement.dataset.layout==='simple');
+    assert(await page.locator('#desktop').isHidden(),'原版布局卡片切换极简模式');
+    await f.getByText('组件',{exact:true}).click();
+    f=await settings('wallpaper');await f.getByText('深色',{exact:true}).click();
+    await page.waitForFunction(()=>document.documentElement.dataset.theme==='dark');
+    assert(await f.locator('html.dark').count()===1,'原版外观页面切换深色主题');
+    await page.screenshot({animations:"disabled",path:'output/playwright/appearance-dark.png'});
+    await f.getByText('浅色',{exact:true}).click();
+    await f.getByRole('button',{name:'更换壁纸',exact:true}).click();
+    await page.waitForFunction(()=>document.querySelector('.native-widget-dialog')?.dataset.nativeStatus==='ready');
+    assert(await page.locator('#modal').evaluate(n=>getComputedStyle(n).backgroundColor)==='rgba(0, 0, 0, 0)','原版壁纸直接显示自身窗口，没有第二层本地边框');
+    await page.frameLocator('.native-widget-dialog').locator('.close-window').first().click();
+    await page.locator('#modal[open]').waitFor({state:'hidden'});
+    await settings('backup');assert(await page.locator('#drive-status').isVisible(),'备份设置保留 Google 和 JSON 入口');
+    const downloadPromise=page.waitForEvent('download');await page.getByRole('button',{name:'导出本地数据',exact:true}).click();await(await downloadPromise).saveAs('output/playwright/appearance-backup.json');
+    await page.locator('#backup-file').setInputFiles('output/playwright/appearance-backup.json');await page.getByRole('button',{name:'确认',exact:true}).click();await page.getByText('备份恢复成功',{exact:true}).waitFor();
+    assert((await state()).settings.time.font==='Orbitron','原版外观设置经过真实 JSON 导出导入完整恢复');
+    await page.setViewportSize({width:390,height:844});f=await settings('time');
+    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'390px 主页和设置抽屉没有横向溢出');
+    assert(await f.locator('body').evaluate(n=>n.scrollWidth<=innerWidth),'390px 原版设置内容没有横向溢出');
+    await page.screenshot({animations:"disabled",path:'output/playwright/appearance-mobile.png'});
+    await page.getByRole('button',{name:'关闭设置',exact:true}).click();await page.setViewportSize({width:1440,height:900});
+    // 回到默认外观，供最终视觉验收与预览使用。
+    await settings('reset');await page.getByRole('button',{name:'恢复默认设置',exact:true}).click();await page.getByRole('button',{name:'确认',exact:true}).click();await page.getByText('默认设置已恢复',{exact:true}).waitFor();await page.getByRole('button',{name:'关闭设置',exact:true}).click();
+    await page.screenshot({animations:"disabled",path:'output/playwright/appearance-home.png'});
+    assert(errors.length===0,'整套设置操作没有未捕获 JavaScript 错误');
+    return {checks,errors};
+  }catch(e){return {checks,errors,failure:e.message};}
+}

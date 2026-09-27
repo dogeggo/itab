@@ -1,0 +1,36 @@
+{
+  "version": "2.3.13",
+  "components": [
+    "IconEdit-BNgKhupT",
+    "CustomAdd-CYYDf8MW",
+    "vue-cropper.es-D16yehvn"
+  ],
+  "styles": [
+    "CustomAdd-DmJclX0G",
+    "index-dJQF7aNL",
+    "utils-CXX6ZX7A",
+    "d-button-CwmpYApa"
+  ],
+  "inputs": [
+    "vendor-vue-BG-CQRtu.js",
+    "vendor-vueuse-BuArpzIG.js",
+    "vendor-lodash-DCeD6L6s.js",
+    "vendor-dayjs-D25YbOr3.js",
+    "vendor-element-plus-CRt18gND.js",
+    "tailwind-S0oaxdkI.js",
+    "utils-t0Ul179p.js",
+    "IconLoader-Cpk6zysC.js",
+    "d-button-BjYS68ZA.js",
+    "getCharLength-3_Kn4KSh.js",
+    "preload-helper-Bj79fh9f.js",
+    "d-color-DVejX7gp.js",
+    "vue-cropper.es-D16yehvn.js",
+    "staleAssetReload.lazy-DksV6goU.js",
+    "IconLink-t07YNosc.js",
+    "IconPencil-BPjbK-8T.js",
+    "IconPlus-y2tXh9jU.js",
+    "CustomAdd-CYYDf8MW.js",
+    "IconEdit-BNgKhupT.js",
+    "icon-editor-entry.js"
+  ]
+}

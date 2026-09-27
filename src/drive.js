@@ -73,7 +73,7 @@ export async function disconnectDrive() {
 export async function listBackups() {
   const query = new URLSearchParams({
     spaces: "appDataFolder",
-    q: "trashed = false and mimeType = 'application/json' and name contains 'itab-local-'",
+    q: "trashed = false and mimeType = 'application/json' and (name contains 'NewTab-' or name contains 'itab-local-')",
     fields: "files(id,name,createdTime,size),nextPageToken",
     orderBy: "createdTime desc",
     pageSize: "100",
@@ -85,9 +85,9 @@ export async function uploadBackup(backup) {
   const json = JSON.stringify(backup);
   if (new TextEncoder().encode(json).length > 25 * 1024 * 1024)
     throw new Error("备份不能超过 25 MB");
-  const boundary = "itab_" + crypto.randomUUID().replaceAll("-", "");
+  const boundary = "newtab_" + crypto.randomUUID().replaceAll("-", "");
   const metadata = {
-    name: `itab-local-${new Date().toISOString().replaceAll(":", "-")}.json`,
+    name: `NewTab-${new Date().toISOString().replaceAll(":", "-")}.json`,
     parents: ["appDataFolder"],
     mimeType: "application/json",
   };

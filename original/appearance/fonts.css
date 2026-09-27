@@ -1,0 +1,84 @@
+@font-face {
+    font-family: "dsdigi";
+    src: url("../webfont/ds-digi.woff");
+}
+
+@font-face {
+    font-family: "JetBrains";
+    src: url("../webfont/JetBrainsMono.woff") format("woff");
+}
+
+
+
+@font-face {
+    font-family: "TrainOne";
+    src: url("../webfont/TrainOne-Regular.woff") format("woff");
+}
+
+@font-face {
+    font-family: "AbrilFatface";
+    src: url("../webfont/AbrilFatface-Regular.woff") format("woff");
+}
+
+@font-face {
+    font-family: "HarmonyOS_Sans";
+    src: url("../webfont/HarmonyOS_Sans.woff") format("woff");
+}
+
+@font-face {
+    font-family: "iTabArial";
+    src: url("../webfont/Arial-Rounded-Bold.woff") format("woff");
+}
+
+@font-face {
+    font-family: "Bebas";
+    src: url("../webfont/Bebas.woff") format("woff");
+}
+
+@font-face {
+    font-family: "Aldrich";
+    src: url("../webfont/Aldrich-Regular.woff") format("woff");
+}
+
+
+
+@font-face {
+    font-family: "Expansiva";
+    src: url("../webfont/Expansiva.woff") format("woff");
+}
+
+@font-face {
+    font-family: "Merriweather";
+    src: url("../webfont/Merriweather-Regular.woff") format("woff");
+}
+
+@font-face {
+    font-family: "Nabla";
+    src: url("../webfont/Nabla.woff") format("woff");
+}
+
+@font-face {
+    font-family: "Orbitron";
+    src: url("../webfont/Orbitron-VariableFont_wght.woff") format("woff");
+}
+
+@font-face {
+    font-family: "Silkscreen";
+    src: url("../webfont/Silkscreen-Regular.woff") format("woff");
+}
+
+@font-face {
+    font-family: "MiSans";
+    src: url("../webfont/MiSans-Normal.woff") format("woff");
+}
+
+
+
+@font-face {
+    font-family: "PlusJakartaSans";
+    src: url("../webfont/PlusJakartaSans.woff") format("woff");
+}
+
+.dsdigi {
+    font-family: "dsdigi" !important;
+}

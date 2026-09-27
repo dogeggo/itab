@@ -3,7 +3,7 @@ let database;
 async function db() {
   if (database) return database;
   database = await new Promise((resolve, reject) => {
-    const r = indexedDB.open("itab-local", 1);
+    const r = indexedDB.open("itab-local-v2", 1);
     r.onupgradeneeded = () => r.result.createObjectStore("data");
     r.onsuccess = () => resolve(r.result);
     r.onerror = () => reject(r.error);
@@ -31,7 +31,7 @@ export async function write(key, value) {
 let queue = Promise.resolve();
 const channel =
   typeof window !== "undefined" && typeof BroadcastChannel !== "undefined"
-    ? new BroadcastChannel("itab-local-state")
+    ? new BroadcastChannel("itab-local-state-v2")
     : null;
 export function saveState(state) {
   state.updatedAt = new Date().toISOString();

@@ -2,7 +2,6 @@ import http from "node:http";
 import path from "node:path";
 import fs from "node:fs/promises";
 import { fileURLToPath } from "node:url";
-import { fetchBaiduBoard } from "../src/hotlist.js";
 const root = fileURLToPath(new URL("../", import.meta.url));
 const types = {
   ".html": "text/html; charset=utf-8",
@@ -22,19 +21,6 @@ http
       const pathname = decodeURIComponent(
         new URL(req.url, "http://localhost").pathname,
       );
-      if (pathname === "/api/hotlist/baidu") {
-        try {
-          const data = await fetchBaiduBoard();
-          res.writeHead(200, {
-            "Content-Type": "application/json; charset=utf-8",
-          });
-          res.end(JSON.stringify(data));
-        } catch {
-          res.writeHead(502);
-          res.end('{"error":"榜单暂不可用"}');
-        }
-        return;
-      }
       const target = path.resolve(
         root,
         "." + (pathname === "/" ? "/index.html" : pathname),
@@ -53,5 +39,5 @@ http
     }
   })
   .listen(4173, "127.0.0.1", () =>
-    console.log("iTab Local: http://127.0.0.1:4173"),
+    console.log("NewTab: http://127.0.0.1:4173"),
   );

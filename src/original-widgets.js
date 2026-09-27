@@ -1,4 +1,10 @@
-// 由原版 widget/list 的 insetType=iframe 及实际页面地址核实；扩展不执行远程 JS 模块。
+import { nativeComponents, nativeCardComponents } from "../original/registry.js";
+export function hasNativeCard(item) {
+  return (item.type === "native" && nativeComponents.has(item.config?.component)) ||
+    (item.type === "original" && originalComponents.has(item.config?.component) &&
+      nativeCardComponents.has(item.config.component));
+}
+// 在线页面与随包提供的原版内置组件使用不同宿主。
 export const originalComponents = new Set([
   "xiayigejiaqi",
   "dino",
@@ -39,6 +45,7 @@ export function parseCatalog(payload) {
       typeof row.component !== "string" ||
       !/^[A-Za-z0-9]+$/.test(row.component) ||
       seen.has(row.component) ||
+      (!nativeComponents.has(row.component) && !originalComponents.has(row.component)) ||
       typeof row.name !== "string" ||
       !row.name.trim()
     )
@@ -59,14 +66,23 @@ export function parseCatalog(payload) {
     return [
       {
         component: row.component,
-        name: row.name.slice(0, 100),
+        name: row.name.replace(/\biTab(?: Local)?\b/gi, "NewTab").slice(0, 100),
         description:
           typeof row.description === "string"
-            ? row.description.slice(0, 300)
+            ? row.description.replace(/\biTab(?: Local)?\b/gi, "NewTab").slice(0, 300)
             : "",
         image,
         available:
-          row.insetType === "iframe" && originalComponents.has(row.component),
+          nativeComponents.has(row.component) ||
+          (row.insetType === "iframe" && originalComponents.has(row.component)),
+        runtime: nativeComponents.has(row.component) ? "native" : "online",
+        original: nativeComponents.has(row.component)
+          ? {
+              config: row.config || {},
+              component: row.component,
+              type: row.type,
+            }
+          : undefined,
         color: /^#[0-9a-f]{6}$/i.test(row.backgroundColor)
           ? row.backgroundColor
           : "#ffffff",
@@ -85,15 +101,27 @@ export async function fetchOriginalCatalog() {
 }
 export function newOriginalWidget(row) {
   if (!row.available) throw new Error("该组件需要原版宿主，暂不能直接添加");
-  originalWidgetURL(row.component);
+  if (row.runtime !== "native") originalWidgetURL(row.component);
+  else if (!nativeComponents.has(row.component))
+    throw new Error("未知原版内置组件");
   return {
     id: crypto.randomUUID(),
     kind: "widget",
-    type: "original",
+    type: row.runtime === "native" ? "native" : "original",
     name: row.name,
-    size: "1x1",
+    size:
+      nativeCardComponents.has(row.component)
+        ? ["topsearch", "countdown", "stock", "sport", "vgn", "xiayigejiaqi"].includes(
+            row.component,
+          )
+          ? "4x2"
+          : "2x2"
+        : "1x1",
     image: row.image,
     color: row.color,
-    config: { component: row.component },
+    config: {
+      component: row.component,
+      ...(row.runtime === "native" ? { original: row.original || {} } : {}),
+    },
   };
 }

@@ -4,15 +4,14 @@ async (page) => {
   const errors=[]; page.on('pageerror',e=>errors.push(e.message));
   await page.reload();
   await page.locator('#topbar').getByRole('button',{name:'添加组件',exact:true}).click();
-  assert(await page.locator('.widget-catalog').getByRole('button',{name:/PDF|AiPPT/i}).count()===0,'本地组件列表无 PDF 和 AiPPT');
-  await page.getByRole('tab',{name:'原版组件仓库',exact:true}).click();
+
   await page.locator('.original-catalog button').first().waitFor();
-  assert(await page.locator('.original-catalog button').count()===50,'读取原版目录全部 50 项');
-  for(const name of ['PDF转换大师','AiPPT']) assert(await page.locator('.original-catalog strong').getByText(name,{exact:true}).count()===1,'原版仓库保留 '+name);
-  assert(await page.locator('.original-catalog button:enabled').count()===18,'18 类在线组件可直接添加');
+  assert(await page.locator('.original-catalog button').count()===47,'仓库只显示 47 项审核组件');
+  for(const name of ['PDF转换大师','AiPPT']) assert(await page.locator('.original-catalog strong').getByText(name,{exact:true}).count()===0,'原版仓库屏蔽 '+name);
+  assert(await page.locator('.original-catalog button:enabled').count()===47,'所有审核组件可添加');
   await page.screenshot({path:'output/playwright/original-widget-store.png'});
   await page.getByRole('checkbox',{name:'只看可直接使用',exact:true}).check();
-  assert(await page.locator('.original-catalog button').count()===18,'可用项筛选生效');
+  assert(await page.locator('.original-catalog button').count()===47,'可用项筛选生效');
   await page.getByRole('searchbox',{name:'搜索原版组件'}).fill('2048');
   assert(await page.locator('.original-catalog button').count()===1,'原版仓库可搜索');
   await page.locator('.original-catalog button').click();
@@ -25,7 +24,7 @@ async (page) => {
   for(const key of ['ArrowLeft','ArrowUp','ArrowRight','ArrowDown']) await page.keyboard.press(key);
   await frame.locator('.tile-container .tile').nth(2).waitFor();
   assert(await frame.locator('.tile-container .tile').count()>2,'原版 2048 响应真实键盘操作');
-  assert(!(await page.locator('iframe').getAttribute('src')).includes('token='),'未向原站传递账号或 Google 令牌');
+  assert(!(await page.locator('.original-widget-frame').getAttribute('src')).includes('token='),'未向原站传递账号或 Google 令牌');
   await page.screenshot({path:'output/playwright/original-2048.png'});
   await page.getByRole('button',{name:'关闭',exact:true}).click();
   await page.locator('.original-widget-frame').waitFor({state:'detached'});
@@ -40,16 +39,10 @@ async (page) => {
   });
   assert(roundtrip,'原版入口可随完整主页备份往返');
   await page.locator('#topbar').getByRole('button',{name:'添加组件',exact:true}).click();
-  await page.getByRole('tab',{name:'原版组件仓库',exact:true}).click();
   await page.locator('.original-catalog button').first().waitFor();
   await page.route('https://base.itab.link/widget/list**',route=>route.fulfill({status:503,body:'unavailable'}));
   await page.getByRole('button',{name:'刷新',exact:true}).click();
-  await page.getByRole('alert').waitFor();
-  assert((await page.getByRole('alert').textContent()).includes('503'),'原版仓库故障给出真实错误');
-  await page.unroute('https://base.itab.link/widget/list**');
-  await page.getByRole('button',{name:'重试',exact:true}).click();
-  await page.locator('.original-catalog button').first().waitFor();
-  assert(await page.locator('.original-catalog button').count()===50,'故障恢复后可重试');
+  await page.getByText(/显示随包提供的免费组件/).waitFor();assert(await page.locator('.original-catalog button').count()===29,'网络故障展示当前随包清单');await page.unroute('https://base.itab.link/widget/list**');
   await page.getByRole('button',{name:'关闭',exact:true}).click();
   assert(errors.length===0,'原版仓库与 2048 操作无未捕获错误');
   return {checks,errors};

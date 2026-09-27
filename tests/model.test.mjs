@@ -10,11 +10,8 @@ import {
   normalizeURL,
   searchURL,
   moveItem,
-  calculate,
-  daysBetween,
-  newWidget,
 } from "../src/model.js";
-import { lunarDate, clockParts } from "../src/widgets.js";
+import { lunarDate, clockParts } from "../src/clock.js";
 const groups = JSON.parse(
   fs.readFileSync(new URL("../assets/seed.json", import.meta.url), "utf8"),
 );
@@ -22,10 +19,7 @@ const state = () => createState(structuredClone(groups));
 test("完整备份往返保留设置、图标、上传壁纸和组件数据", () => {
   const s = state();
   s.settings.wallpaper.src = "data:image/png;base64,aGVsbG8=";
-  s.widgetData.notes = {
-    text: "中文\n多行备忘录",
-    todos: [{ id: "1", text: "完成验收", done: false }],
-  };
+  s.nativeData.local.notes = JSON.stringify([{title:"测试",content:"中文全文"}]);
   assert.deepEqual(parseBackup(JSON.stringify(makeBackup(s))), s);
 });
 test("损坏、不兼容和伪造的备份被拒绝", () => {
@@ -62,7 +56,7 @@ test("重复图标 ID、非法配置、组件配置不会进入应用", () => {
     (s) => (s.settings.icon.size = -1),
     (s) => (s.settings.theme.system = "true"),
     (s) => (s.settings.time.font = "unknown"),
-    (s) => (s.groups[0].items[0].config.latitude = 999),
+
     (s) => (s.settings.wallpaper.src = "javascript:alert(1)"),
   ]) {
     const x = state();
@@ -93,29 +87,7 @@ test("拖动排序保留所有项目且支持前后移动", () => {
   );
   assert.equal(moveItem(items, "missing", "b"), false);
 });
-test("计算器遵守运算优先级，支持括号百分数并阻止脚本", () => {
-  for (const [formula, answer] of [
-    ["2+3*4", 14],
-    ["(12+8)×5", 100],
-    ["100×10%", 10],
-    ["-3+4/2", -1],
-    [".1+.2", 0.3],
-    ["2*(-3)", -6],
-  ])
-    assert.equal(calculate(formula), answer);
-  for (const input of [
-    "1/0",
-    "globalThis.alert(1)",
-    "1+",
-    "(2+3",
-    "2**3",
-    "2;3",
-  ])
-    assert.throws(() => calculate(input));
-});
-test("日期使用日历天差，不因当天小时数变化", () => {
-  assert.equal(daysBetween("2026-10-01", new Date(2026, 8, 27, 23, 59)), 4);
-  assert.equal(daysBetween("2026-09-27", new Date(2026, 8, 27, 0, 1)), 0);
+test("主页公历、农历和十二小时制", () => {
   assert.equal(lunarDate(new Date(2026, 8, 27, 12)), "八月十七");
   const s = state().settings.time;
   s.hour24 = false;
@@ -124,14 +96,4 @@ test("日期使用日历天差，不因当天小时数变化", () => {
     clockParts(s, new Date(2026, 0, 1, 0, 5, 9)).time,
     "12:05:09 AM",
   );
-});
-test("组件工厂可生成独立且有效的配置", () => {
-  const s = state();
-  s.groups[0].items.push(
-    newWidget("todo"),
-    newWidget("pomodoro"),
-    newWidget("days"),
-  );
-  validateState(s);
-  assert.throws(() => newWidget("unknown"));
 });

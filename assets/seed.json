@@ -11,11 +11,12 @@
         "size": "2x2",
         "image": "",
         "color": "#ffffff",
-        "type": "weather",
+        "type": "native",
         "config": {
-          "city": "北京",
-          "latitude": 39.9,
-          "longitude": 116.4
+          "component": "weather",
+          "original": {
+            "config": {}
+          }
         }
       },
       {
@@ -25,8 +26,13 @@
         "size": "2x2",
         "image": "",
         "color": "#ffffff",
-        "type": "calendar",
-        "config": {}
+        "type": "native",
+        "config": {
+          "component": "calendar",
+          "original": {
+            "config": {}
+          }
+        }
       },
       {
         "id": "4YROGDwnK",
@@ -35,8 +41,13 @@
         "size": "4x2",
         "image": "",
         "color": "#ffffff",
-        "type": "hotlist",
-        "config": {}
+        "type": "native",
+        "config": {
+          "component": "topsearch",
+          "original": {
+            "config": {}
+          }
+        }
       },
       {
         "id": "u8vVYeSTlmoebAtAVrfSq9094",
@@ -45,11 +56,22 @@
         "size": "2x2",
         "image": "",
         "color": "#ffffff",
-        "type": "days",
+        "type": "native",
         "config": {
-          "title": "你在世界已经",
-          "date": "1997-10-01",
-          "countUp": true
+          "component": "daysMatter",
+          "original": {
+            "config": {
+              "name": "纪念日",
+              "title": "你在世界已经",
+              "target": "1997-10-1",
+              "repeat": "",
+              "bgColor": "https://files.itab.link/itab/widget/yiyan/12.jpg",
+              "textColor": "#ffffff",
+              "family": "",
+              "icon": "",
+              "mask": ""
+            }
+          }
         }
       },
       {
@@ -95,8 +117,13 @@
         "size": "2x2",
         "image": "",
         "color": "#ffffff",
-        "type": "notes",
-        "config": {}
+        "type": "native",
+        "config": {
+          "component": "notes",
+          "original": {
+            "config": {}
+          }
+        }
       },
       {
         "id": "AMCmO0mTkAuDbfFxG9XVK8222",
@@ -105,11 +132,12 @@
         "size": "2x2",
         "image": "",
         "color": "#ffffff",
-        "type": "movie",
+        "type": "native",
         "config": {
-          "title": "肖申克的救赎",
-          "quote": "希望是美好的，也许是人间至善。",
-          "year": "1994"
+          "component": "movieCalendar",
+          "original": {
+            "config": {}
+          }
         }
       },
       {
@@ -119,10 +147,12 @@
         "size": "4x2",
         "image": "",
         "color": "#ffffff",
-        "type": "offwork",
+        "type": "native",
         "config": {
-          "time": "18:00",
-          "start": "09:00"
+          "component": "countdown",
+          "original": {
+            "config": {}
+          }
         }
       },
       {
@@ -135,7 +165,7 @@
         "children": [
           {
             "id": "-GlRzTMT11",
-            "name": "iTab新标签页",
+            "name": "NewTab新标签页",
             "kind": "site",
             "size": "1x1",
             "url": "https://itab.link/",
@@ -241,8 +271,13 @@
         "size": "1x1",
         "image": "assets/sites/b26cc04a86e358.svg",
         "color": "#ffffff",
-        "type": "wallpaper",
-        "config": {}
+        "type": "native",
+        "config": {
+          "component": "wallpaper",
+          "original": {
+            "config": {}
+          }
+        }
       },
       {
         "id": "FEckvqK1B3jFIBlPt_jOL5377",
@@ -265,11 +300,17 @@
       {
         "id": "ABlIiKONc4F1acq3FZU-S",
         "name": "书签管理",
-        "kind": "site",
+        "kind": "widget",
         "size": "1x1",
-        "url": "chrome://bookmarks/",
         "image": "assets/sites/3cd3c8cbfecd98.svg",
-        "color": "#ffffff"
+        "color": "#ffffff",
+        "type": "native",
+        "config": {
+          "component": "bookmarks",
+          "original": {
+            "config": {}
+          }
+        }
       },
       {
         "id": "guide-1",
@@ -903,6 +944,24 @@
         "color": "#000000"
       },
       {
+        "id": "8-VDqT9WoIa1c36e3kRMS0725",
+        "name": "博思AIPPT",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://pptgo.cn/",
+        "image": "",
+        "color": "#ffffff"
+      },
+      {
+        "id": "LdTdDBXXs1vu69v8mImjK7694",
+        "name": "AI免费生成PPT",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.aippt.cn/",
+        "image": "",
+        "color": "#fff"
+      },
+      {
         "id": "Ns2VOBuus1ji4JxQXlHHL7006",
         "name": "DeepSeek",
         "kind": "site",
@@ -928,6 +987,15 @@
         "url": "https://ibiling.cn/paper",
         "image": "assets/sites/08e4ab4ea8d0f4.svg",
         "color": "#00b178"
+      },
+      {
+        "id": "n9-L5S3SthZgAb36zXfjb9802",
+        "name": "博思AIPPT",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://pptgo.cn/",
+        "image": "",
+        "color": "#023373"
       },
       {
         "id": "g3UExqf67PBV4W1GzzdYP0696",
@@ -1098,6 +1166,21 @@
     "name": "摸鱼",
     "icon": "game",
     "items": [
+      {
+        "id": "en78uPOC1seXTLoNHkhUi0078",
+        "name": "小游戏",
+        "kind": "widget",
+        "size": "1x1",
+        "image": "",
+        "color": "#ffffff",
+        "type": "native",
+        "config": {
+          "component": "games",
+          "original": {
+            "config": {}
+          }
+        }
+      },
       {
         "id": "s3wVdL3FAVLwemTPj2vTf1056",
         "name": "热门游戏",

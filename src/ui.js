@@ -1,3 +1,4 @@
+import { originalIcons } from "../original/appearance/icons.js";
 export const esc = (value) =>
   String(value ?? "").replace(
     /[&<>"']/g,
@@ -51,6 +52,17 @@ const paths = {
   move: "M12 2v20M2 12h20M9 5l3-3 3 3M9 19l3 3 3-3M5 9l-3 3 3 3M19 9l3 3-3 3",
 };
 export function icon(name, size = 22) {
+  const upstream = originalIcons[name];
+  if (upstream)
+    return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="${upstream.filled ? "currentColor" : "none"}" stroke="${upstream.filled ? "none" : "currentColor"}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${upstream.nodes
+      .map(
+        ([tag, attrs]) =>
+          `<${tag} ${Object.entries(attrs)
+            .filter(([key]) => key !== "key")
+            .map(([key, value]) => `${key}="${esc(value)}"`)
+            .join(" ")}/>`,
+      )
+      .join("")}</svg>`;
   return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${paths[name] || paths.grid}"/></svg>`;
 }
 export function button(action, label, iconName, cls = "") {
@@ -65,12 +77,36 @@ export function toast(message, error = false) {
 }
 export function modal(title, content, { wide = false } = {}) {
   const el = document.querySelector("#modal");
+  el.className = content.includes("native-widget-dialog")
+    ? "native-dialog"
+    : content.includes("folder-grid")
+      ? "folder-dialog"
+      : content.includes("widget-store-content")
+        ? "store-dialog"
+        : "";
   el.innerHTML = `<header class="modal-header"><h2 id="modal-title">${esc(title)}</h2>${button("close-modal", "关闭", "close", "icon-btn")}</header><div class="modal-body ${wide ? "wide" : ""}">${content}</div>`;
   if (!el.open) el.showModal();
+  el.oncancel = (event) => {
+    event.preventDefault();
+    void closeModal();
+  };
   return el;
 }
-export function closeModal() {
-  document.querySelector("#modal").close();
+export async function closeModal() {
+  const dialog = document.querySelector("#modal");
+  const native = dialog.querySelector(".native-widget-dialog");
+  if (native) {
+    try {
+      await native.contentWindow.__nativeFlush?.();
+      // 先把最新数据送回仍在运行的卡片，再释放弹窗对数据的编辑权。
+      await native.contentWindow.__nativeSession?.syncCards();
+    } catch (error) {
+      toast("原版组件保存失败：" + error.message, true);
+      return;
+    }
+  }
+  dialog.close();
+  if (native) window.dispatchEvent(new Event("native-widget-saved"));
 }
 export function confirmDialog(title, message, onConfirm) {
   const d = modal(
