@@ -1,0 +1,205 @@
+{
+  "checkedAt": "2026-09-27T09:08:52.321Z",
+  "results": [
+    {
+      "component": "xiayigejiaqi",
+      "url": "https://widget.itab.link/xiayigejiaqi/index.html",
+      "status": 200,
+      "csp": null,
+      "xFrame": null,
+      "scripts": [
+        "https://www.67tool.com/js/sdk.js",
+        "./assets/index-ea95ebb0.js"
+      ]
+    },
+    {
+      "component": "dino",
+      "url": "https://widget.itab.link/dino/index.html",
+      "status": 200,
+      "csp": null,
+      "xFrame": null,
+      "scripts": [
+        "./assets/index-ccddc525.js"
+      ]
+    },
+    {
+      "component": "speedtest",
+      "url": "https://widget.itab.link/speedtest/index.html",
+      "status": 200,
+      "csp": null,
+      "xFrame": null,
+      "scripts": []
+    },
+    {
+      "component": "2048",
+      "url": "https://widget.itab.link/2048/index.html",
+      "status": 200,
+      "csp": null,
+      "xFrame": null,
+      "scripts": [
+        "js/bind_polyfill.js",
+        "js/classlist_polyfill.js",
+        "js/animframe_polyfill.js",
+        "js/keyboard_input_manager.js",
+        "js/html_actuator.js",
+        "js/grid.js",
+        "js/tile.js",
+        "js/local_storage_manager.js",
+        "js/game_manager.js",
+        "js/application.js"
+      ]
+    },
+    {
+      "component": "qwertyLearner",
+      "url": "https://widget.itab.link/qwertyLearner/index.html",
+      "status": 200,
+      "csp": null,
+      "xFrame": null,
+      "scripts": [
+        "./assets/index-a86b7d85.js"
+      ]
+    },
+    {
+      "component": "webGradients",
+      "url": "https://widget.itab.link/webGradients/index.html",
+      "status": 200,
+      "csp": null,
+      "xFrame": null,
+      "scripts": [
+        "https://www.67tool.com/js/sdk.js",
+        "./assets/index-a98ff2fd.js"
+      ]
+    },
+    {
+      "component": "imgCompress",
+      "url": "https://widget.itab.link/imgCompress/index.html",
+      "status": 200,
+      "csp": null,
+      "xFrame": null,
+      "scripts": [
+        "https://www.67tool.com/js/sdk.js",
+        "./assets/index-dca07fde.js"
+      ]
+    },
+    {
+      "component": "timestamp",
+      "url": "https://widget.itab.link/timestamp/index.html",
+      "status": 200,
+      "csp": null,
+      "xFrame": null,
+      "scripts": [
+        "./assets/index.ee4b39ee.js"
+      ]
+    },
+    {
+      "component": "colorAvatar",
+      "url": "https://widget.itab.link/colorAvatar/index.html",
+      "status": 200,
+      "csp": null,
+      "xFrame": null,
+      "scripts": [
+        "https://www.googletagmanager.com/gtag/js?id=G-B4C9FN5DFR",
+        "./assets/index.1b2c90d5.js"
+      ]
+    },
+    {
+      "component": "audioConvert",
+      "url": "https://widget.itab.link/audioConvert/index.html",
+      "status": 200,
+      "csp": null,
+      "xFrame": null,
+      "scripts": [
+        "https://www.67tool.com/js/sdk.js",
+        "./assets/index-CDrMtoVy.js"
+      ]
+    },
+    {
+      "component": "encryptionTools",
+      "url": "https://widget.itab.link/encryptionTools/index.html",
+      "status": 200,
+      "csp": null,
+      "xFrame": null,
+      "scripts": [
+        "https://www.67tool.com/js/sdk.js",
+        "./assets/index-11290c56.js"
+      ]
+    },
+    {
+      "component": "ip",
+      "url": "https://widget.itab.link/ip/index.html",
+      "status": 200,
+      "csp": null,
+      "xFrame": null,
+      "scripts": [
+        "https://www.67tool.com/js/sdk.js",
+        "./assets/index-4bd42cd1.js"
+      ]
+    },
+    {
+      "component": "videoCut",
+      "url": "https://widget.itab.link/videoCut/index.html",
+      "status": 200,
+      "csp": null,
+      "xFrame": null,
+      "scripts": [
+        "https://www.67tool.com/js/sdk.js",
+        "./assets/index-b3a87397.js"
+      ]
+    },
+    {
+      "component": "relationship",
+      "url": "https://widget.itab.link/relationship/index.html",
+      "status": 200,
+      "csp": null,
+      "xFrame": null,
+      "scripts": [
+        "https://www.67tool.com/js/sdk.js",
+        "./assets/index-CMHvGL3K.js"
+      ]
+    },
+    {
+      "component": "multiavatar",
+      "url": "https://widget.itab.link/multiavatar/index.html",
+      "status": 200,
+      "csp": null,
+      "xFrame": null,
+      "scripts": [
+        "./assets/index.b8f291f6.js",
+        "./registerSW.js",
+        "./registerSW.js"
+      ]
+    },
+    {
+      "component": "audioCut",
+      "url": "https://widget.itab.link/audioCut/index.html",
+      "status": 200,
+      "csp": null,
+      "xFrame": null,
+      "scripts": [
+        "https://www.67tool.com/js/sdk.js",
+        "./assets/index-e2439c56.js"
+      ]
+    },
+    {
+      "component": "uppercase",
+      "url": "https://widget.itab.link/uppercase/index.html",
+      "status": 200,
+      "csp": null,
+      "xFrame": null,
+      "scripts": [
+        "./assets/index.f31ebd26.js"
+      ]
+    },
+    {
+      "component": "chinaedu",
+      "url": "https://widget.itab.link/chinaedu/index.html",
+      "status": 200,
+      "csp": null,
+      "xFrame": null,
+      "scripts": [
+        "https://www.67tool.com/js/sdk.js",
+        "./assets/index-B1DIe6Y4.js"
+      ]
+    }
+  ]
+}

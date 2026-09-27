@@ -1,0 +1,7 @@
+src/vendor/
+assets/
+dist/
+output/
+node_modules/
+docs/original-*.json
+package-lock.json

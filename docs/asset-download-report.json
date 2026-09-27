@@ -1,0 +1,17 @@
+{
+  "total": 127,
+  "failures": [
+    {
+      "src": "https://files.itab.link/tools-icon/daysMatter.svg",
+      "error": "404"
+    },
+    {
+      "src": "https://files.itab.link/tools-icon/movieCalendar.svg",
+      "error": "404"
+    },
+    {
+      "src": "https://files.itab.link/tools-icon/weather.svg",
+      "error": "404"
+    }
+  ]
+}

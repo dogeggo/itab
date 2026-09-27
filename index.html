@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="referrer" content="no-referrer" />
+    <title>新标签页 · iTab Local</title>
+    <link rel="icon" href="./assets/icon/icon_32.png" />
+    <link rel="stylesheet" href="./src/styles.css" />
+    <script type="module" src="./src/app.js"></script>
+  </head>
+  <body>
+    <div id="wallpaper" aria-hidden="true"></div>
+    <div id="wallpaper-mask" aria-hidden="true"></div>
+    <aside id="sidebar" aria-label="导航分组"></aside>
+    <main id="home">
+      <header id="topbar"></header>
+      <button id="clock" title="点击切换极简模式" aria-label="切换极简模式">
+        <time id="clock-time"></time><span id="clock-date"></span>
+      </button>
+      <section id="search" aria-label="搜索"></section>
+      <section id="desktop" aria-label="主页图标和组件">
+        <div id="grid"></div>
+      </section>
+      <footer id="quote"></footer>
+    </main>
+    <div id="popover-root"></div>
+    <dialog id="settings" aria-labelledby="settings-title"></dialog>
+    <dialog id="modal" aria-labelledby="modal-title"></dialog>
+    <div id="toasts" role="status" aria-live="polite"></div>
+    <noscript>请启用 JavaScript 以使用新标签页。</noscript>
+  </body>
+</html>

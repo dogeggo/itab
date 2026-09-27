@@ -1,0 +1,32 @@
+async (page) => {
+  page.setDefaultTimeout(15000);
+  const checks=[];const assert=(ok,label)=>{if(!ok)throw new Error(label);checks.push(label);};
+  await page.reload();
+  await page.locator('#topbar').getByRole('button',{name:'添加组件',exact:true}).click();
+  await page.getByRole('tab',{name:'原版组件仓库',exact:true}).click();
+  await page.getByRole('searchbox',{name:'搜索原版组件'}).fill('数字大写');
+  await page.locator('.original-catalog button').click();
+  await page.getByRole('button',{name:'数字大写转换',exact:true}).last().click();
+  const tool=page.frameLocator('.original-widget-frame').frameLocator('iframe');
+  await tool.getByPlaceholder('1024').waitFor();
+  await page.frames().find(f=>f.url().startsWith('https://daxie.madebylesign.com/')).waitForLoadState('load');
+  await tool.getByPlaceholder('1024').fill('1234.56');
+  await tool.getByText('壹仟贰佰叁拾肆圆伍角陆分',{exact:true}).waitFor();
+  assert(true,'原版数字大写转换对输入产生正确结果');
+  await page.screenshot({path:'output/playwright/original-uppercase.png'});
+  await page.getByRole('button',{name:'关闭',exact:true}).click();
+  await page.setViewportSize({width:390,height:844});
+  await page.locator('#topbar').getByRole('button',{name:'添加组件',exact:true}).click();
+  await page.getByRole('tab',{name:'原版组件仓库',exact:true}).click();
+  await page.locator('.original-catalog button').first().waitFor();
+  assert(await page.evaluate(()=>{const d=document.querySelector('#modal');return d.scrollWidth<=d.clientWidth+1;}),'390px 原版仓库无横向溢出');
+  await page.screenshot({path:'output/playwright/mobile-original-store.png'});
+  await page.getByRole('button',{name:'关闭',exact:true}).click();
+  await page.getByRole('button',{name:'2048',exact:true}).last().click();
+  await page.frameLocator('.original-widget-frame').locator('.game-container').waitFor();
+  assert(await page.evaluate(()=>{const d=document.querySelector('#modal');return d.scrollWidth<=d.clientWidth+1;}),'390px 原版弹窗无页面溢出');
+  assert(await page.locator('.original-widget-viewport').evaluate(e=>e.scrollWidth>e.clientWidth),'原版固定宽度游戏在窄屏可横向滚动');
+  await page.getByRole('button',{name:'关闭',exact:true}).click();
+  await page.setViewportSize({width:1440,height:900});
+  return {checks};
+}

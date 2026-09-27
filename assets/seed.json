@@ -1,0 +1,1310 @@
+[
+  {
+    "id": "1",
+    "name": "主页",
+    "icon": "home",
+    "items": [
+      {
+        "id": "nMP5oJxPwlouseo90ylqs0137",
+        "name": "天气",
+        "kind": "widget",
+        "size": "2x2",
+        "image": "",
+        "color": "#ffffff",
+        "type": "weather",
+        "config": {
+          "city": "北京",
+          "latitude": 39.9,
+          "longitude": 116.4
+        }
+      },
+      {
+        "id": "3iUUffmwIKCvjP-RmwXWe5342",
+        "name": "日历",
+        "kind": "widget",
+        "size": "2x2",
+        "image": "",
+        "color": "#ffffff",
+        "type": "calendar",
+        "config": {}
+      },
+      {
+        "id": "4YROGDwnK",
+        "name": "热搜榜",
+        "kind": "widget",
+        "size": "4x2",
+        "image": "",
+        "color": "#ffffff",
+        "type": "hotlist",
+        "config": {}
+      },
+      {
+        "id": "u8vVYeSTlmoebAtAVrfSq9094",
+        "name": "倒数日",
+        "kind": "widget",
+        "size": "2x2",
+        "image": "",
+        "color": "#ffffff",
+        "type": "days",
+        "config": {
+          "title": "你在世界已经",
+          "date": "1997-10-01",
+          "countUp": true
+        }
+      },
+      {
+        "id": "Mh9M0gUXe6N-TjKfMaGx_",
+        "name": "淘宝",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.taobao.com/",
+        "image": "assets/sites/cd550a920acff4.svg",
+        "color": "#ff5c00"
+      },
+      {
+        "id": "5yEZm2kln",
+        "name": "京东商城",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.jd.com/",
+        "image": "assets/sites/79f6e5f5ec9fa4.svg",
+        "color": "#ff0030"
+      },
+      {
+        "id": "glN0dLcwF",
+        "name": "百度",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.baidu.com/",
+        "image": "assets/sites/34bbaa2d151154.svg",
+        "color": "#346efd"
+      },
+      {
+        "id": "5a94d582e753876b29cffb95",
+        "name": "天猫精选",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.tmall.com/",
+        "image": "assets/sites/c17e9e297d409a.svg",
+        "color": "#ff0030"
+      },
+      {
+        "id": "pLm0V9msZ",
+        "name": "备忘录",
+        "kind": "widget",
+        "size": "2x2",
+        "image": "",
+        "color": "#ffffff",
+        "type": "notes",
+        "config": {}
+      },
+      {
+        "id": "AMCmO0mTkAuDbfFxG9XVK8222",
+        "name": "电影日历",
+        "kind": "widget",
+        "size": "2x2",
+        "image": "",
+        "color": "#ffffff",
+        "type": "movie",
+        "config": {
+          "title": "肖申克的救赎",
+          "quote": "希望是美好的，也许是人间至善。",
+          "year": "1994"
+        }
+      },
+      {
+        "id": "XH4chhkPCCynjgtUk2Ued",
+        "name": "下班倒计时",
+        "kind": "widget",
+        "size": "4x2",
+        "image": "",
+        "color": "#ffffff",
+        "type": "offwork",
+        "config": {
+          "time": "18:00",
+          "start": "09:00"
+        }
+      },
+      {
+        "id": "13zoZ7zCe-ejE2K_mEhun1608",
+        "name": "文件夹",
+        "kind": "folder",
+        "size": "2x2",
+        "image": "",
+        "color": "#ffffff",
+        "children": [
+          {
+            "id": "-GlRzTMT11",
+            "name": "iTab新标签页",
+            "kind": "site",
+            "size": "1x1",
+            "url": "https://itab.link/",
+            "image": "assets/sites/2e636082a9facc.svg",
+            "color": "#1581ff"
+          },
+          {
+            "id": "vwLnQvDMr",
+            "name": "哔哩哔哩",
+            "kind": "site",
+            "size": "1x1",
+            "url": "http://www.bilibili.com/",
+            "image": "assets/sites/db30a595123e4b.svg",
+            "color": "#fe65a6"
+          },
+          {
+            "id": "GUeCPknZi",
+            "name": "爱奇艺",
+            "kind": "site",
+            "size": "1x1",
+            "url": "https://www.iqiyi.com/",
+            "image": "assets/sites/248136f45c4c34.svg",
+            "color": "#00cc4c"
+          }
+        ]
+      },
+      {
+        "id": "xYQZ8MsluBvjC3VDGvLEK1053",
+        "name": "小红书",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.xiaohongshu.com/",
+        "image": "assets/sites/dc50677193b32a.svg",
+        "color": "#ff2442"
+      },
+      {
+        "id": "ZZvJuRkzaciKud2lW3EH_5544",
+        "name": "抖音",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.douyin.com/",
+        "image": "assets/sites/b4d7c4f1456b15.svg",
+        "color": "#1c0b1a"
+      },
+      {
+        "id": "EkqMR0tOtFarPEgyt6KOj9383",
+        "name": "秘塔AI搜索",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://metaso.cn/",
+        "image": "assets/sites/519d4b68fbbb42.png",
+        "color": "#1d4dc7"
+      },
+      {
+        "id": "7001H6blviCCeX-3HM6pX0404",
+        "name": "豆包-你的AI朋友",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.doubao.com/chat/",
+        "image": "assets/sites/ca070a8385006a.webp",
+        "color": "#ffffff"
+      },
+      {
+        "id": "xKbrKQrti688zhCBtbeEz8176",
+        "name": "稿定设计",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.gaoding.com/",
+        "image": "assets/sites/08e66b78fb407d.svg",
+        "color": "#0050ff"
+      },
+      {
+        "id": "MGorr7OMW9ESZMAX8tXMu5875",
+        "name": "WorkBuddy",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://workbuddy.coml.cc/",
+        "image": "assets/sites/b8522b5f4a5787.png",
+        "color": "#fff"
+      },
+      {
+        "id": "MKneLBRIIs-teDnVnY5qp3565",
+        "name": "通义千问",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://qianwen.coml.cc/",
+        "image": "assets/sites/fbbef52566d66a.svg",
+        "color": "#fffff"
+      },
+      {
+        "id": "U922XSX0DJOQrSfr1l2bg9926",
+        "name": "携程网",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.ctrip.com/",
+        "image": "assets/sites/69cb79693384e4.svg",
+        "color": "#2c8bed"
+      },
+      {
+        "id": "GgyleQxDTXqLy4T841UO35806",
+        "name": "壁纸",
+        "kind": "widget",
+        "size": "1x1",
+        "image": "assets/sites/b26cc04a86e358.svg",
+        "color": "#ffffff",
+        "type": "wallpaper",
+        "config": {}
+      },
+      {
+        "id": "FEckvqK1B3jFIBlPt_jOL5377",
+        "name": "即梦AI",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://dis.csqixiang.cn/unpo/jmitab.html",
+        "image": "assets/sites/6a418218e4a521.png",
+        "color": "#ffffff"
+      },
+      {
+        "id": "0g75JmsYHHPQlYhpKxsBD",
+        "name": "扩展管理",
+        "kind": "site",
+        "size": "1x1",
+        "url": "chrome://extensions/",
+        "image": "assets/sites/2c8585453c27bf.svg",
+        "color": "#9c9c9c"
+      },
+      {
+        "id": "ABlIiKONc4F1acq3FZU-S",
+        "name": "书签管理",
+        "kind": "site",
+        "size": "1x1",
+        "url": "chrome://bookmarks/",
+        "image": "assets/sites/3cd3c8cbfecd98.svg",
+        "color": "#ffffff"
+      },
+      {
+        "id": "guide-1",
+        "name": "添加组件",
+        "kind": "action",
+        "size": "1x1",
+        "image": "assets/sites/a4f9245c878596.svg",
+        "color": "#febc04",
+        "action": "add-widget"
+      },
+      {
+        "id": "k67HgbHCCHn_wvZBHbYR-",
+        "name": "历史记录",
+        "kind": "site",
+        "size": "1x1",
+        "url": "chrome://history/",
+        "image": "assets/sites/1208c6091cc616.svg",
+        "color": "#0599d9"
+      },
+      {
+        "id": "GTIzQ7fHwS501SWtM_8H_",
+        "name": "设置",
+        "kind": "action",
+        "size": "1x1",
+        "image": "assets/sites/d91e744cf12d26.svg",
+        "color": "#fff",
+        "action": "settings"
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "name": "编程",
+    "icon": "code",
+    "items": [
+      {
+        "id": "xLiON51K5",
+        "name": "Apifox",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://apifox.com/",
+        "image": "assets/sites/115382e9d84945.svg",
+        "color": "#f4425f"
+      },
+      {
+        "id": "CZHjnJIMB",
+        "name": "GitHub",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://github.com/",
+        "image": "assets/sites/b20bf79a4b0178.svg",
+        "color": "#000"
+      },
+      {
+        "id": "sfPX-WRi0",
+        "name": "V2EX",
+        "kind": "site",
+        "size": "1x1",
+        "url": "http://www.v2ex.com/",
+        "image": "assets/sites/ec456b956d971a.svg",
+        "color": "#222222"
+      },
+      {
+        "id": "zsTvF1WI3",
+        "name": "React",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://zh-hans.reactjs.org/",
+        "image": "assets/sites/2b4b1500f6a9b3.svg",
+        "color": "#27333b"
+      },
+      {
+        "id": "Svyvhe-MI",
+        "name": "Java学习",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://mrjokersince1997.github.io/My-Notes/#/",
+        "image": "assets/sites/6d6fb82df7d6ea.svg",
+        "color": "#1c1c1c"
+      },
+      {
+        "id": "yQv_IiTzL",
+        "name": "码云Gitee",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://gitee.com/",
+        "image": "assets/sites/2c7dcbc7026647.svg",
+        "color": "#bb2124"
+      },
+      {
+        "id": "NKfU43cp6",
+        "name": "CSDN",
+        "kind": "site",
+        "size": "1x1",
+        "url": "http://www.csdn.net/",
+        "image": "assets/sites/828523ec1ae7ff.svg",
+        "color": "#cc001b"
+      },
+      {
+        "id": "9ivZt9a2i",
+        "name": "w3school在线教程",
+        "kind": "site",
+        "size": "1x1",
+        "url": "http://www.w3school.com.cn/",
+        "image": "assets/sites/cfc5b49f24ff7c.svg",
+        "color": "#cc3333"
+      },
+      {
+        "id": "omCrX5KHJ",
+        "name": "Stack Overflow",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://stackoverflow.com/",
+        "image": "assets/sites/c4078ceef124c4.svg",
+        "color": "#444444"
+      },
+      {
+        "id": "Cp9wFUk43",
+        "name": "掘金",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://juejin.cn/",
+        "image": "assets/sites/1b1a9e85308402.svg",
+        "color": "#0984fe"
+      },
+      {
+        "id": "zGsb_kZ9_",
+        "name": "力扣",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://leetcode.cn/",
+        "image": "assets/sites/9c5152276c38ca.svg",
+        "color": "#fff"
+      },
+      {
+        "id": "lG5SopVNY",
+        "name": "Vue2",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://cn.vuejs.org/",
+        "image": "assets/sites/ea636fdd02a6cd.svg",
+        "color": "#fff"
+      },
+      {
+        "id": "Qz-7AjQ2j-0LgOW1gvzs8",
+        "name": "Arco Design",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://arco.design/",
+        "image": "assets/sites/b27a7b681a888e.svg",
+        "color": "#fdfef7"
+      },
+      {
+        "id": "dGKow0Xcz",
+        "name": "Ant Design Vue",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.antdv.com/docs/vue/introduce-cn/",
+        "image": "assets/sites/9acb1828d1dcb3.svg",
+        "color": "#fff"
+      },
+      {
+        "id": "vjMN3-WZq",
+        "name": "开源中国",
+        "kind": "site",
+        "size": "1x1",
+        "url": "http://www.oschina.net/",
+        "image": "assets/sites/eb8a837956fb0e.svg",
+        "color": "#34b960"
+      },
+      {
+        "id": "vflKyWV5I91jKj2XGpWp-",
+        "name": "亚洲云",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.asiayun.com/aff/IROSKGHJ",
+        "image": "assets/sites/621c2c0501999f.svg",
+        "color": "#fff"
+      },
+      {
+        "id": "geekbang-",
+        "name": "极客时间",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://time.geekbang.org/",
+        "image": "assets/sites/67fa24d62a4860.svg",
+        "color": "#fff"
+      },
+      {
+        "id": "hTirVJgmj-kaifa",
+        "name": "开发者搜索",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://kaifa.baidu.com/",
+        "image": "assets/sites/0d368068a920e5.svg",
+        "color": "#fff"
+      }
+    ]
+  },
+  {
+    "id": "nav_yepAOU0lK",
+    "name": "设计",
+    "icon": "palette",
+    "items": [
+      {
+        "id": "3NjEiwNGO",
+        "name": "稿定设计",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.gaoding.com/",
+        "image": "assets/sites/08e66b78fb407d.svg",
+        "color": "#2455f4"
+      },
+      {
+        "id": "5kGk9TzkRam-a",
+        "name": "即时设计",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://js.design/square",
+        "image": "assets/sites/34d9dda6a0112e.svg",
+        "color": "#cf3d35"
+      },
+      {
+        "id": "v_xMvU7V_",
+        "name": "花瓣",
+        "kind": "site",
+        "size": "1x1",
+        "url": "http://huaban.com/",
+        "image": "assets/sites/f155e1a062219b.svg",
+        "color": "#ea2936"
+      },
+      {
+        "id": "zmttd9JWCVpxCzBq6rLkW9859",
+        "name": "绘蛙",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.ihuiwa.com/invite",
+        "image": "assets/sites/f57c33a0e4ae82.jpg",
+        "color": "#fff"
+      },
+      {
+        "id": "raBGdwOvo",
+        "name": "站酷",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.zcool.com.cn/",
+        "image": "assets/sites/074b113771202e.svg",
+        "color": "#e6be1c"
+      },
+      {
+        "id": "qW3jSNLWy",
+        "name": "Dribbble",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://dribbble.com/",
+        "image": "assets/sites/e37aa6bbf7cf86.svg",
+        "color": "#f24e7c"
+      },
+      {
+        "id": "F8seeVF_iygnw9RYcGoSl2614",
+        "name": "美图设计室",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.x-design.com/",
+        "image": "assets/sites/1f52f50752d066.svg",
+        "color": "#000000"
+      },
+      {
+        "id": "4A9hLUKqm",
+        "name": "大作免费图片",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.bigbigwork.com/",
+        "image": "assets/sites/92ae2996c1086e.svg",
+        "color": "#ff4d4d"
+      },
+      {
+        "id": "SF74W_GIh",
+        "name": "昵图网",
+        "kind": "site",
+        "size": "1x1",
+        "url": "http://www.nipic.com/index.html",
+        "image": "assets/sites/7452444736a3b8.svg",
+        "color": "#dd137b"
+      },
+      {
+        "id": "BLJkgf_Aw",
+        "name": "每日ui设计",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://uidesigndaily.com/",
+        "image": "assets/sites/938fc798fcff82.svg",
+        "color": "#fafefe"
+      },
+      {
+        "id": "UiQz7t81324v8JV2X3DdM8575",
+        "name": "Unsplash加速版",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://unsplash.dogedoge.com/",
+        "image": "assets/sites/479e9c2b23b3ee.svg",
+        "color": "#FFFFFF"
+      },
+      {
+        "id": "l5OAFo0I2",
+        "name": "TinyPNG",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://tinypng.com/",
+        "image": "assets/sites/a7e06fd8cbdcc6.png",
+        "color": "#cde7f0"
+      },
+      {
+        "id": "7U3csko_Y",
+        "name": "搜图导航",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.91sotu.com/",
+        "image": "assets/sites/7a4f2e4d2c463b.svg",
+        "color": "#fec20a"
+      },
+      {
+        "id": "RC4f5ycSJ",
+        "name": "Iconfont",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.iconfont.cn/",
+        "image": "assets/sites/a418e43f8c53a9.svg",
+        "color": "#ffffff"
+      },
+      {
+        "id": "2tIHIXVtj",
+        "name": "中国色",
+        "kind": "site",
+        "size": "1x1",
+        "url": "http://zhongguose.com/",
+        "image": "assets/sites/98a8fbeb936017.svg",
+        "color": "#dadada"
+      },
+      {
+        "id": "kKCjRYCwG",
+        "name": "千图网",
+        "kind": "site",
+        "size": "1x1",
+        "url": "http://www.58pic.com/",
+        "image": "assets/sites/b249ca914bff98.svg",
+        "color": "#00a46b"
+      },
+      {
+        "id": "i-Q33NQLQ_GAv2PJzid7M0573",
+        "name": "千图AI设计助手",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://hisheai.com/",
+        "image": "assets/sites/a11b1a5b724af0.svg",
+        "color": "#0b62ff"
+      },
+      {
+        "id": "hCG7key-W",
+        "name": "包图网",
+        "kind": "site",
+        "size": "1x1",
+        "url": "http://ibaotu.com/",
+        "image": "assets/sites/f29685bebdd5ec.svg",
+        "color": "#fff5c8"
+      },
+      {
+        "id": "cfYmvqDNAcv-kSZAoKLu3",
+        "name": "奇迹秀",
+        "kind": "site",
+        "size": "1x1",
+        "url": "http://www.qijishow.com/down/index.html",
+        "image": "assets/sites/eeaa8d1813324b.svg",
+        "color": "#122441"
+      },
+      {
+        "id": "0z6-vP_7M-2",
+        "name": "字由字体",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.hellofont.cn/",
+        "image": "assets/sites/adbd515121a1c4.svg",
+        "color": "#403F41"
+      },
+      {
+        "id": "0z6-vP_7M-21",
+        "name": "Top.AI",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://topd.tencent.com/ai",
+        "image": "assets/sites/6605688482221f.png",
+        "color": "#ffffff"
+      },
+      {
+        "id": "uuRgm6iHVJLnQ6Zw4qFye6338",
+        "name": "易条形",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.1txm.com/",
+        "image": "assets/sites/7fa86fe2a5d8cb.jpg",
+        "color": "#fff"
+      }
+    ]
+  },
+  {
+    "id": "nav_v1yD3mRTC",
+    "name": "产品",
+    "icon": "product",
+    "items": [
+      {
+        "id": "vqZCrDh6zad",
+        "name": "FlowUs",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://flowus.cn/product",
+        "image": "assets/sites/d739f75dafc02b.png",
+        "color": "#fff"
+      },
+      {
+        "id": "vqZCrDh6z",
+        "name": "Notion ",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.notion.so/",
+        "image": "assets/sites/860aacd487146b.svg",
+        "color": "#fff"
+      },
+      {
+        "id": "lYxszRKo_RNs2gf9B0uoZ9054",
+        "name": "思维导图流程图",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.processon.com/",
+        "image": "assets/sites/f1f90ec9dd77b4.png",
+        "color": "#1985f0"
+      },
+      {
+        "id": "yGCkjz8yG0AjCwRx61s3r5694",
+        "name": "PPT神器",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.officeplus.cn/",
+        "image": "assets/sites/1cb2d268481d3f.svg",
+        "color": "#ffffff"
+      },
+      {
+        "id": "-wDKDVcMeU3Ptykw-F0aF",
+        "name": "uTools",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://u.tools/",
+        "image": "assets/sites/61ad97865c0694.svg",
+        "color": "#fff"
+      },
+      {
+        "id": "6q1euMaEjtzT7K8oosijk5045-2",
+        "name": "秘塔写作猫",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://xiezuocat.com/",
+        "image": "assets/sites/ca03a48bad04e1.svg",
+        "color": "#fefefe"
+      },
+      {
+        "id": "zE9RKmF0l",
+        "name": "石墨文档",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://shimo.im/desktop",
+        "image": "assets/sites/dd16d720f729fe.svg",
+        "color": "#fff"
+      },
+      {
+        "id": "NxcUMe4w5",
+        "name": "Iconfont",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.iconfont.cn/",
+        "image": "assets/sites/a418e43f8c53a9.svg",
+        "color": "#ffffff"
+      },
+      {
+        "id": "HXATd_798",
+        "name": "36氪",
+        "kind": "site",
+        "size": "1x1",
+        "url": "http://www.36kr.com/",
+        "image": "assets/sites/7b50ce10a82072.svg",
+        "color": "#1380d8"
+      },
+      {
+        "id": "KHigwIg9e",
+        "name": " 知犀思维导图",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.zhixi.com/",
+        "image": "assets/sites/54cdb186b630cb.svg",
+        "color": "#4dec7c"
+      },
+      {
+        "id": "3OaNFoVII7bWIDIzqXhYX6675",
+        "name": "少数派",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://sspai.com/",
+        "image": "assets/sites/99a9115c048fae.svg",
+        "color": "#d7191a"
+      },
+      {
+        "id": "crxsoso-1",
+        "name": "扩展搜搜",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.crxsoso.com/",
+        "image": "assets/sites/84441d62e7747b.svg",
+        "color": "#fff"
+      },
+      {
+        "id": "iSlide-1",
+        "name": "iSlide PPT神器",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.islide.cc/ppt",
+        "image": "assets/sites/a33fe02f669615.svg",
+        "color": "#fff"
+      },
+      {
+        "id": "boardmix-2",
+        "name": "boardmix白板",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://boardmix.cn/",
+        "image": "assets/sites/fa471da2e4142b.svg",
+        "color": "#fff"
+      },
+      {
+        "id": "writingo-2",
+        "name": "英语润色",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.writingo.net/document",
+        "image": "assets/sites/0f366a8a33f620.svg",
+        "color": "#fff"
+      },
+      {
+        "id": "hbPSc5kFD",
+        "name": "即时工具",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.67tool.com/",
+        "image": "assets/sites/80f655e1fc7afb.svg",
+        "color": "#369dfc"
+      },
+      {
+        "id": "axmax",
+        "name": "原型托管",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://axmax.cn/",
+        "image": "assets/sites/75102fd813c999.svg",
+        "color": "#ffffff"
+      },
+      {
+        "id": "eVliIqrUh81LSf2P2-eYe2781",
+        "name": "心动AI简历",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://cv.ibiling.cn/",
+        "image": "assets/sites/c99c79725651d3.webp",
+        "color": "#ffffff"
+      },
+      {
+        "id": "4IM79snuL",
+        "name": "人人都是产品经理",
+        "kind": "site",
+        "size": "1x1",
+        "url": "http://www.woshipm.com/",
+        "image": "assets/sites/94d2efb77a216c.svg",
+        "color": "#fff"
+      }
+    ]
+  },
+  {
+    "id": "nav_ZLL8ueRdj8VpYbAOPKR1S0699",
+    "name": "AI",
+    "icon": "sparkles",
+    "items": [
+      {
+        "id": "SO0MxdvOyceJuAP_HNp306267",
+        "name": "AI工具集",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://ai-bot.cn/",
+        "image": "assets/sites/489b47afb29bcb.svg",
+        "color": "#0071c0"
+      },
+      {
+        "id": "dbc658-yCnYPB9Uu8x8Y01201",
+        "name": "秘塔AI搜索",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://metaso.cn/",
+        "image": "assets/sites/519d4b68fbbb42.png",
+        "color": "#ffffff"
+      },
+      {
+        "id": "WU5cPaye_efmmAvJ4lK3D5835",
+        "name": "秘塔写作猫",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://xiezuocat.com/",
+        "image": "assets/sites/ca03a48bad04e1.svg",
+        "color": "#fefefe"
+      },
+      {
+        "id": "kYDrBNXLQbJdxqWAUReRm2875",
+        "name": "Kimi",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://kimi.moonshot.cn/",
+        "image": "assets/sites/7f814eaafba951.png",
+        "color": "#054092"
+      },
+      {
+        "id": "Yr5tOtQA5tBeleeBD3Mki9217",
+        "name": "ChatExcel",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.chatexcel.com/#/home?partner_uuid=DF120F2826B33A8DB74C708B6A371019",
+        "image": "assets/sites/fa96ee999e0dc4.png",
+        "color": "#000000"
+      },
+      {
+        "id": "Ns2VOBuus1ji4JxQXlHHL7006",
+        "name": "DeepSeek",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.deepseek.com/",
+        "image": "assets/sites/d4809676a6a172.svg",
+        "color": "#fff"
+      },
+      {
+        "id": "p5ZH7tcFPgxFxT2Bast183278",
+        "name": "即梦AI",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://dis.csqixiang.cn/unpo/jmitab.html",
+        "image": "assets/sites/6a418218e4a521.png",
+        "color": "#ffffff"
+      },
+      {
+        "id": "xAgiltMGYSXIVL-oDXeT54859",
+        "name": "专业AI论文写作",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://ibiling.cn/paper",
+        "image": "assets/sites/08e4ab4ea8d0f4.svg",
+        "color": "#00b178"
+      },
+      {
+        "id": "g3UExqf67PBV4W1GzzdYP0696",
+        "name": "mindshow",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.mindshow.fun/#/home?inviteCode=itab",
+        "image": "assets/sites/f86fc2604d6523.svg",
+        "color": "#ffffff"
+      },
+      {
+        "id": "dkeucOHuzJQLRHhd-7K7M2546",
+        "name": "AI一键论文",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.aipaperpass.com/",
+        "image": "assets/sites/acbd52e524f782.png",
+        "color": "#fff"
+      },
+      {
+        "id": "f9D3-8gOjsr0SbApe3YnG9294",
+        "name": "智谱清言",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://chatglm.cn/apps",
+        "image": "assets/sites/07e55644bfb215.png",
+        "color": "#ffffff"
+      },
+      {
+        "id": "ieIfvYqKMJmvnsgczB4kF7028",
+        "name": "阿里绘蛙",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.ihuiwa.com/invite",
+        "image": "assets/sites/f57c33a0e4ae82.jpg",
+        "color": "#fff"
+      },
+      {
+        "id": "Iv8H9pHSRHx-roruQfxi75847",
+        "name": "扣子",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.coze.cn/overview",
+        "image": "assets/sites/b8a203903dc3c4.svg",
+        "color": "#4d53e8"
+      },
+      {
+        "id": "YpCGR-aAM8KYQQLZ6fhR51423",
+        "name": "Ai思维导图",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://boardmix.cn/mindmapping/",
+        "image": "assets/sites/f6b2f8b80f12a5.svg",
+        "color": "#ffffff"
+      },
+      {
+        "id": "7xu5fW3BGzdr7GVj29jRW0577",
+        "name": "豆包代码助手",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.trae.com.cn/",
+        "image": "assets/sites/9ef54dc27c0e2d.svg",
+        "color": "#fc4548"
+      },
+      {
+        "id": "AKSrinXrPaBEV51pZH8pP6334",
+        "name": "讯飞星火",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://xinghuo.xfyun.cn/",
+        "image": "assets/sites/ac954da58c28b7.png",
+        "color": "#fff"
+      },
+      {
+        "id": "eBwy8XrYYvT0Vekd0CNRC2328",
+        "name": "豆包",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.doubao.com/chat/",
+        "image": "assets/sites/ca070a8385006a.webp",
+        "color": "#ffffff"
+      },
+      {
+        "id": "q4Jloyi72qJxjkr13KZO88873",
+        "name": "AI论文助手",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://ai.wolian.chat/openmao/#/?inviteCode=1721353838461456386",
+        "image": "assets/sites/a6259a997c64b3.png",
+        "color": "#ffffff"
+      },
+      {
+        "id": "WcR9ifg4F5NXJ4ZsHbZme8274",
+        "name": "即时AI",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://js.design/ai",
+        "image": "assets/sites/6dcbe40159a560.png",
+        "color": "#FFFFFF"
+      },
+      {
+        "id": "JINCoSyY-lTPPRc3fGsXQ1325",
+        "name": "知犀AI",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.swdt.com/",
+        "image": "assets/sites/54cdb186b630cb.svg",
+        "color": "#8d49d9"
+      },
+      {
+        "id": "GQy_HPbVVW91003ykXzIr9485",
+        "name": "WHEE",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.whee.com/",
+        "image": "assets/sites/181d6b38e1c22c.svg",
+        "color": "#3549ff"
+      },
+      {
+        "id": "NdjgJUz5ZQZ8-N5Z4CgjA2553",
+        "name": "文心一格",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://yige.baidu.com/",
+        "image": "assets/sites/e6e5c85220c345.png",
+        "color": "#ffffff"
+      },
+      {
+        "id": "Cz4F7JR9Xwz2FQ8lQk1MS1965",
+        "name": "AI设计工具",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.gaoding.com/utms/ba46f32f055a48aab63ee74f15281593",
+        "image": "assets/sites/08e66b78fb407d.svg",
+        "color": "#2455f4"
+      },
+      {
+        "id": "7hHtpc8iDuRbgqGwkJbSg4511",
+        "name": "飞书妙记",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.feishu.cn/product/minutes",
+        "image": "assets/sites/690c86e832c801.png",
+        "color": "#ffffff"
+      },
+      {
+        "id": "4Vt_zPl6iIMz2TgipoTYD1369",
+        "name": "万兴爱画",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://aigc.wondershare.cn/",
+        "image": "assets/sites/95d0bec5131644.svg",
+        "color": "#12142f"
+      },
+      {
+        "id": "OvALL7ftka157nLXso0Fk9913",
+        "name": "免费AI写作",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://ibiling.cn/template",
+        "image": "assets/sites/e75eaf821d9eb8.png",
+        "color": "#ffffff"
+      }
+    ]
+  },
+  {
+    "id": "nav_WjjuUHrlw",
+    "name": "摸鱼",
+    "icon": "game",
+    "items": [
+      {
+        "id": "s3wVdL3FAVLwemTPj2vTf1056",
+        "name": "热门游戏",
+        "kind": "site",
+        "size": "1x1",
+        "url": "http://jg.doghun.com/fast/index",
+        "image": "assets/sites/7f61f94cac502d.png",
+        "color": "#000000"
+      },
+      {
+        "id": "xiaohongshu-2",
+        "name": "小红书",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.xiaohongshu.com/explore",
+        "image": "assets/sites/dc50677193b32a.svg",
+        "color": "#ff2442"
+      },
+      {
+        "id": "RHza5iCO0",
+        "name": "新浪微博",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://weibo.com/",
+        "image": "assets/sites/3cf31dadc3f21e.svg",
+        "color": "#ffd850"
+      },
+      {
+        "id": "hBDW2dtTJ",
+        "name": "爱奇艺",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.iqiyi.com/",
+        "image": "assets/sites/248136f45c4c34.svg",
+        "color": "#00cc4c"
+      },
+      {
+        "id": "vzwxQmzGMJE2DJhUyPNs79983",
+        "name": "今日热榜",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://tophub.today/",
+        "image": "assets/sites/47ce9707bc76f6.svg",
+        "color": "#fff"
+      },
+      {
+        "id": "vgXmpPPaJ",
+        "name": "优酷",
+        "kind": "site",
+        "size": "1x1",
+        "url": "http://www.youku.com/",
+        "image": "assets/sites/2812b63282f597.svg",
+        "color": "#ffffff"
+      },
+      {
+        "id": "NnuH_lGqe",
+        "name": "腾讯视频",
+        "kind": "site",
+        "size": "1x1",
+        "url": "http://v.qq.com/",
+        "image": "assets/sites/c356f7b4d37417.svg",
+        "color": "#ffffff"
+      },
+      {
+        "id": "KHgOwEaEwALR14p0tVq_W",
+        "name": "Bilibili",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.bilibili.com/",
+        "image": "assets/sites/db30a595123e4b.svg",
+        "color": "#fe65a6"
+      },
+      {
+        "id": "3kcHk8fDe",
+        "name": "知乎",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.zhihu.com/",
+        "image": "assets/sites/1156835e0273a7.svg",
+        "color": "#0c6dfe"
+      },
+      {
+        "id": "VqqNHgaf-",
+        "name": "Steam",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://store.steampowered.com/",
+        "image": "assets/sites/575594ce067fd4.svg",
+        "color": "#000000"
+      },
+      {
+        "id": "-Q8KQDvzf",
+        "name": "抖音",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.douyin.com/",
+        "image": "assets/sites/444a92a32fd6b5.svg",
+        "color": "#1c0b1a"
+      },
+      {
+        "id": "2ykpQ4jnS",
+        "name": "小霸王",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.yikm.net/",
+        "image": "assets/sites/172ef85cf50f33.svg",
+        "color": "#1499b5"
+      },
+      {
+        "id": "CSGfty1NQ",
+        "name": "4399小游戏",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.4399.com/",
+        "image": "assets/sites/615e42e19a9164.svg",
+        "color": "#f19425"
+      },
+      {
+        "id": "Ar6V8x5ep",
+        "name": "虎牙直播",
+        "kind": "site",
+        "size": "1x1",
+        "url": "http://www.huya.com/",
+        "image": "assets/sites/944fd69f2b6019.svg",
+        "color": "#fff"
+      },
+      {
+        "id": "G7LefZAPp",
+        "name": "斗鱼",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.douyu.com/",
+        "image": "assets/sites/65a371c2488d5a.svg",
+        "color": "#ff6a2d"
+      },
+      {
+        "id": "DMW71i6ra-1",
+        "name": "今日热榜",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://rebang.today/",
+        "image": "assets/sites/0d38c58e60c47e.png",
+        "color": "#165dff"
+      },
+      {
+        "id": "E73yZrjb-",
+        "name": "番茄小说网",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://fanqienovel.com/",
+        "image": "assets/sites/cfa3b637d3c8a1.svg",
+        "color": "#fff"
+      },
+      {
+        "id": "P9JTzK_tG",
+        "name": "小众技术资源库",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://www.xiaozhongjishu.com/",
+        "image": "assets/sites/bb242a9b07f622.png",
+        "color": "#fff"
+      },
+      {
+        "id": "oTRgyT2MF",
+        "name": "豆瓣",
+        "kind": "site",
+        "size": "1x1",
+        "url": "http://www.douban.com/",
+        "image": "assets/sites/a4306948347bb8.svg",
+        "color": "#00c117"
+      },
+      {
+        "id": "IC2ssYXhT",
+        "name": "什么值得买",
+        "kind": "site",
+        "size": "1x1",
+        "url": "http://www.smzdm.com/",
+        "image": "assets/sites/f742f55d7ee619.svg",
+        "color": "#ed1c24"
+      },
+      {
+        "id": "iOtWHp7dU",
+        "name": "微信读书",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://weread.qq.com/",
+        "image": "assets/sites/c37f171cf767e5.svg",
+        "color": "#fff"
+      },
+      {
+        "id": "kemoji",
+        "name": "emoji合成",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://tikolu.net/emojimix/",
+        "image": "assets/sites/1af432f03096e7.png",
+        "color": "#fff"
+      },
+      {
+        "id": "1u_ausuHc3AUAodD1lv4w1758",
+        "name": "阿里巴巴",
+        "kind": "site",
+        "size": "1x1",
+        "url": "https://1688.coml.cc/",
+        "image": "assets/sites/0877224ff68bb4.svg",
+        "color": "#fd7c11"
+      }
+    ]
+  }
+]

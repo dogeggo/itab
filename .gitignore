@@ -1,0 +1,7 @@
+dist/
+release/
+node_modules/
+google.config.json
+output/playwright/*
+!output/playwright/.gitkeep
+.playwright-cli

@@ -1,0 +1,1761 @@
+{
+  "config": {
+    "lang": "zh-CN",
+    "searchEngine": [
+      {
+        "key": "360",
+        "title": "360搜索",
+        "href": "https://www.so.com/s?src=lm&ls=sm3022768&lm_extend=ctype:31&q="
+      },
+      {
+        "key": "baidu",
+        "title": "百度",
+        "href": "https://www.baidu.com/s?wd=%s&tn=52176495_dg&ch=3&ie=utf-8"
+      },
+      {
+        "key": "bing",
+        "title": "必应",
+        "href": "https://www.bing.com/search?form=QBLH&q="
+      },
+      {
+        "key": "google",
+        "title": "Google",
+        "href": "https://www.google.com/search?q="
+      },
+      {
+        "key": "metaso",
+        "title": "秘塔AI",
+        "href": "https://metaso.cn/?s=3mitab&referrer_s=3mitab&q="
+      }
+    ],
+    "useSearch": "baidu",
+    "search": {
+      "show": true,
+      "history": false,
+      "height": 46,
+      "radius": 23,
+      "bgColor": 0.5,
+      "translate": "",
+      "translateHide": false,
+      "globalSearch": true
+    },
+    "theme": {
+      "mode": "light",
+      "system": true,
+      "color": "#1890ff"
+    },
+    "sidebar": {
+      "placement": "left",
+      "autoHide": false,
+      "width": 50,
+      "lastGroup": false,
+      "mouseGroup": true,
+      "opacity": 0.4
+    },
+    "wallpaper": {
+      "mask": 0,
+      "blur": 0,
+      "type": 1,
+      "name": "",
+      "src": "https://files.itab.link/itab/defaultWallpaper/defaultWallpaper.webp",
+      "thumb": "https://files.itab.link/itab/defaultWallpaper/defaultWallpaper.webp?x-oss-process=image/resize,limit_1,w_220,h_120/quality,q_95",
+      "time": 0,
+      "source": "",
+      "switchBtn": false
+    },
+    "layout": {
+      "view": "widget",
+      "yiyan": true
+    },
+    "time": {
+      "weekBegin1": true,
+      "show": true,
+      "size": 70,
+      "color": "#fff",
+      "fontWeight": 400,
+      "font": "HarmonyOS_Sans",
+      "hour24": true,
+      "sec": false,
+      "month": "inline",
+      "week": "inline",
+      "lunar": "inline"
+    },
+    "open": {
+      "searchBlank": true,
+      "iconBlank": true
+    },
+    "icon": {
+      "name": 1,
+      "nameSize": 12,
+      "nameColor": "#fff",
+      "startAnimation": false,
+      "iconRadius": 18,
+      "iconSize": 60,
+      "iconX": 30,
+      "iconY": 30,
+      "xysync": true,
+      "opactiy": 1,
+      "unit": "px",
+      "width": 1350,
+      "autoSort": true
+    },
+    "topSearch": [
+      {
+        "name": "百度",
+        "id": "Jb0vmloB1G"
+      },
+      {
+        "name": "微博",
+        "id": "KqndgxeLl9"
+      },
+      {
+        "name": "抖音",
+        "id": "DpQvNABoNE"
+      }
+    ]
+  },
+  "navigation": [
+    {
+      "id": "1",
+      "name": "主页",
+      "icon": "home",
+      "children": [
+        {
+          "component": "weather",
+          "insetType": "",
+          "name": "天气",
+          "src": "https://files.itab.link/tools-icon/weather.svg",
+          "type": "component",
+          "size": "2x2",
+          "id": "nMP5oJxPwlouseo90ylqs0137",
+          "pos": "14:1,1"
+        },
+        {
+          "component": "calendar",
+          "insetType": "",
+          "name": "日历",
+          "type": "component",
+          "size": "2x2",
+          "id": "3iUUffmwIKCvjP-RmwXWe5342",
+          "view": 2,
+          "pos": "14:3,1"
+        },
+        {
+          "name": "热搜榜",
+          "component": "topsearch",
+          "type": "component",
+          "size": "2x4",
+          "id": "4YROGDwnK",
+          "view": 10,
+          "pos": "14:5,1"
+        },
+        {
+          "component": "daysMatter",
+          "insetType": "",
+          "name": "倒数日",
+          "src": "https://files.itab.link/tools-icon/daysMatter.svg",
+          "type": "component",
+          "config": {
+            "name": "纪念日",
+            "title": "你在世界已经",
+            "target": "1997-10-1",
+            "repeat": "",
+            "bgColor": "https://files.itab.link/itab/widget/yiyan/12.jpg",
+            "textColor": "#ffffff",
+            "family": "",
+            "icon": "",
+            "mask": ""
+          },
+          "size": "2x2",
+          "id": "u8vVYeSTlmoebAtAVrfSq9094",
+          "view": 4,
+          "pos": "14:9,1"
+        },
+        {
+          "component": "pdfConvert",
+          "name": "PDF转换大师",
+          "src": "https://files.itab.link/icons/pdfConvert.svg",
+          "type": "component",
+          "backgroundColor": "",
+          "size": "2x2",
+          "id": "nqenv15ylCDaRy5TYD7Bg6777",
+          "view": 2,
+          "pos": "14:11,1"
+        },
+        {
+          "id": "Mh9M0gUXe6N-TjKfMaGx_",
+          "url": "https://taobao.coml.cc",
+          "type": "icon",
+          "name": "淘宝",
+          "src": "https://files.itab.link/icons/taobao.svg",
+          "backgroundColor": "#ff5c00",
+          "view": 15,
+          "iconText": "淘宝网",
+          "editedCurrentSrc": "",
+          "size": "1x1",
+          "pos": "14:13,1"
+        },
+        {
+          "id": "5yEZm2kln",
+          "url": "https://jd.coml.cc/",
+          "type": "icon",
+          "name": "京东商城",
+          "src": "https://files.itab.link/icons/jd.svg",
+          "backgroundColor": "#ff0030",
+          "view": 15,
+          "iconText": "京东网",
+          "editedCurrentSrc": "",
+          "size": "1x1",
+          "pos": "14:14,1"
+        },
+        {
+          "id": "glN0dLcwF",
+          "url": "https://www.baidu.com/?tn=15007414_23_dg",
+          "type": "icon",
+          "name": "百度",
+          "src": "https://files.itab.link/icons/baidu.svg",
+          "backgroundColor": "#346efd",
+          "view": 4,
+          "iconText": "百度",
+          "size": "1x1",
+          "pos": "14:13,2"
+        },
+        {
+          "id": "5a94d582e753876b29cffb95",
+          "type": "icon",
+          "url": "https://tmall.coml.cc/",
+          "name": "天猫精选",
+          "src": "https://files.itab.link/icons/tmall.svg",
+          "backgroundColor": "#ff0030",
+          "view": 15,
+          "iconText": "天猫精",
+          "editedCurrentSrc": "",
+          "size": "1x1",
+          "pos": "14:14,2"
+        },
+        {
+          "name": "备忘录",
+          "component": "notes",
+          "type": "component",
+          "size": "2x2",
+          "id": "pLm0V9msZ",
+          "view": 5,
+          "pos": "14:1,3"
+        },
+        {
+          "component": "aippt",
+          "name": "AiPPT",
+          "src": "https://files.itab.link/icons/aippt.jpg",
+          "type": "component",
+          "backgroundColor": "#fe2f29",
+          "size": "2x2",
+          "id": "Km50GJ1NgJEX7Lkli7-Il9099",
+          "pos": "14:3,3"
+        },
+        {
+          "name": "电影日历",
+          "component": "movieCalendar",
+          "type": "component",
+          "insetType": "",
+          "src": "https://files.itab.link/tools-icon/movieCalendar.svg",
+          "size": "2x2",
+          "id": "AMCmO0mTkAuDbfFxG9XVK8222",
+          "pos": "14:5,3"
+        },
+        {
+          "component": "countdown",
+          "name": "下班倒计时",
+          "size": "2x4",
+          "type": "component",
+          "id": "XH4chhkPCCynjgtUk2Ued",
+          "view": 0,
+          "pos": "14:7,3"
+        },
+        {
+          "id": "13zoZ7zCe-ejE2K_mEhun1608",
+          "name": "文件夹",
+          "size": "2x2",
+          "type": "folder",
+          "children": [
+            {
+              "id": "-GlRzTMT11",
+              "url": "https://itab.link",
+              "type": "icon",
+              "name": "iTab新标签页",
+              "src": "https://files.itab.link/icons/itab.svg",
+              "backgroundColor": "#1581ff",
+              "view": 1,
+              "size": "1x1",
+              "pos": ""
+            },
+            {
+              "id": "vwLnQvDMr",
+              "url": "http://www.bilibili.com/",
+              "type": "icon",
+              "name": "哔哩哔哩",
+              "src": "https://files.itab.link/icons/bilibili2.svg",
+              "backgroundColor": "#fe65a6",
+              "view": 2,
+              "size": "1x1",
+              "pos": ""
+            },
+            {
+              "id": "GUeCPknZi",
+              "url": "https://www.iqiyi.com/?vfm=f_432_dhm&fv=8648154ddd63e0af",
+              "type": "icon",
+              "name": "爱奇艺",
+              "src": "https://files.itab.link/icons/iqiyi.svg",
+              "backgroundColor": "#00cc4c",
+              "view": 1,
+              "size": "1x1",
+              "pos": ""
+            }
+          ],
+          "pos": "14:11,3"
+        },
+        {
+          "url": "https://www.xiaohongshu.com",
+          "type": "icon",
+          "name": "小红书",
+          "src": "https://files.itab.link/icons/xiaohongshu.svg",
+          "backgroundColor": "#ff2442",
+          "id": "xYQZ8MsluBvjC3VDGvLEK1053",
+          "view": 7,
+          "iconText": "小红书",
+          "editedCurrentSrc": "",
+          "size": "1x1",
+          "pos": "14:13,3"
+        },
+        {
+          "url": "https://www.douyin.com/?ug_source=pc_liangxiang_01",
+          "type": "icon",
+          "name": "抖音",
+          "src": "https://files.itab.link/website/douyin.svg",
+          "backgroundColor": "#1c0b1a",
+          "id": "ZZvJuRkzaciKud2lW3EH_5544",
+          "iconText": "抖音",
+          "view": 5,
+          "size": "1x1",
+          "pos": "14:14,3"
+        },
+        {
+          "url": "https://metaso.cn/?s=itaber&referrer_s=itaber",
+          "type": "icon",
+          "name": "秘塔AI搜索",
+          "src": "https://files.itab.link/icons/metaso.cn.png",
+          "backgroundColor": "#1d4dc7",
+          "id": "EkqMR0tOtFarPEgyt6KOj9383",
+          "size": "1x1",
+          "pos": "14:13,4",
+          "iconText": "",
+          "editedCurrentSrc": ""
+        },
+        {
+          "url": "https://www.doubao.com/chat/?channel=hw_db_itab&source=hw_db_itab",
+          "type": "icon",
+          "name": "豆包-你的AI朋友",
+          "src": "https://files.itab.link/icons/doubao.com.webp",
+          "backgroundColor": "#ffffff",
+          "id": "7001H6blviCCeX-3HM6pX0404",
+          "view": 6,
+          "iconText": "豆包-",
+          "size": "1x1",
+          "pos": "14:13,5"
+        },
+        {
+          "url": "https://www.gaoding.com/utms/cd52981c7dfe966f01ee33d63fa94183",
+          "type": "icon",
+          "name": "稿定设计",
+          "src": "https://files.itab.link/icons/gaoding.svg",
+          "backgroundColor": "#0050ff",
+          "id": "xKbrKQrti688zhCBtbeEz8176",
+          "iconText": "稿定设",
+          "view": 1,
+          "size": "1x1",
+          "pos": "14:1,5"
+        },
+        {
+          "url": "https://workbuddy.coml.cc/",
+          "type": "icon",
+          "name": "WorkBuddy",
+          "src": "https://files.itab.link/icons/workbuddy-logo.cn.png",
+          "backgroundColor": "#fff",
+          "id": "MGorr7OMW9ESZMAX8tXMu5875",
+          "size": "1x1",
+          "pos": "14:2,5",
+          "iconText": "Wor",
+          "editedCurrentSrc": ""
+        },
+        {
+          "url": "https://qianwen.coml.cc/",
+          "type": "icon",
+          "name": "通义千问",
+          "src": "https://files.itab.link/icons/qianweb.svg",
+          "backgroundColor": "#fffff",
+          "id": "MKneLBRIIs-teDnVnY5qp3565",
+          "pos": "14:3,5",
+          "iconText": "千问-",
+          "editedCurrentSrc": "",
+          "size": "1x1"
+        },
+        {
+          "url": "https://ctrip.coml.cc",
+          "type": "icon",
+          "name": "携程网",
+          "src": "https://files.itab.link/icons/ctrip.svg",
+          "backgroundColor": "#2c8bed",
+          "id": "U922XSX0DJOQrSfr1l2bg9926",
+          "iconText": "",
+          "editedCurrentSrc": "",
+          "size": "1x1",
+          "pos": "14:4,5"
+        },
+        {
+          "component": "wallpaper",
+          "__v": 0,
+          "categorys": [
+            "design"
+          ],
+          "createTime": "2022-07-01T03:39:26.686Z",
+          "insetType": "",
+          "name": "壁纸",
+          "src": "https://files.itab.link/tools-icon/wallpaper.svg",
+          "type": "component",
+          "updateTime": "2022-07-01T04:13:57.686Z",
+          "version": "1.1.11",
+          "show": true,
+          "size": "1x1",
+          "id": "GgyleQxDTXqLy4T841UO35806",
+          "pos": "14:5,5"
+        },
+        {
+          "url": "https://dis.csqixiang.cn/unpo/jmitab.html",
+          "type": "icon",
+          "name": "即梦AI",
+          "src": "https://files.itab.link/icons/jimeng.jianying.png",
+          "backgroundColor": "",
+          "id": "FEckvqK1B3jFIBlPt_jOL5377",
+          "view": 1,
+          "size": "1x1",
+          "pos": "14:6,5"
+        },
+        {
+          "id": "0g75JmsYHHPQlYhpKxsBD",
+          "url": "chrome://extensions/",
+          "type": "icon",
+          "name": "扩展管理",
+          "src": "https://files.itab.link/icons/extensions.svg",
+          "backgroundColor": "#9c9c9c",
+          "view": 1,
+          "size": "1x1",
+          "pos": "14:7,5"
+        },
+        {
+          "name": "书签管理",
+          "type": "icon",
+          "component": "bookmarks",
+          "size": "1x1",
+          "id": "ABlIiKONc4F1acq3FZU-S",
+          "src": "https://files.itab.link/tools-icon/bookmarks.svg",
+          "view": 2,
+          "pos": "14:8,5"
+        },
+        {
+          "id": "guide-1",
+          "url": "itab://guide",
+          "type": "icon",
+          "name": "iTab新手引导",
+          "src": "https://files.itab.link/icons/guide.svg",
+          "backgroundColor": "#febc04",
+          "size": "1x1",
+          "pos": "14:9,5"
+        },
+        {
+          "id": "k67HgbHCCHn_wvZBHbYR-",
+          "url": "chrome://history/",
+          "type": "icon",
+          "name": "历史记录",
+          "src": "https://files.itab.link/icons/history.svg",
+          "view": 2,
+          "backgroundColor": "#0599d9",
+          "size": "1x1",
+          "pos": "14:10,5"
+        },
+        {
+          "id": "GTIzQ7fHwS501SWtM_8H_",
+          "url": "itab://setting",
+          "type": "icon",
+          "name": "设置",
+          "src": "https://files.itab.link/icons/setting.svg",
+          "view": 1,
+          "backgroundColor": "#fff",
+          "size": "1x1",
+          "pos": "14:11,5"
+        },
+        {
+          "id": "y5z85eystel",
+          "url": "itab://add",
+          "type": "icon",
+          "name": "添加图标",
+          "src": "https://files.itab.link/icons/add.svg",
+          "size": "1x1",
+          "backgroundColor": "#ffffff",
+          "pos": "14:12,5"
+        }
+      ]
+    },
+    {
+      "name": "编程",
+      "icon": "code",
+      "children": [
+        {
+          "id": "xLiON51K5",
+          "url": "https://www.apifox.cn/a1itabweb",
+          "type": "icon",
+          "name": "Apifox",
+          "src": "https://files.itab.link/icons/apifoxcn.svg",
+          "backgroundColor": "#f4425f",
+          "size": "1x1",
+          "pos": "14:1,1"
+        },
+        {
+          "id": "CZHjnJIMB",
+          "url": "https://github.com/",
+          "type": "icon",
+          "name": "GitHub",
+          "src": "https://files.itab.link/icons/github.svg",
+          "backgroundColor": "#000",
+          "size": "1x1",
+          "pos": "14:2,1"
+        },
+        {
+          "id": "sfPX-WRi0",
+          "url": "http://www.v2ex.com/",
+          "type": "icon",
+          "name": "V2EX",
+          "src": "https://files.itab.link/icons/v2ex.svg",
+          "backgroundColor": "#222222",
+          "size": "1x1",
+          "pos": "14:3,1"
+        },
+        {
+          "id": "zsTvF1WI3",
+          "url": "https://zh-hans.reactjs.org/",
+          "type": "icon",
+          "name": "React",
+          "src": "https://files.itab.link/icons/react.svg",
+          "backgroundColor": "#27333b",
+          "size": "1x1",
+          "pos": "14:4,1"
+        },
+        {
+          "id": "Svyvhe-MI",
+          "url": "https://mrjokersince1997.github.io/My-Notes/#/",
+          "type": "icon",
+          "name": "Java学习",
+          "src": "https://files.itab.link/icons/mrjokersince-java.svg",
+          "backgroundColor": "#1c1c1c",
+          "size": "1x1",
+          "pos": "14:5,1"
+        },
+        {
+          "id": "yQv_IiTzL",
+          "url": "https://gitee.com/",
+          "type": "icon",
+          "name": "码云Gitee",
+          "src": "https://files.itab.link/icons/gitee.svg",
+          "backgroundColor": "#bb2124",
+          "size": "1x1",
+          "pos": "14:6,1"
+        },
+        {
+          "id": "NKfU43cp6",
+          "url": "http://www.csdn.net/",
+          "type": "icon",
+          "name": "CSDN",
+          "src": "https://files.itab.link/icons/csdn.svg",
+          "backgroundColor": "#cc001b",
+          "size": "1x1",
+          "pos": "14:7,1"
+        },
+        {
+          "id": "9ivZt9a2i",
+          "url": "http://www.w3school.com.cn",
+          "type": "icon",
+          "name": "w3school在线教程",
+          "src": "https://files.itab.link/icons/w3school.svg",
+          "backgroundColor": "#cc3333",
+          "size": "1x1",
+          "pos": "14:8,1"
+        },
+        {
+          "id": "omCrX5KHJ",
+          "url": "https://stackoverflow.com/",
+          "type": "icon",
+          "name": "Stack Overflow",
+          "src": "https://files.itab.link/icons/stackoverflow.svg",
+          "backgroundColor": "#444444",
+          "size": "1x1",
+          "pos": "14:9,1"
+        },
+        {
+          "id": "Cp9wFUk43",
+          "url": "https://juejin.cn/",
+          "type": "icon",
+          "name": "掘金",
+          "src": "https://files.itab.link/icons/juejin.svg",
+          "backgroundColor": "#0984fe",
+          "size": "1x1",
+          "pos": "14:10,1"
+        },
+        {
+          "id": "zGsb_kZ9_",
+          "url": "https://leetcode.cn/",
+          "type": "icon",
+          "name": "力扣",
+          "src": "https://files.itab.link/icons/leetcode.svg",
+          "backgroundColor": "#fff",
+          "size": "1x1",
+          "pos": "14:11,1"
+        },
+        {
+          "id": "lG5SopVNY",
+          "url": "https://cn.vuejs.org/",
+          "type": "icon",
+          "name": "Vue2",
+          "src": "https://files.itab.link/icons/vuejs.svg",
+          "backgroundColor": "#fff",
+          "size": "1x1",
+          "pos": "14:12,1"
+        },
+        {
+          "id": "Qz-7AjQ2j-0LgOW1gvzs8",
+          "url": "https://arco.design",
+          "type": "icon",
+          "name": "Arco Design",
+          "src": "https://files.itab.link/icons/arco-design.svg",
+          "backgroundColor": "#fdfef7",
+          "size": "1x1",
+          "pos": "14:13,1"
+        },
+        {
+          "id": "dGKow0Xcz",
+          "url": "https://www.antdv.com/docs/vue/introduce-cn/",
+          "type": "icon",
+          "name": "Ant Design Vue",
+          "src": "https://files.itab.link/icons/ant-design-vue.svg",
+          "backgroundColor": "#fff",
+          "size": "1x1",
+          "pos": "14:14,1"
+        },
+        {
+          "id": "vjMN3-WZq",
+          "url": "http://www.oschina.net/",
+          "type": "icon",
+          "name": "开源中国",
+          "src": "https://files.itab.link/icons/oschina.svg",
+          "backgroundColor": "#34b960",
+          "size": "1x1",
+          "pos": "14:1,2"
+        },
+        {
+          "id": "vflKyWV5I91jKj2XGpWp-",
+          "url": "https://www.asiayun.com/aff/IROSKGHJ",
+          "type": "icon",
+          "name": "亚洲云",
+          "src": "https://files.itab.link/icons/asiayun.svg",
+          "backgroundColor": "#fff",
+          "iconText": "亚云",
+          "view": 1,
+          "size": "1x1",
+          "pos": "14:2,2"
+        },
+        {
+          "id": "geekbang-",
+          "url": "https://time.geekbang.org/?utm_term=iTab&utm_source=iTab&utm_medium=iTab&utm_campaign=iTab&utm_content=iTab",
+          "type": "icon",
+          "name": "极客时间",
+          "src": "https://files.itab.link/icons/geekbang.svg",
+          "backgroundColor": "#fff",
+          "size": "1x1",
+          "pos": "14:3,2"
+        },
+        {
+          "id": "hTirVJgmj-kaifa",
+          "url": "https://kaifa.baidu.com/",
+          "type": "icon",
+          "name": "开发者搜索",
+          "src": "https://files.itab.link/icons/kaifa.baidu.svg",
+          "backgroundColor": "#fff",
+          "size": "1x1",
+          "pos": "14:4,2"
+        },
+        {
+          "id": "pxos8n0v2xs",
+          "url": "itab://add",
+          "type": "icon",
+          "name": "添加图标",
+          "src": "https://files.itab.link/icons/add.svg",
+          "size": "1x1",
+          "backgroundColor": "#ffffff",
+          "pos": "14:5,2"
+        }
+      ],
+      "id": "2"
+    },
+    {
+      "id": "nav_yepAOU0lK",
+      "name": "设计",
+      "icon": "Darw",
+      "children": [
+        {
+          "id": "3NjEiwNGO",
+          "url": "https://www.gaoding.com/utms/cd52981c7dfe966f01ee33d63fa94183",
+          "type": "icon",
+          "name": "稿定设计",
+          "src": "https://files.itab.link/icons/gaoding.svg",
+          "backgroundColor": "#2455f4",
+          "view": 3,
+          "size": "1x1",
+          "pos": "14:1,1"
+        },
+        {
+          "id": "5kGk9TzkRam-a",
+          "url": "https://js.design/square?sort=downloadNum&source=itab&plan=4",
+          "type": "icon",
+          "name": "即时设计",
+          "src": "https://files.itab.link/icons/jsdesign.svg",
+          "backgroundColor": "#cf3d35",
+          "size": "1x1",
+          "pos": "14:2,1"
+        },
+        {
+          "id": "v_xMvU7V_",
+          "url": "http://huaban.com/",
+          "type": "icon",
+          "name": "花瓣",
+          "src": "https://files.itab.link/icons/huaban.svg",
+          "backgroundColor": "#ea2936",
+          "size": "1x1",
+          "pos": "14:3,1"
+        },
+        {
+          "url": "https://www.ihuiwa.com/invite?huiwaInviteCode=EMUX7L",
+          "type": "icon",
+          "name": "绘蛙",
+          "src": "https://files.itab.link/icons/ihuiwa.jpg",
+          "backgroundColor": "#fff",
+          "id": "zmttd9JWCVpxCzBq6rLkW9859",
+          "iconText": "",
+          "view": 1,
+          "size": "1x1",
+          "pos": "14:4,1"
+        },
+        {
+          "id": "raBGdwOvo",
+          "url": "https://www.zcool.com.cn/",
+          "type": "icon",
+          "name": "站酷",
+          "src": "https://files.itab.link/icons/zcool.svg",
+          "backgroundColor": "#e6be1c",
+          "size": "1x1",
+          "pos": "14:5,1"
+        },
+        {
+          "id": "qW3jSNLWy",
+          "url": "https://dribbble.com",
+          "type": "icon",
+          "name": "Dribbble",
+          "src": "https://files.itab.link/icons/dribbble.svg",
+          "backgroundColor": "#f24e7c",
+          "size": "1x1",
+          "pos": "14:6,1"
+        },
+        {
+          "url": "https://www.x-design.com/?channel=goitab",
+          "type": "icon",
+          "name": "美图设计室",
+          "src": "https://files.itab.link/icons/x-design.com .svg",
+          "backgroundColor": "#000000",
+          "id": "F8seeVF_iygnw9RYcGoSl2614",
+          "size": "1x1",
+          "pos": "14:7,1"
+        },
+        {
+          "id": "4A9hLUKqm",
+          "url": "https://www.bigbigwork.com",
+          "type": "icon",
+          "name": "大作免费图片",
+          "src": "https://files.itab.link/icons/bigbigwork.svg",
+          "backgroundColor": "#ff4d4d",
+          "size": "1x1",
+          "pos": "14:8,1"
+        },
+        {
+          "id": "SF74W_GIh",
+          "url": "http://www.nipic.com/index.html",
+          "type": "icon",
+          "name": "昵图网",
+          "src": "https://files.itab.link/icons/nipic.svg",
+          "backgroundColor": "#dd137b",
+          "size": "1x1",
+          "pos": "14:9,1"
+        },
+        {
+          "id": "BLJkgf_Aw",
+          "url": "https://uidesigndaily.com/",
+          "type": "icon",
+          "name": "每日ui设计",
+          "src": "https://files.itab.link/icons/uidesigndaily.svg",
+          "backgroundColor": "#fafefe",
+          "size": "1x1",
+          "pos": "14:10,1"
+        },
+        {
+          "url": "https://unsplash.dogedoge.com/",
+          "type": "icon",
+          "name": "Unsplash加速版",
+          "src": "https://files.itab.link/icons/unsplash.svg",
+          "backgroundColor": "#FFFFFF",
+          "id": "UiQz7t81324v8JV2X3DdM8575",
+          "iconText": "",
+          "size": "1x1",
+          "pos": "14:11,1"
+        },
+        {
+          "id": "l5OAFo0I2",
+          "url": "https://tinypng.com",
+          "type": "icon",
+          "name": "TinyPNG",
+          "src": "https://files.itab.link/icons/60b9eba2ae5a9ba4024b3bfc.png",
+          "backgroundColor": "#cde7f0",
+          "size": "1x1",
+          "pos": "14:12,1"
+        },
+        {
+          "id": "7U3csko_Y",
+          "url": "https://www.91sotu.com/",
+          "type": "icon",
+          "name": "搜图导航",
+          "src": "https://files.itab.link/icons/www.91sotu.com.svg",
+          "backgroundColor": "#fec20a",
+          "size": "1x1",
+          "pos": "14:13,1"
+        },
+        {
+          "id": "RC4f5ycSJ",
+          "url": "https://www.iconfont.cn/",
+          "type": "icon",
+          "name": "Iconfont",
+          "src": "https://files.itab.link/icons/iconfont.svg",
+          "backgroundColor": "#ffffff",
+          "size": "1x1",
+          "pos": "14:14,1"
+        },
+        {
+          "id": "2tIHIXVtj",
+          "url": "http://zhongguose.com/",
+          "type": "icon",
+          "name": "中国色",
+          "src": "https://files.itab.link/icons/zhongguose.com.svg",
+          "backgroundColor": "#dadada",
+          "size": "1x1",
+          "pos": "14:1,2"
+        },
+        {
+          "id": "kKCjRYCwG",
+          "url": "http://www.58pic.com/",
+          "type": "icon",
+          "name": "千图网",
+          "src": "https://files.itab.link/icons/58pic.svg",
+          "backgroundColor": "#00a46b",
+          "size": "1x1",
+          "pos": "14:2,2"
+        },
+        {
+          "url": "https://hisheai.com/?from=itab",
+          "type": "icon",
+          "name": "千图AI设计助手",
+          "src": "https://files.itab.link/icons/hisheai.svg",
+          "backgroundColor": "#0b62ff",
+          "id": "i-Q33NQLQ_GAv2PJzid7M0573",
+          "size": "1x1",
+          "pos": "14:3,2"
+        },
+        {
+          "id": "hCG7key-W",
+          "url": "http://ibaotu.com/",
+          "type": "icon",
+          "name": "包图网",
+          "src": "https://files.itab.link/icons/ibaotu.svg",
+          "backgroundColor": "#fff5c8",
+          "size": "1x1",
+          "pos": "14:4,2"
+        },
+        {
+          "id": "cfYmvqDNAcv-kSZAoKLu3",
+          "url": "http://www.qijishow.com/down/index.html",
+          "type": "icon",
+          "name": "奇迹秀",
+          "src": "https://files.itab.link/icons/qijishow.svg",
+          "backgroundColor": "#122441",
+          "size": "1x1",
+          "pos": "14:5,2"
+        },
+        {
+          "id": "0z6-vP_7M-2",
+          "url": "https://www.hellofont.cn?from=itab:test",
+          "type": "icon",
+          "name": "字由字体",
+          "src": "https://files.itab.link/icons/hellofont.cn.svg",
+          "backgroundColor": "#403F41",
+          "size": "1x1",
+          "pos": "14:6,2"
+        },
+        {
+          "id": "0z6-vP_7M-21",
+          "url": "https://topd.tencent.com/ai?ref=itab.link",
+          "type": "icon",
+          "name": "Top.AI",
+          "src": "https://files.itab.link/icons/top-ai.png",
+          "backgroundColor": "#ffffff",
+          "size": "1x1",
+          "pos": "14:7,2"
+        },
+        {
+          "url": "https://www.1txm.com/?from=itab",
+          "type": "icon",
+          "name": "易条形",
+          "src": "https://files.itab.link/icons/1txm.jpg",
+          "backgroundColor": "#fff",
+          "id": "uuRgm6iHVJLnQ6Zw4qFye6338",
+          "size": "1x1",
+          "pos": "14:8,2"
+        },
+        {
+          "id": "1txva838n3m",
+          "url": "itab://add",
+          "type": "icon",
+          "name": "添加图标",
+          "src": "https://files.itab.link/icons/add.svg",
+          "size": "1x1",
+          "backgroundColor": "#ffffff",
+          "pos": "14:9,2"
+        }
+      ]
+    },
+    {
+      "name": "产品",
+      "icon": "Producthunt",
+      "children": [
+        {
+          "id": "vqZCrDh6zad",
+          "url": "https://flowus.cn/product?promotionChannel=GW_itab",
+          "type": "icon",
+          "name": "FlowUs",
+          "src": "https://files.itab.link/icons/flowus.png",
+          "backgroundColor": "#fff",
+          "size": "1x1",
+          "pos": "14:1,1"
+        },
+        {
+          "id": "vqZCrDh6z",
+          "url": "https://www.notion.so/",
+          "type": "icon",
+          "name": "Notion ",
+          "src": "https://files.itab.link/icons/notion.svg",
+          "backgroundColor": "#fff",
+          "size": "1x1",
+          "pos": "14:2,1"
+        },
+        {
+          "url": "https://www.processon.com/?utm_source=itab",
+          "type": "icon",
+          "name": "思维导图流程图",
+          "src": "https://files.itab.link/icons/processon.png",
+          "backgroundColor": "#1985f0",
+          "id": "lYxszRKo_RNs2gf9B0uoZ9054",
+          "iconText": "Pro",
+          "size": "1x1",
+          "pos": "14:3,1"
+        },
+        {
+          "url": "https://www.officeplus.cn/",
+          "type": "icon",
+          "name": "PPT神器",
+          "src": "https://files.itab.link/icons/officeplus.cn.svg",
+          "backgroundColor": "#ffffff",
+          "id": "yGCkjz8yG0AjCwRx61s3r5694",
+          "view": 1,
+          "size": "1x1",
+          "pos": "14:4,1"
+        },
+        {
+          "id": "-wDKDVcMeU3Ptykw-F0aF",
+          "url": "https://u.tools/?from=itab",
+          "type": "icon",
+          "name": "uTools",
+          "src": "https://files.itab.link/icons/utools.svg",
+          "backgroundColor": "#fff",
+          "size": "1x1",
+          "pos": "14:5,1"
+        },
+        {
+          "url": "https://xiezuocat.com/?s=itab",
+          "type": "icon",
+          "name": "秘塔写作猫",
+          "src": "https://files.itab.link/icons/xiezuocat.com.svg",
+          "id": "6q1euMaEjtzT7K8oosijk5045-2",
+          "view": 0,
+          "backgroundColor": "#fefefe",
+          "size": "1x1",
+          "pos": "14:6,1"
+        },
+        {
+          "id": "zE9RKmF0l",
+          "url": "https://shimo.im/desktop",
+          "type": "icon",
+          "name": "石墨文档",
+          "src": "https://files.itab.link/icons/shimo.svg",
+          "backgroundColor": "#fff",
+          "size": "1x1",
+          "pos": "14:7,1"
+        },
+        {
+          "id": "NxcUMe4w5",
+          "url": "https://www.iconfont.cn/",
+          "type": "icon",
+          "name": "Iconfont",
+          "src": "https://files.itab.link/icons/iconfont.svg",
+          "backgroundColor": "#ffffff",
+          "size": "1x1",
+          "pos": "14:8,1"
+        },
+        {
+          "id": "HXATd_798",
+          "url": "http://www.36kr.com",
+          "type": "icon",
+          "name": "36氪",
+          "src": "https://files.itab.link/icons/36kr.svg",
+          "backgroundColor": "#1380d8",
+          "size": "1x1",
+          "pos": "14:9,1"
+        },
+        {
+          "id": "KHigwIg9e",
+          "url": "https://www.zhixi.com/?utm_source=webaff&id=Zx7wbwin",
+          "type": "icon",
+          "name": " 知犀思维导图",
+          "src": "https://files.itab.link/icons/zhixi.svg",
+          "backgroundColor": "#4dec7c",
+          "size": "1x1",
+          "pos": "14:10,1"
+        },
+        {
+          "url": "https://sspai.com/?utm_source=itab.ink",
+          "type": "icon",
+          "name": "少数派",
+          "src": "https://files.itab.link/icons/sspai.svg",
+          "id": "3OaNFoVII7bWIDIzqXhYX6675",
+          "backgroundColor": "#d7191a",
+          "size": "1x1",
+          "pos": "14:11,1"
+        },
+        {
+          "url": "https://www.crxsoso.com/?utm=itab",
+          "type": "icon",
+          "name": "扩展搜搜",
+          "src": "https://files.itab.link/icons/crxsoso.com.svg",
+          "id": "crxsoso-1",
+          "backgroundColor": "#fff",
+          "size": "1x1",
+          "pos": "14:12,1"
+        },
+        {
+          "url": "https://www.islide.cc/ppt?utm_source=itab&utm_medium=web&utm_campaign=1",
+          "type": "icon",
+          "name": "iSlide PPT神器",
+          "src": "https://files.itab.link/icons/islide.svg",
+          "id": "iSlide-1",
+          "backgroundColor": "#fff",
+          "view": 1,
+          "size": "1x1",
+          "pos": "14:13,1"
+        },
+        {
+          "url": "https://boardmix.cn/",
+          "type": "icon",
+          "name": "boardmix白板",
+          "src": "https://files.itab.link/icons/boardmix.cn.svg",
+          "id": "boardmix-2",
+          "backgroundColor": "#fff",
+          "size": "1x1",
+          "pos": "14:14,1"
+        },
+        {
+          "id": "writingo-2",
+          "url": "https://www.writingo.net/document?source=itab",
+          "type": "icon",
+          "name": "英语润色",
+          "src": "https://files.itab.link/icons/writingo.net.svg",
+          "backgroundColor": "#fff",
+          "size": "1x1",
+          "pos": "14:1,2"
+        },
+        {
+          "id": "hbPSc5kFD",
+          "url": "https://www.67tool.com/?from=itab.link",
+          "type": "icon",
+          "name": "即时工具",
+          "src": "https://files.itab.link/icons/67tool.svg",
+          "backgroundColor": "#369dfc",
+          "size": "1x1",
+          "pos": "14:2,2"
+        },
+        {
+          "url": "https://axmax.cn?utm_source=itab",
+          "type": "icon",
+          "name": "原型托管",
+          "src": "https://files.itab.link/icons/axmaxcn.svg",
+          "id": "axmax",
+          "backgroundColor": "#ffffff",
+          "size": "1x1",
+          "pos": "14:3,2"
+        },
+        {
+          "url": "https://cv.ibiling.cn/?from=itab",
+          "type": "icon",
+          "name": "心动AI简历",
+          "src": "https://files.itab.link/icons/cv.ibiling.cn.webp",
+          "backgroundColor": "#ffffff",
+          "id": "eVliIqrUh81LSf2P2-eYe2781",
+          "size": "1x1",
+          "pos": "14:4,2"
+        },
+        {
+          "id": "4IM79snuL",
+          "url": "http://www.woshipm.com/",
+          "type": "icon",
+          "name": "人人都是产品经理",
+          "src": "https://files.itab.link/icons/woshipm.svg",
+          "backgroundColor": "#fff",
+          "size": "1x1",
+          "pos": "14:5,2"
+        },
+        {
+          "id": "5cbxaqr5q5l",
+          "url": "itab://add",
+          "type": "icon",
+          "name": "添加图标",
+          "src": "https://files.itab.link/icons/add.svg",
+          "size": "1x1",
+          "backgroundColor": "#ffffff",
+          "pos": "14:6,2"
+        }
+      ],
+      "id": "nav_v1yD3mRTC"
+    },
+    {
+      "id": "nav_ZLL8ueRdj8VpYbAOPKR1S0699",
+      "name": "AI",
+      "icon": "ApiApp",
+      "children": [
+        {
+          "url": "https://ai-bot.cn/?utm_source=itab",
+          "type": "icon",
+          "name": "AI工具集",
+          "src": "https://files.itab.link/icons/ai-bot.svg",
+          "backgroundColor": "#0071c0",
+          "id": "SO0MxdvOyceJuAP_HNp306267",
+          "view": 2,
+          "iconText": "豆包 ",
+          "size": "1x1",
+          "pos": "14:1,1"
+        },
+        {
+          "url": "https://metaso.cn/?s=itaber&referrer_s=itaber",
+          "type": "icon",
+          "name": "秘塔AI搜索",
+          "src": "https://files.itab.link/icons/metaso.cn.png",
+          "backgroundColor": "#ffffff",
+          "id": "dbc658-yCnYPB9Uu8x8Y01201",
+          "iconText": "秘塔A",
+          "size": "1x1",
+          "pos": "14:2,1"
+        },
+        {
+          "url": "https://xiezuocat.com/?s=itab",
+          "type": "icon",
+          "name": "秘塔写作猫",
+          "src": "https://files.itab.link/icons/xiezuocat.com.svg",
+          "backgroundColor": "#fefefe",
+          "id": "WU5cPaye_efmmAvJ4lK3D5835",
+          "view": 3,
+          "size": "1x1",
+          "pos": "14:3,1"
+        },
+        {
+          "url": "https://kimi.moonshot.cn/?utm_campaign=TR_90K51izQ&utm_content=&utm_medium=%E7%BA%BF%E4%B8%8ACPA&utm_source=CH_AwqiWw8L&utm_term=",
+          "type": "icon",
+          "name": "Kimi",
+          "src": "https://files.itab.link/icons/kimi.moonshot.png",
+          "backgroundColor": "#054092",
+          "id": "kYDrBNXLQbJdxqWAUReRm2875",
+          "iconText": "Kim",
+          "size": "1x1",
+          "pos": "14:4,1"
+        },
+        {
+          "url": "https://www.chatexcel.com/#/home?partner_uuid=DF120F2826B33A8DB74C708B6A371019",
+          "type": "icon",
+          "name": "ChatExcel",
+          "src": "https://files.itab.link/icons/chatexcel.png",
+          "backgroundColor": "#000000",
+          "id": "Yr5tOtQA5tBeleeBD3Mki9217",
+          "size": "1x1",
+          "pos": "14:5,1"
+        },
+        {
+          "url": "https://pptgo.cn/?utm_source=referrals&utm_content=iTabnav&_channel_track_key=tpxzQ4ud",
+          "type": "icon",
+          "name": "博思AIPPT",
+          "src": "https://files.itab.link/icons/pptgo.cn.webp",
+          "backgroundColor": "",
+          "id": "8-VDqT9WoIa1c36e3kRMS0725",
+          "iconText": "博思A",
+          "size": "1x1",
+          "pos": "14:6,1"
+        },
+        {
+          "url": "https://www.aippt.cn/?seller=itab",
+          "type": "icon",
+          "name": "AI免费生成PPT",
+          "src": "https://files.itab.link/icons/aippt.cn.png",
+          "backgroundColor": "#fff",
+          "id": "LdTdDBXXs1vu69v8mImjK7694",
+          "iconText": "",
+          "view": 1,
+          "size": "1x1",
+          "pos": "14:7,1"
+        },
+        {
+          "url": "https://www.deepseek.com/",
+          "type": "icon",
+          "name": "DeepSeek",
+          "src": "https://files.itab.link/icons/deepseek.svg",
+          "backgroundColor": "#fff",
+          "id": "Ns2VOBuus1ji4JxQXlHHL7006",
+          "size": "1x1",
+          "pos": "14:8,1"
+        },
+        {
+          "url": "https://dis.csqixiang.cn/unpo/jmitab.html",
+          "type": "icon",
+          "name": "即梦AI",
+          "src": "https://files.itab.link/icons/jimeng.jianying.png",
+          "backgroundColor": "",
+          "id": "p5ZH7tcFPgxFxT2Bast183278",
+          "size": "1x1",
+          "pos": "14:9,1"
+        },
+        {
+          "url": "https://ibiling.cn/paper?from=itabpaper02",
+          "type": "icon",
+          "name": "专业AI论文写作",
+          "src": "https://files.itab.link/icons/biling.cn.svg",
+          "backgroundColor": "#00b178",
+          "id": "xAgiltMGYSXIVL-oDXeT54859",
+          "iconText": "专业A",
+          "view": 4,
+          "size": "1x1",
+          "pos": "14:10,1"
+        },
+        {
+          "url": "https://pptgo.cn?utm_source=referrals&utm_content=iTab&_channel_track_key=d98KCRn9",
+          "type": "icon",
+          "name": "博思AIPPT",
+          "src": "https://files.itab.link/icons/pptgo.cn.webp",
+          "backgroundColor": "#023373",
+          "id": "n9-L5S3SthZgAb36zXfjb9802",
+          "iconText": "",
+          "size": "1x1",
+          "pos": "14:11,1"
+        },
+        {
+          "url": "https://www.mindshow.fun/#/home?inviteCode=itab",
+          "type": "icon",
+          "name": "mindshow",
+          "src": "https://files.itab.link/icons/mindshow.fun.svg",
+          "backgroundColor": "#ffffff",
+          "id": "g3UExqf67PBV4W1GzzdYP0696",
+          "view": 2,
+          "size": "1x1",
+          "pos": "14:12,1"
+        },
+        {
+          "url": "https://www.aipaperpass.com?pic=xQN6",
+          "type": "icon",
+          "name": "AI一键论文",
+          "src": "https://files.itab.link/icons/aipaperpass.png",
+          "backgroundColor": "#fff",
+          "id": "dkeucOHuzJQLRHhd-7K7M2546",
+          "size": "1x1",
+          "pos": "14:13,1"
+        },
+        {
+          "url": "https://chatglm.cn/apps?image=https%3A%2F%2Fsfile.chatglm.cn%2Factiveimg%2Fbdms%2F66b97e348217030036f486f1&open_from=ads_web_itab&fr=ads_web_itab",
+          "type": "icon",
+          "name": "智谱清言",
+          "src": "https://files.itab.link/icons/chatglm.cn.png",
+          "backgroundColor": "#ffffff",
+          "id": "f9D3-8gOjsr0SbApe3YnG9294",
+          "size": "1x1",
+          "pos": "14:14,1"
+        },
+        {
+          "url": "https://www.ihuiwa.com/invite?huiwaInviteCode=EMUX7L",
+          "type": "icon",
+          "name": "阿里绘蛙",
+          "src": "https://files.itab.link/icons/ihuiwa.jpg",
+          "backgroundColor": "#fff",
+          "id": "ieIfvYqKMJmvnsgczB4kF7028",
+          "size": "1x1",
+          "pos": "14:1,2"
+        },
+        {
+          "url": "https://www.coze.cn/overview?utm_medium=daohang&utm_source=itab&utm_term=doutui_hw_coze_itab_nctm9j",
+          "type": "icon",
+          "name": "扣子",
+          "src": "https://files.itab.link/icons/coze.cn.svg",
+          "backgroundColor": "#4d53e8",
+          "id": "Iv8H9pHSRHx-roruQfxi75847",
+          "size": "1x1",
+          "pos": "14:2,2"
+        },
+        {
+          "url": "https://boardmix.cn/mindmapping/",
+          "type": "icon",
+          "name": "Ai思维导图",
+          "src": "https://files.itab.link/icons/boardmix.svg",
+          "backgroundColor": "#ffffff",
+          "id": "YpCGR-aAM8KYQQLZ6fhR51423",
+          "view": 2,
+          "size": "1x1",
+          "pos": "14:3,2"
+        },
+        {
+          "url": "https://www.trae.com.cn/?utm_source=advertising&utm_medium=itab_ug_cpa&utm_term=hw_trae_itab",
+          "type": "icon",
+          "name": "豆包代码助手",
+          "src": "https://files.itab.link/icons/marscode.cn.svg",
+          "backgroundColor": "#fc4548",
+          "id": "7xu5fW3BGzdr7GVj29jRW0577",
+          "iconText": "",
+          "size": "1x1",
+          "pos": "14:4,2"
+        },
+        {
+          "url": "https://xinghuo.xfyun.cn/",
+          "type": "icon",
+          "name": "讯飞星火",
+          "src": "https://files.itab.link/icons/xinghuo.xfyun.cn.png",
+          "backgroundColor": "#fff",
+          "id": "AKSrinXrPaBEV51pZH8pP6334",
+          "view": 1,
+          "iconText": "讯飞星",
+          "size": "1x1",
+          "pos": "14:5,2"
+        },
+        {
+          "url": "https://www.doubao.com/chat/?channel=hw_db_itab&source=hw_db_itab",
+          "type": "icon",
+          "name": "豆包",
+          "src": "https://files.itab.link/icons/doubao.com.webp",
+          "backgroundColor": "#ffffff",
+          "id": "eBwy8XrYYvT0Vekd0CNRC2328",
+          "view": 2,
+          "iconText": "豆包-",
+          "size": "1x1",
+          "pos": "14:6,2"
+        },
+        {
+          "url": "https://ai.wolian.chat/openmao/#/?inviteCode=1721353838461456386",
+          "type": "icon",
+          "name": "AI论文助手",
+          "src": "https://files.itab.link/icons/ai.wolian.chat.png",
+          "backgroundColor": "#ffffff",
+          "id": "q4Jloyi72qJxjkr13KZO88873",
+          "iconText": "",
+          "view": 1,
+          "size": "1x1",
+          "pos": "14:7,2"
+        },
+        {
+          "url": "https://js.design/ai?source=itab&plan=ai",
+          "type": "icon",
+          "name": "即时AI",
+          "src": "https://files.itab.link/icons/js-design-ai.png",
+          "backgroundColor": "#FFFFFF",
+          "id": "WcR9ifg4F5NXJ4ZsHbZme8274",
+          "iconText": "",
+          "view": 1,
+          "size": "1x1",
+          "pos": "14:8,2"
+        },
+        {
+          "url": "https://www.swdt.com/?utm_source=itab",
+          "type": "icon",
+          "name": "知犀AI",
+          "src": "https://files.itab.link/icons/zhixi.svg",
+          "backgroundColor": "#8d49d9",
+          "id": "JINCoSyY-lTPPRc3fGsXQ1325",
+          "view": 3,
+          "iconText": "知犀A",
+          "size": "1x1",
+          "pos": "14:9,2"
+        },
+        {
+          "url": "https://www.whee.com/?channel=goitab",
+          "type": "icon",
+          "name": "WHEE",
+          "src": "https://files.itab.link/icons/whee.com.svg",
+          "backgroundColor": "#3549ff",
+          "id": "GQy_HPbVVW91003ykXzIr9485",
+          "view": 3,
+          "size": "1x1",
+          "pos": "14:10,2"
+        },
+        {
+          "url": "https://yige.baidu.com",
+          "type": "icon",
+          "name": "文心一格",
+          "src": "https://files.itab.link/icons/yige.baidu.png",
+          "backgroundColor": "#ffffff",
+          "id": "NdjgJUz5ZQZ8-N5Z4CgjA2553",
+          "size": "1x1",
+          "pos": "14:11,2"
+        },
+        {
+          "url": "https://www.gaoding.com/utms/ba46f32f055a48aab63ee74f15281593",
+          "type": "icon",
+          "name": "AI设计工具",
+          "src": "https://files.itab.link/icons/gaoding.svg",
+          "backgroundColor": "#2455f4",
+          "id": "Cz4F7JR9Xwz2FQ8lQk1MS1965",
+          "iconText": "稿定设",
+          "view": 2,
+          "size": "1x1",
+          "pos": "14:12,2"
+        },
+        {
+          "url": "https://www.feishu.cn/product/minutes",
+          "type": "icon",
+          "name": "飞书妙记",
+          "src": "https://files.itab.link/icons/feishufeishu.png",
+          "backgroundColor": "#ffffff",
+          "id": "7hHtpc8iDuRbgqGwkJbSg4511",
+          "size": "1x1",
+          "pos": "14:13,2"
+        },
+        {
+          "url": "https://aigc.wondershare.cn/",
+          "type": "icon",
+          "name": "万兴爱画",
+          "src": "https://files.itab.link/icons/aigc.wondershare.cn.svg",
+          "backgroundColor": "#12142f",
+          "id": "4Vt_zPl6iIMz2TgipoTYD1369",
+          "view": 2,
+          "size": "1x1",
+          "pos": "14:14,2"
+        },
+        {
+          "url": "https://ibiling.cn/template?from=itabpaper03",
+          "type": "icon",
+          "name": "免费AI写作",
+          "src": "https://files.itab.link/icons/baipingai.png",
+          "backgroundColor": "#ffffff",
+          "id": "OvALL7ftka157nLXso0Fk9913",
+          "iconText": "心动A",
+          "size": "1x1",
+          "pos": "14:1,3"
+        },
+        {
+          "id": "m5ek0yd8vb",
+          "url": "itab://add",
+          "type": "icon",
+          "name": "添加图标",
+          "src": "https://files.itab.link/icons/add.svg",
+          "size": "1x1",
+          "backgroundColor": "#ffffff",
+          "pos": "14:2,3"
+        }
+      ]
+    },
+    {
+      "name": "摸鱼",
+      "icon": "entertainment",
+      "children": [
+        {
+          "component": "games",
+          "insetType": "",
+          "name": "小游戏",
+          "type": "component",
+          "size": "1x1",
+          "id": "en78uPOC1seXTLoNHkhUi0078",
+          "view": 4,
+          "pos": "14:1,1"
+        },
+        {
+          "url": "http://jg.doghun.com/fast/index?gametypetg=tg&lg=11216785&client=4&ly=platform&pagetype=20&themeid=7",
+          "type": "icon",
+          "name": "热门游戏",
+          "src": "https://files.itab.link/icons/jd.doghun.png",
+          "backgroundColor": "#000000",
+          "id": "s3wVdL3FAVLwemTPj2vTf1056",
+          "size": "1x1",
+          "pos": "14:2,1"
+        },
+        {
+          "id": "xiaohongshu-2",
+          "url": "https://www.xiaohongshu.com/explore?m_source=itab",
+          "type": "icon",
+          "name": "小红书",
+          "src": "https://files.itab.link/icons/xiaohongshu.svg",
+          "backgroundColor": "#ff2442",
+          "size": "1x1",
+          "pos": "14:3,1"
+        },
+        {
+          "id": "RHza5iCO0",
+          "url": "https://weibo.com/",
+          "type": "icon",
+          "name": "新浪微博",
+          "src": "https://files.itab.link/icons/weibo.svg",
+          "backgroundColor": "#ffd850",
+          "size": "1x1",
+          "pos": "14:4,1"
+        },
+        {
+          "id": "hBDW2dtTJ",
+          "url": "https://www.iqiyi.com/?vfm=f_432_dhm&fv=8648154ddd63e0af",
+          "type": "icon",
+          "name": "爱奇艺",
+          "src": "https://files.itab.link/icons/iqiyi.svg",
+          "backgroundColor": "#00cc4c",
+          "view": 1,
+          "size": "1x1",
+          "pos": "14:5,1"
+        },
+        {
+          "url": "https://tophub.today/",
+          "type": "icon",
+          "name": "今日热榜",
+          "src": "https://files.itab.link/icons/tophubtopday.svg",
+          "backgroundColor": "#fff",
+          "id": "vzwxQmzGMJE2DJhUyPNs79983",
+          "view": 1,
+          "size": "1x1",
+          "pos": "14:6,1"
+        },
+        {
+          "id": "vgXmpPPaJ",
+          "url": "http://www.youku.com",
+          "type": "icon",
+          "name": "优酷",
+          "src": "https://files.itab.link/icons/youku.svg",
+          "backgroundColor": "#ffffff",
+          "view": 1,
+          "size": "1x1",
+          "pos": "14:7,1"
+        },
+        {
+          "id": "NnuH_lGqe",
+          "url": "http://v.qq.com/",
+          "type": "icon",
+          "name": "腾讯视频",
+          "src": "https://files.itab.link/icons/qqvideo.svg",
+          "backgroundColor": "#ffffff",
+          "size": "1x1",
+          "pos": "14:8,1"
+        },
+        {
+          "id": "KHgOwEaEwALR14p0tVq_W",
+          "url": "https://www.bilibili.com/",
+          "type": "icon",
+          "name": "Bilibili",
+          "src": "https://files.itab.link/icons/bilibili2.svg",
+          "backgroundColor": "#fe65a6",
+          "size": "1x1",
+          "pos": "14:9,1"
+        },
+        {
+          "id": "3kcHk8fDe",
+          "url": "https://www.zhihu.com/",
+          "type": "icon",
+          "name": "知乎",
+          "src": "https://files.itab.link/icons/zhihu.svg",
+          "backgroundColor": "#0c6dfe",
+          "size": "1x1",
+          "pos": "14:10,1"
+        },
+        {
+          "id": "VqqNHgaf-",
+          "url": "https://store.steampowered.com/",
+          "type": "icon",
+          "name": "Steam",
+          "src": "https://files.itab.link/icons/steam.svg",
+          "backgroundColor": "#000000",
+          "size": "1x1",
+          "pos": "14:11,1"
+        },
+        {
+          "id": "-Q8KQDvzf",
+          "url": "https://www.douyin.com/?ug_source=pc_liangxiang_01",
+          "type": "icon",
+          "name": "抖音",
+          "src": "https://files.itab.link/icons/douyin.svg",
+          "backgroundColor": "#1c0b1a",
+          "view": 2,
+          "iconText": "抖音",
+          "size": "1x1",
+          "pos": "14:12,1"
+        },
+        {
+          "id": "2ykpQ4jnS",
+          "url": "https://www.yikm.net/",
+          "type": "icon",
+          "name": "小霸王",
+          "src": "https://files.itab.link/icons/www.yikm.net.svg",
+          "backgroundColor": "#1499b5",
+          "size": "1x1",
+          "pos": "14:13,1"
+        },
+        {
+          "id": "CSGfty1NQ",
+          "url": "https://www.4399.com/",
+          "type": "icon",
+          "name": "4399小游戏",
+          "src": "https://files.itab.link/icons/4399.svg",
+          "backgroundColor": "#f19425",
+          "size": "1x1",
+          "pos": "14:14,1"
+        },
+        {
+          "id": "Ar6V8x5ep",
+          "url": "http://www.huya.com/",
+          "type": "icon",
+          "name": "虎牙直播",
+          "src": "https://files.itab.link/icons/huya.svg",
+          "backgroundColor": "#fff",
+          "size": "1x1",
+          "pos": "14:1,2"
+        },
+        {
+          "id": "G7LefZAPp",
+          "url": "https://www.douyu.com/",
+          "type": "icon",
+          "name": "斗鱼",
+          "src": "https://files.itab.link/icons/douyu.svg",
+          "backgroundColor": "#ff6a2d",
+          "size": "1x1",
+          "pos": "14:2,2"
+        },
+        {
+          "id": "DMW71i6ra-1",
+          "url": "https://rebang.today/?from=itab.link",
+          "type": "icon",
+          "name": "今日热榜",
+          "src": "https://files.itab.link/icons/rebang.today.png",
+          "backgroundColor": "#165dff",
+          "view": 1,
+          "size": "1x1",
+          "pos": "14:3,2"
+        },
+        {
+          "id": "E73yZrjb-",
+          "url": "https://fanqienovel.com/",
+          "type": "icon",
+          "name": "番茄小说网",
+          "src": "https://files.itab.link/icons/fanqienovel.svg",
+          "backgroundColor": "#fff",
+          "size": "1x1",
+          "pos": "14:4,2"
+        },
+        {
+          "id": "P9JTzK_tG",
+          "url": "https://www.xiaozhongjishu.com/?from=itab",
+          "type": "icon",
+          "name": "小众技术资源库",
+          "src": "https://files.itab.link/icons/xiaozhongjishu.com.png",
+          "backgroundColor": "#fff",
+          "view": 1,
+          "size": "1x1",
+          "pos": "14:5,2"
+        },
+        {
+          "id": "oTRgyT2MF",
+          "url": "http://www.douban.com",
+          "type": "icon",
+          "name": "豆瓣",
+          "src": "https://files.itab.link/icons/douban.svg",
+          "backgroundColor": "#00c117",
+          "size": "1x1",
+          "pos": "14:6,2"
+        },
+        {
+          "id": "IC2ssYXhT",
+          "url": "http://www.smzdm.com/?from=itab.link",
+          "type": "icon",
+          "name": "什么值得买",
+          "src": "https://files.itab.link/icons/smzdm.svg",
+          "backgroundColor": "#ed1c24",
+          "size": "1x1",
+          "pos": "14:7,2"
+        },
+        {
+          "id": "iOtWHp7dU",
+          "url": "https://weread.qq.com/",
+          "type": "icon",
+          "name": "微信读书",
+          "src": "https://files.itab.link/icons/weread-qq.svg",
+          "backgroundColor": "#fff",
+          "size": "1x1",
+          "pos": "14:8,2"
+        },
+        {
+          "id": "kemoji",
+          "url": "https://tikolu.net/emojimix/",
+          "type": "icon",
+          "name": "emoji合成",
+          "src": "https://files.itab.link/icons/59f723c85138415abdea365b.png",
+          "backgroundColor": "#fff",
+          "size": "1x1",
+          "pos": "14:9,2"
+        },
+        {
+          "url": "https://1688.coml.cc/",
+          "type": "icon",
+          "name": "阿里巴巴",
+          "src": "https://files.itab.link/icons/1688.svg",
+          "backgroundColor": "#fd7c11",
+          "id": "1u_ausuHc3AUAodD1lv4w1758",
+          "iconText": "",
+          "editedCurrentSrc": "",
+          "size": "1x1",
+          "pos": "14:10,2"
+        },
+        {
+          "id": "npwrvd2e4bf",
+          "url": "itab://add",
+          "type": "icon",
+          "name": "添加图标",
+          "src": "https://files.itab.link/icons/add.svg",
+          "size": "1x1",
+          "backgroundColor": "#ffffff",
+          "pos": "14:11,2"
+        }
+      ],
+      "id": "nav_WjjuUHrlw"
+    }
+  ]
+}

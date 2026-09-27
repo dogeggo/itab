@@ -1,0 +1,105 @@
+{
+  "lang": "",
+  "searchEngine": [
+    {
+      "key": "360",
+      "title": "360搜索",
+      "href": "https://www.so.com/s?q="
+    },
+    {
+      "key": "baidu",
+      "title": "百度",
+      "href": "https://www.baidu.com/s?&tn=15007414_23_dg&ie=utf-8&wd="
+    },
+    {
+      "key": "bing",
+      "title": "必应",
+      "href": "https://www.bing.com/search?q="
+    }
+  ],
+  "useSearch": "baidu",
+  "search": {
+    "show": true,
+    "history": false,
+    "height": 46,
+    "radius": 23,
+    "bgColor": 0.5,
+    "translate": "",
+    "translateHide": false,
+    "globalSearch": true
+  },
+  "theme": {
+    "mode": "light",
+    "system": true,
+    "color": "#1890ff"
+  },
+  "sidebar": {
+    "placement": "left",
+    "autoHide": false,
+    "width": 50,
+    "lastGroup": false,
+    "mouseGroup": true,
+    "opacity": 0.4
+  },
+  "wallpaper": {
+    "mask": 0,
+    "blur": 0,
+    "type": 1,
+    "name": "",
+    "src": "https://files.itab.link/itab/defaultWallpaper/defaultWallpaper.webp",
+    "thumb": "https://files.itab.link/itab/defaultWallpaper/defaultWallpaper.webp?x-oss-process=image/resize,limit_1,w_220,h_120/quality,q_95",
+    "time": 0,
+    "source": "",
+    "switchBtn": false
+  },
+  "layout": {
+    "view": "widget",
+    "yiyan": true
+  },
+  "time": {
+    "weekBegin1": true,
+    "show": true,
+    "size": 70,
+    "color": "#fff",
+    "fontWeight": 400,
+    "font": "HarmonyOS_Sans",
+    "hour24": true,
+    "sec": false,
+    "month": "inline",
+    "week": "inline",
+    "lunar": "inline"
+  },
+  "open": {
+    "searchBlank": true,
+    "iconBlank": true
+  },
+  "icon": {
+    "name": 1,
+    "nameSize": 12,
+    "nameColor": "#fff",
+    "startAnimation": false,
+    "iconRadius": 18,
+    "iconSize": 60,
+    "iconX": 30,
+    "iconY": 30,
+    "xysync": true,
+    "opactiy": 1,
+    "unit": "px",
+    "width": 1350,
+    "autoSort": true
+  },
+  "topSearch": [
+    {
+      "name": "百度",
+      "id": "Jb0vmloB1G"
+    },
+    {
+      "name": "微博",
+      "id": "KqndgxeLl9"
+    },
+    {
+      "name": "抖音",
+      "id": "DpQvNABoNE"
+    }
+  ]
+}
