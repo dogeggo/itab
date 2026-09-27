@@ -306,7 +306,7 @@ function itemHTML(item) {
     face = siteFace(item);
     action = "open-site";
   }
-  return `<article class="desktop-item ${editing ? "editing" : ""}" data-item-id="${esc(item.id)}" draggable="true" style="--span-x:${w};--span-y:${h}"><div class="tile ${item.kind === "widget" ? "widget widget-" + item.type : item.kind === "folder" ? "folder-tile" : "site-tile"}" role="button" tabindex="0" aria-label="${esc(item.name)}" data-action="${action}">${face}</div><span class="item-label">${esc(item.name)}</span><button class="item-edit" data-action="item-menu" title="编辑 ${esc(item.name)}" aria-label="编辑 ${esc(item.name)}">${icon("edit", 12)}</button></article>`;
+  return `<article class="desktop-item ${editing ? "editing" : ""}" data-item-id="${esc(item.id)}" draggable="true" style="--span-x:${w};--span-y:${h}"><div class="tile ${item.kind === "widget" ? "widget widget-" + item.type : item.kind === "folder" ? "folder-tile" : "site-tile"}" role="button" tabindex="0" aria-label="${esc(item.name)}" data-action="${action}">${face}</div><span class="item-label">${esc(item.name)}</span></article>`;
 }
 function renderGrid() {
   const group = currentGroup();
@@ -330,9 +330,6 @@ function syncNativeGrid() {
     }
     element.querySelector(".item-label").textContent = item.name;
     element.querySelector(".tile").setAttribute("aria-label", item.name);
-    const edit = element.querySelector(".item-edit");
-    edit.title = `编辑 ${item.name}`;
-    edit.setAttribute("aria-label", edit.title);
   }
   sizeGrid();
 }
@@ -678,11 +675,6 @@ document.addEventListener("click", async (e) => {
       case "open-folder":
         openFolder(item);
         break;
-      case "item-menu": {
-        const r = target.getBoundingClientRect();
-        itemMenu(id, r.x, r.bottom);
-        break;
-      }
       case "edit-item":
         closePopover();
         if (item.kind === "widget") openOriginalWidget(item);

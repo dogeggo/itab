@@ -445,22 +445,6 @@ button:active {
   width: 30px;
   height: 30px;
 }
-.item-edit {
-  display: none;
-  position: absolute;
-  right: -7px;
-  top: -7px;
-  padding: 4px;
-  border-radius: 50%;
-  background: #fff;
-  color: #555;
-  box-shadow: 0 1px 5px #0003;
-  z-index: 5;
-}
-.desktop-item.editing .item-edit,
-.desktop-item:hover .item-edit {
-  display: flex;
-}
 .desktop-item.editing .tile {
   outline: 1px dashed #ffffff80;
   outline-offset: 4px;
