@@ -9,9 +9,11 @@
 3. 选择本项目的 **dist** 目录；使用 ZIP 时先解压，选择包含 manifest.json 的目录。
 4. 打开新标签页。
 
-发行包：release/NewTab-2.1.0.zip。源码包：release/NewTab-source-2.1.0.zip。
+发行包：release/NewTab-2.1.0.crx（CRX3）、release/NewTab-2.1.0.zip。源码包：release/NewTab-source-2.1.0.zip。
 
-Windows 发行打包：构建后执行 `powershell -ExecutionPolicy Bypass -File scripts/package.ps1`，生成安装 ZIP、源码 ZIP 和 `release/SHA256.txt`。源码包使用白名单，不包含测试 profile、构建中间文件、node_modules 或本机 Google 配置。
+Windows 发行打包：安装 Google Chrome 后执行 `npm run package`，自动构建并生成 CRX、安装 ZIP、源码 ZIP 和 `release/SHA256.txt`。也可以构建后执行 `powershell -ExecutionPolicy Bypass -File scripts/package.ps1`。源码包使用白名单，不包含测试 profile、构建中间文件、node_modules、本机 Google 配置或签名私钥。
+
+CRX 首次打包自动生成 `.keys/NewTab.pem`，后续复用同一私钥以保持扩展 ID；请单独备份，勿分发。可用 `CRX_KEY_PATH` 指定已有 RSA 私钥，用 `CHROME_PATH` 指定 Chrome 路径。原开发版本只保存了公钥，没有保存配套私钥，因此默认 CRX 使用独立扩展 ID，开发目录和 ZIP 仍保留原 ID。数据可通过 JSON 备份转移，Google OAuth 客户端需要匹配实际使用的扩展 ID，具体 CRX ID 见 `release/CRX安装说明.txt`。Windows Chrome 对商店外 CRX 有安装限制；无法直接安装时，使用上述“加载已解压的扩展程序”方式。
 
 ## 原版界面
 

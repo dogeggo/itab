@@ -67,6 +67,9 @@ s=s.replace('applyNotesV2Flag:ye,','');
    s='import cache from "../data.js";import {a as f} from "./vendor-dayjs-D25YbOr3.js";import {b as u} from "./baseRequest-Yj83uNvm.js";import {values as l} from "../data.js";const N=async()=>cache;const '+s.slice(f.start,f.end)+';export {F as g};';
  }
  if(name==='staleAssetReload.lazy-DksV6goU.js') {
+   // 日期共享时钟只显示到秒；保留真实动画的 RAF，并在重新导入原包时保留优化。
+   if(!s.includes('el=requestAnimationFrame(dl)')||!s.includes('cancelAnimationFrame(el)'))throw new Error('原版日期时钟结构不匹配');
+   s=edit(s,(n,p,code)=>n.type==='FunctionDeclaration'&&n.id.name==='dl'?code.replace('requestAnimationFrame(dl)','setTimeout(dl,1000-Date.now()%1000)'):n.type==='FunctionDeclaration'&&n.id.name==='fl'?code.replace('cancelAnimationFrame(el)','clearTimeout(el)'):undefined);
    const removed=new Set(['Zf','Bf']),kept=new Set();
    walk(ast(s),n=>{if(n.type==='Property'&&/^\.\/app\/.+\/icon\/icon\d*\.vue$/.test(n.key?.value||''))(allowedCards.has(n.key.value.split('/')[2])?kept:removed).add(n.value.name)});
    s=edit(s,n=>n.type==='ExportNamedDeclaration'?'export {'+n.specifiers.filter(p=>!removed.has(p.local.name)||kept.has(p.local.name)).map(p=>s.slice(p.start,p.end)).join(',')+'};':undefined);

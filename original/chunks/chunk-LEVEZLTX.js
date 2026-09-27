@@ -427,13 +427,13 @@ function ul() {
 }
 function dl() {
   let e2 = sl2();
-  al("HH", nl(e2.getHours())), al("h", nl(e2.getHours() % 12 || 12)), al("mm", nl(e2.getMinutes())), al("ss", nl(e2.getSeconds())), tl != ol(e2) && ul(), el = requestAnimationFrame(dl);
+  al("HH", nl(e2.getHours())), al("h", nl(e2.getHours() % 12 || 12)), al("mm", nl(e2.getMinutes())), al("ss", nl(e2.getSeconds())), tl != ol(e2) && ul(), el = setTimeout(dl, 1000 - Date.now() % 1000);
 }
 function pl() {
   typeof document < "u" && document.visibilityState === "hidden" || (fl(), ul(), dl());
 }
 function fl() {
-  cancelAnimationFrame(el), el = null;
+  clearTimeout(el), el = null;
 }
 function ml() {
   let e2;

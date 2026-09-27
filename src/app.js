@@ -349,11 +349,21 @@ function sizeGrid() {
   $("#grid").style.width = cols * s.size + (cols - 1) * s.gapX + "px";
   $("#grid").style.setProperty("--max-span", cols);
 }
+function renderTopbar() {
+  $("#topbar").innerHTML =
+    `<span class="topbar-name">${editing ? "拖动调整顺序 · 右键编辑" : ""}</span><div>${button("add-widget", "添加组件", "plus", "topbar-button")}${button("toggle-edit", editing ? "完成编辑" : "编辑主页", editing ? "check" : "grid", "topbar-button")}${button("settings", "主页设置", "settings", "topbar-button")}${button("toggle-layout", state.settings.layout.view === "simple" ? "切换到组件模式" : "切换到极简模式", "leaf", "topbar-button")}</div>`;
+}
+function toggleEditing() {
+  editing = !editing;
+  // 编辑开关只改变交互状态，保留 iframe、组件计时器和未提交的输入。
+  for (const item of $("#grid").querySelectorAll(".desktop-item[data-item-id]"))
+    item.classList.toggle("editing", editing);
+  renderTopbar();
+}
 function render() {
   applyTheme();
   renderSidebar();
-  $("#topbar").innerHTML =
-    `<span class="topbar-name">${editing ? "拖动调整顺序 · 右键编辑" : ""}</span><div>${button("add-widget", "添加组件", "plus", "topbar-button")}${button("toggle-edit", editing ? "完成编辑" : "编辑主页", editing ? "check" : "grid", "topbar-button")}${button("settings", "主页设置", "settings", "topbar-button")}${button("toggle-layout", state.settings.layout.view === "simple" ? "切换到组件模式" : "切换到极简模式", "leaf", "topbar-button")}</div>`;
+  renderTopbar();
   renderSearch();
   renderGrid();
   updateClock();
@@ -623,8 +633,7 @@ document.addEventListener("click", async (e) => {
         widgetPicker();
         break;
       case "toggle-edit":
-        editing = !editing;
-        render();
+        toggleEditing();
         break;
       case "toggle-layout":
         state.settings.layout.view =

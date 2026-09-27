@@ -7,7 +7,7 @@
 在 Chrome 的扩展管理页打开开发者模式，加载本项目 `dist` 目录。项目自带固定公钥，当前扩展 ID 为：
 
 ```text
-nogiefacebhdjbdgfieciakffkcfcmkn
+iloddidemhbedaopmipajgclofjocogb
 ```
 
 请以 `chrome://extensions` 显示的实际 ID 为准。`extension-public-key.txt` 用于保持开发目录变化后的扩展 ID 稳定，不是私钥。

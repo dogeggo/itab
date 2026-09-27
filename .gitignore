@@ -4,3 +4,4 @@ node_modules/
 google.config.json
 output/
 .playwright-cli
+.keys/

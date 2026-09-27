@@ -32,11 +32,18 @@ function Write-ProjectZip {
 
 $extensionZip = Join-Path $releaseRoot "NewTab-$version.zip"
 $sourceZip = Join-Path $releaseRoot "NewTab-source-$version.zip"
+$extensionCrx = Join-Path $releaseRoot "NewTab-$version.crx"
+& node (Join-Path $PSScriptRoot 'package-crx.mjs')
+if ($LASTEXITCODE -ne 0) { throw 'CRX 打包失败' }
 Write-ProjectZip -Target $extensionZip -BasePath $distRoot -Entries @('manifest.json', 'index.html', 'src', 'assets', 'original')
 Write-ProjectZip -Target $sourceZip -BasePath $projectRoot -Entries @('README.md', '.gitignore', '.prettierignore', 'package.json', 'package-lock.json', 'manifest.json', 'index.html', 'extension-public-key.txt', 'src', 'assets', 'original', 'docs', 'scripts', 'tests')
-$hashes = @($extensionZip, $sourceZip) | ForEach-Object {
-    $hash = Get-FileHash -LiteralPath $_ -Algorithm SHA256
-    '{0}  {1}' -f $hash.Hash.ToLowerInvariant(), [IO.Path]::GetFileName($_)
+$hashes = @($extensionZip, $sourceZip, $extensionCrx) | ForEach-Object {
+    $stream = [IO.File]::OpenRead($_)
+    $sha256 = [Security.Cryptography.SHA256]::Create()
+    try {
+        $hash = [BitConverter]::ToString($sha256.ComputeHash($stream)).Replace('-', '').ToLowerInvariant()
+        '{0}  {1}' -f $hash, [IO.Path]::GetFileName($_)
+    } finally { $sha256.Dispose(); $stream.Dispose() }
 }
 [IO.File]::WriteAllLines((Join-Path $releaseRoot 'SHA256.txt'), $hashes, [Text.UTF8Encoding]::new($false))
-Get-Item -LiteralPath $extensionZip, $sourceZip | Select-Object Name, Length
+Get-Item -LiteralPath $extensionZip, $sourceZip, $extensionCrx | Select-Object Name, Length
