@@ -16,9 +16,13 @@ try {
       ? h(IconEdit, { data: data.item, modelValue: visible.value, "onUpdate:modelValue": close })
       : h(Dialog, {
           modelValue: visible.value, "onUpdate:modelValue": close,
-          title: "自定义图标", width: "740px", appendToBody: true,
+          title: "自定义图标", class: "custom-add-dialog", width: "740px", appendToBody: true,
           style: { "--el-dialog-bg-color": "var(--bg-info)", "--el-dialog-padding-primary": "20px 18px 30px 30px" },
-        }, { header: () => null, default: () => h(CustomAdd) }),
+        }, {
+          // 空插槽会回退到 Dialog 的默认标题；保留实际节点，标题由 CustomAdd 显示。
+          header: () => h("span", { "aria-hidden": "true" }),
+          default: () => h(CustomAdd),
+        }),
   });
   app.mount("#icon-editor-app");
   window.addEventListener("pagehide", () => app.unmount(), { once: true });

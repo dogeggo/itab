@@ -7,6 +7,8 @@ body { font-family: "PingFang SC", -apple-system, BlinkMacSystemFont, "Helvetica
 /* 主页遮罩由宿主统一处理；裁剪弹窗继续遮暗下方的编辑器。 */
 .el-overlay:has(.add-icon-custom) { background: transparent; }
 .el-dialog { max-width: calc(100vw - 24px); }
+/* 新增窗口的标题位于内容区，关闭按钮需高于与其重叠的内容。 */
+.custom-add-dialog > .el-dialog__header > .el-dialog__headerbtn { z-index: 1; }
 .icon-bg-card .el-input { max-width: 100%; }
 .add-icon-custom .el-form-item__content { min-width: 0; }
 .add-icon-custom .icon-bg-card > div > .icon-preview { vertical-align: top; }

@@ -12,7 +12,8 @@
     "test": "node --test tests/*.test.mjs",
     "configure:google": "node scripts/configure-google.mjs",
     "prepare:appearance": "node scripts/prepare-appearance.mjs",
-    "prepare:icon-editor": "node scripts/prepare-icon-editor.mjs"
+    "prepare:icon-editor": "node scripts/prepare-icon-editor.mjs",
+    "prepare:home-yiyan": "node scripts/prepare-home-yiyan.mjs"
   },
   "engines": {
     "node": ">=20"

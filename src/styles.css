@@ -577,13 +577,21 @@ button:active {
   background: linear-gradient(transparent, #00000015);
   font-size: 12px;
 }
-#quote button {
+#quote .app-yiyan {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
   pointer-events: auto;
   background: transparent;
-  color: #fff;
-  text-shadow: 0 0 20px #000;
-  padding: 8px 16px;
-  max-width: 100%;
+  cursor: pointer;
+  line-height: 20px;
+}
+#quote .app-yiyan-body {
+  position: relative;
+  max-width: calc(100% - 32px);
+}
+#quote .yiyan-text,
+#quote .yiyan-from {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

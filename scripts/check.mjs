@@ -41,7 +41,7 @@ for (const name of await fs.readdir(new URL("../original/chunks/", import.meta.u
 }
 const { componentStyles } = await import("../original/registry.js");
 // 原版设置和图标编辑的独立页面必须从安装包加载全部 JS、CSS 和字体。
-for (const folder of ["appearance", "icon-editor"]) {
+for (const folder of ["appearance", "icon-editor", "home-yiyan"]) {
   for (const name of await fs.readdir(new URL("../original/" + folder + "/", import.meta.url))) {
     const file = new URL("../original/" + folder + "/" + name, import.meta.url);
     if (!/\.(js|html|css)$/.test(name)) continue;

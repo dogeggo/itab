@@ -27,6 +27,7 @@ import {
 import { siteFace, fitSiteText } from "./site-icon.js";
 import { openIconEditor } from "./icon-editor.js";
 import { clockParts } from "./clock.js";
+import { renderHomeYiyan } from "./home-yiyan.js";
 import { widgetHTML } from "./widget-store.js";
 import {
   initSettings,
@@ -47,8 +48,7 @@ import { openOriginalWidget } from "./widget-store.js";
 let state,
   seed,
   editing = false,
-  dragId = null,
-  quoteIndex = 0;
+  dragId = null;
 let calendarDay = new Date().toDateString();
 let googleProfile = null,
   googleProfileRequest = 0;
@@ -57,13 +57,6 @@ const accountChannel =
     ? new BroadcastChannel("newtab-google-account")
     : null;
 const $ = (selector) => document.querySelector(selector);
-const quotes = [
-  "我的太阳西沉是为了再度升起。",
-  "生活明朗，万物可爱。",
-  "行到水穷处，坐看云起时。",
-  "心有山海，静而不争。",
-  "每一个不曾起舞的日子，都是对生命的辜负。",
-];
 const fonts = new Set(timeFonts);
 const currentGroup = () =>
   state.groups.find((g) => g.id === state.activeGroup) || state.groups[0];
@@ -153,7 +146,7 @@ function applyTheme() {
   $("#wallpaper-mask").style.background = `rgba(0,0,0,${s.wallpaper.mask})`;
   $("#clock").hidden = !s.time.show;
   $("#search").hidden = !s.search.show;
-  $("#quote").hidden = !s.layout.quote;
+  renderHomeYiyan(s.layout.quote);
   refreshNativeThemes();
 }
 function updateClock() {
@@ -367,8 +360,6 @@ function render() {
   renderSearch();
   renderGrid();
   updateClock();
-  $("#quote").innerHTML =
-    `<button data-action="next-quote" title="点击切换一言">「 ${quotes[quoteIndex % quotes.length]} 」</button>`;
 }
 function renderAppearance() {
   applyTheme();
@@ -590,7 +581,8 @@ document.addEventListener("click", async (e) => {
     target.dataset.id || target.closest("[data-item-id]")?.dataset.itemId;
   const found = id ? findItem(id) : null;
   const item = found?.item;
-  if (!e.target.closest("#popover-root")) closePopover();
+  // 先读取按钮参数，再统一收起菜单，避免遗漏某个操作或在弹窗关闭后残留。
+  closePopover();
   try {
     switch (action) {
       case "settings":
@@ -603,7 +595,6 @@ document.addEventListener("click", async (e) => {
         openSettings("wallpaper");
         break;
       case "search-settings":
-        closePopover();
         openSettings("search");
         break;
       case "close-settings":
@@ -641,11 +632,6 @@ document.addEventListener("click", async (e) => {
         save();
         render();
         break;
-      case "next-quote":
-        quoteIndex++;
-        $("#quote button").textContent =
-          `「 ${quotes[quoteIndex % quotes.length]} 」`;
-        break;
       case "engine-picker":
         enginePicker();
         break;
@@ -653,7 +639,6 @@ document.addEventListener("click", async (e) => {
         state.settings.search.engine = target.dataset.engine;
         save();
         renderSearch();
-        closePopover();
         $("#search-input").focus();
         break;
       case "search-history":
@@ -679,28 +664,23 @@ document.addEventListener("click", async (e) => {
         break;
       case "open-new":
         if (item) openURL(item.url, true);
-        closePopover();
         break;
       case "open-folder":
         openFolder(item);
         break;
       case "edit-item":
-        closePopover();
         if (item.kind === "widget") openOriginalWidget(item);
         else if (item.kind === "folder") editFolder(id);
         else if (item.kind === "site") editSite(id);
         else toast("该入口无需配置");
         break;
       case "move-item":
-        closePopover();
         moveDialog(id);
         break;
       case "resize-item":
-        closePopover();
         resizeDialog(id);
         break;
       case "delete-item":
-        closePopover();
         confirmDialog(
           "删除图标",
           `确定删除“${item.name}”吗？${item.kind === "folder" ? "其中的网站会移回当前分组。" : ""}`,

@@ -1,0 +1,18 @@
+{
+  "version": "2.3.13",
+  "component": "HomeYiyan",
+  "input": "chunks/main-pR7HcDL9.js",
+  "styleInput": "assets/main-DAZpa2D_.css",
+  "sourceSha256": "59a001bf9dcb097fa6d5b87db090ff5616e832fede50cb77ddb0132ec0603123",
+  "inputs": [
+    "vendor-vue-BG-CQRtu.js",
+    "tailwind-S0oaxdkI.js",
+    "home-yiyan-entry.js"
+  ],
+  "adaptations": [
+    "当前宿主缓存和公开一言接口",
+    "请求失败保留上次一言",
+    "宿主剪贴板及提示",
+    "移除悬停工具栏，保留左键复制和右键切换"
+  ]
+}

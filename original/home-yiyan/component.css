@@ -1,0 +1,8 @@
+.app-yiyan[data-v-955b18c7]{max-height:60px;color:#ffffffe6}
+.app-yiyan .yiyan-text[data-v-955b18c7]{text-shadow:0 0 20px rgba(0,0,0,.8)}
+.app-yiyan .yiyan-from[data-v-955b18c7]{opacity:0;transition:.4s}
+.app-yiyan .app-yiyan-body[data-v-955b18c7]:hover{background-color:#00000005}
+.app-yiyan .app-yiyan-body:hover .yiyan-from[data-v-955b18c7]{opacity:1}
+#quote .d-flex-x{display:flex;justify-content:center}
+#quote .f12{font-size:12px}
+#quote .ac{text-align:center}
