@@ -32,7 +32,47 @@ import {
 let api,
   activeTab = "icon",
   cloudFiles = [],
+  cloudConnected = false,
+  cloudLoading = false,
+  cloudMessage = "",
+  cloudRequest = 0;
+export async function refreshDriveConnection(interactive = false) {
+  const request = ++cloudRequest;
+  if (!driveAvailability().ready) return false;
+  cloudLoading = true;
+  cloudMessage = "";
+  renderDriveStatus();
+  try {
+    const files = await (interactive ? connectDrive() : listBackups());
+    if (request !== cloudRequest) return false;
+    cloudFiles = files;
+    cloudConnected = true;
+    api.googleAccountChanged(true, interactive);
+    return true;
+  } catch (error) {
+    if (request !== cloudRequest) return false;
+    cloudFiles = [];
+    cloudConnected = false;
+    cloudMessage = error.message;
+    api.googleAccountChanged(false, false);
+    if (interactive) throw error;
+    return false;
+  } finally {
+    if (request === cloudRequest) {
+      cloudLoading = false;
+      renderDriveStatus();
+    }
+  }
+}
+export function clearDriveConnection(broadcast = false) {
+  ++cloudRequest;
+  cloudLoading = false;
   cloudConnected = false;
+  cloudFiles = [];
+  cloudMessage = "Google Drive 已断开，点击“连接 Google”可重新连接。";
+  api.googleAccountChanged(false, broadcast);
+  renderDriveStatus();
+}
 export function initSettings(callbacks) {
   api = callbacks;
   window.addEventListener("native-widget-saved", () => {
@@ -118,6 +158,8 @@ export function openSettings(tab = "icon") {
   renderSettings();
   const d = document.querySelector("#settings");
   if (!d.open) d.showModal();
+  if (activeTab === "backup" && !cloudConnected && !cloudLoading)
+    void refreshDriveConnection();
 }
 
 const nativeTabs = new Set([
@@ -188,7 +230,7 @@ function content() {
       return (
         `<div class="drive-card"><div class="drive-logo">${icon("cloud", 32)}</div><div><h3>Google Drive 备份</h3><p>让你的主页，跟随你。</p></div><span class="badge">应用专属空间</span></div>` +
         panel(
-          `<p class="backup-explainer">备份包含图标、分组、设置、壁纸、备忘录和待办。恢复前会自动保留本机快照。</p><p id="drive-status" class="muted">${esc(driveAvailability().message)}</p><div class="backup-buttons"><button class="primary" data-settings-action="drive-connect">${icon("cloud", 17)} ${cloudConnected ? "刷新备份列表" : "连接 Google"}</button><button data-settings-action="drive-backup" ${!driveAvailability().ready ? "disabled" : ""}>立即备份</button>${cloudConnected ? '<button data-settings-action="drive-disconnect">断开本机授权</button>' : ""}</div><div id="cloud-backups">${cloudList()}</div>`,
+          `<p class="backup-explainer">备份包含图标、分组、设置、壁纸、备忘录和待办。恢复前会自动保留本机快照。</p><p id="drive-status" class="muted" role="status"></p><div class="backup-buttons"><button class="primary" data-settings-action="drive-connect"></button><button data-settings-action="drive-backup">立即备份</button><button data-settings-action="drive-disconnect" hidden>断开本机授权</button></div><div id="cloud-backups"></div>`,
         ) +
         heading("本地备份") +
         panel(
@@ -221,6 +263,37 @@ function cloudList() {
       ? '<p class="empty">还没有云端备份，点击“立即备份”创建。</p>'
       : "";
 }
+function renderDriveStatus() {
+  const d = document.querySelector("#settings");
+  const status = d?.querySelector("#drive-status");
+  if (!status) return;
+  const available = driveAvailability();
+  status.textContent = cloudLoading
+    ? "正在连接 Google Drive…"
+    : cloudMessage || (cloudConnected ? "Google Drive 已连接" : available.message);
+  const connect = d.querySelector('[data-settings-action="drive-connect"]');
+  connect.innerHTML = `${icon("cloud", 17)} ${cloudLoading ? "连接中…" : cloudConnected ? "刷新备份列表" : "连接 Google"}`;
+  connect.disabled = cloudLoading || !available.ready;
+  d.querySelector('[data-settings-action="drive-backup"]').disabled = cloudLoading || !available.ready;
+  d.querySelector('[data-settings-action="drive-disconnect"]').hidden = !cloudConnected;
+  const list = d.querySelector("#cloud-backups");
+  list.innerHTML = cloudList();
+  list.setAttribute("aria-busy", String(cloudLoading));
+  list.querySelectorAll("[data-drive-restore]").forEach((btn) => {
+    btn.disabled = cloudLoading;
+    btn.onclick = async () => {
+      btn.disabled = true;
+      try {
+        const next = parseBackup(await downloadBackup(btn.dataset.driveRestore));
+        restorePrompt(next);
+      } catch (err) {
+        toast(err.message, true);
+      } finally {
+        btn.disabled = false;
+      }
+    };
+  });
+}
 function renderSettings() {
   const tab = tabs.find((t) => t[0] === activeTab) || tabs[2];
   activeTab = tab[0];
@@ -233,6 +306,8 @@ function renderSettings() {
       (btn.onclick = () => {
         activeTab = btn.dataset.tab;
         renderSettings();
+        if (activeTab === "backup" && !cloudConnected && !cloudLoading)
+          void refreshDriveConnection();
       }),
   );
   d.querySelectorAll("[data-edit-group]").forEach(
@@ -322,22 +397,7 @@ function renderSettings() {
       e.target.value = "";
     }
   });
-  d.querySelectorAll("[data-drive-restore]").forEach(
-    (btn) =>
-      (btn.onclick = async () => {
-        btn.disabled = true;
-        try {
-          const next = parseBackup(
-            await downloadBackup(btn.dataset.driveRestore),
-          );
-          restorePrompt(next);
-        } catch (err) {
-          toast(err.message, true);
-        } finally {
-          btn.disabled = false;
-        }
-      }),
-  );
+  renderDriveStatus();
   if (activeTab === "backup")
     renderSnapshots().catch((e) => toast(e.message, true));
 }
@@ -487,24 +547,22 @@ async function action(name) {
       toast("本机快照已保存");
       break;
     case "drive-connect":
-      cloudFiles = await connectDrive();
-      cloudConnected = true;
-      renderSettings();
-      toast("Google Drive 已连接");
+      if (await refreshDriveConnection(!cloudConnected))
+        toast("Google Drive 已连接");
       break;
     case "drive-backup":
+      ++cloudRequest;
       await uploadBackup(makeBackup(state));
-      cloudFiles = await listBackups();
-      cloudConnected = true;
+      if (!(await refreshDriveConnection())) break;
+      api.googleAccountChanged(true);
       await write("lastDriveBackup", new Date().toISOString());
       renderSettings();
       toast("已备份到 Google Drive");
       break;
     case "drive-disconnect":
+      ++cloudRequest;
       await disconnectDrive();
-      cloudConnected = false;
-      cloudFiles = [];
-      renderSettings();
+      clearDriveConnection(true);
       toast("已清除本机 Google 授权缓存");
       break;
     case "reset-settings":

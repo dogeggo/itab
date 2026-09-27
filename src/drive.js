@@ -1,5 +1,6 @@
 const BASE = "https://www.googleapis.com/drive/v3";
 export const DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.appdata";
+const AUTO_CONNECT_KEY = "googleDriveAutoConnect";
 export function driveAvailability() {
   if (!globalThis.chrome?.identity?.getAuthToken)
     return {
@@ -18,6 +19,11 @@ export function driveAvailability() {
 async function token(interactive = false) {
   const available = driveAvailability();
   if (!available.ready) throw new Error(available.message);
+  if (!interactive) {
+    const preferences = await globalThis.chrome?.storage?.local?.get(AUTO_CONNECT_KEY);
+    if (preferences?.[AUTO_CONNECT_KEY] === false)
+      throw new Error("Google Drive 已断开，点击“连接 Google”可重新连接。");
+  }
   try {
     const result = await chrome.identity.getAuthToken({
       interactive,
@@ -25,6 +31,8 @@ async function token(interactive = false) {
     });
     const value = typeof result === "string" ? result : result?.token;
     if (!value) throw new Error("未取得授权令牌");
+    if (interactive)
+      await globalThis.chrome?.storage?.local?.set({ [AUTO_CONNECT_KEY]: true });
     return value;
   } catch (e) {
     throw new Error("Google 授权未完成：" + e.message);
@@ -67,8 +75,27 @@ export async function connectDrive() {
   return listBackups();
 }
 export async function disconnectDrive() {
+  await globalThis.chrome?.storage?.local?.set({ [AUTO_CONNECT_KEY]: false });
   if (globalThis.chrome?.identity?.clearAllCachedAuthTokens)
     await chrome.identity.clearAllCachedAuthTokens();
+}
+export async function getGoogleProfile() {
+  if (!driveAvailability().ready) return null;
+  const response = await request(
+    `${BASE}/about?fields=user(displayName,photoLink)`,
+  );
+  const { user } = await response.json();
+  if (!user) return null;
+  let photoURL = "";
+  try {
+    const url = new URL(user.photoLink);
+    if (url.protocol === "https:" && !url.username && !url.password)
+      photoURL = url.href;
+  } catch {}
+  return {
+    displayName: typeof user.displayName === "string" ? user.displayName : "",
+    photoURL,
+  };
 }
 export async function listBackups() {
   const query = new URLSearchParams({

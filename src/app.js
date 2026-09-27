@@ -28,7 +28,14 @@ import { siteFace, fitSiteText } from "./site-icon.js";
 import { openIconEditor } from "./icon-editor.js";
 import { clockParts } from "./clock.js";
 import { widgetHTML } from "./widget-store.js";
-import { initSettings, openSettings, setWallpaper } from "./settings.js";
+import {
+  initSettings,
+  openSettings,
+  setWallpaper,
+  refreshDriveConnection,
+  clearDriveConnection,
+} from "./settings.js";
+import { getGoogleProfile } from "./drive.js";
 import { openWidgetStore } from "./widget-store.js";
 import {
   initNativeBridge,
@@ -43,6 +50,12 @@ let state,
   dragId = null,
   quoteIndex = 0;
 let calendarDay = new Date().toDateString();
+let googleProfile = null,
+  googleProfileRequest = 0;
+const accountChannel =
+  typeof BroadcastChannel !== "undefined"
+    ? new BroadcastChannel("newtab-google-account")
+    : null;
 const $ = (selector) => document.querySelector(selector);
 const quotes = [
   "我的太阳西沉是为了再度升起。",
@@ -156,7 +169,39 @@ function updateClock() {
 }
 function renderSidebar() {
   $("#sidebar").innerHTML =
-    `<button class="sidebar-profile" data-action="backup" title="Google 备份"><span class="avatar">${icon("user", 22)}</span><small>备份</small></button><nav>${state.groups.map((g) => `<button class="sidebar-group ${g.id === state.activeGroup ? "active" : ""}" data-action="switch-group" data-group="${esc(g.id)}" title="${esc(g.name)}">${icon(g.icon)}<span>${esc(g.name)}</span></button>`).join("")}${button("add-group", "添加分组", "plus", "sidebar-add")}</nav><div class="sidebar-bottom">${button("wallpaper", "主题壁纸", "image")}${button("settings", "设置", "settings")}</div>`;
+    `<button class="sidebar-profile" data-action="backup" title="Google 备份" aria-label="备份"><span class="avatar">${icon("user", 22)}</span></button><nav>${state.groups.map((g) => `<button class="sidebar-group ${g.id === state.activeGroup ? "active" : ""}" data-action="switch-group" data-group="${esc(g.id)}" title="${esc(g.name)}">${icon(g.icon)}<span>${esc(g.name)}</span></button>`).join("")}${button("add-group", "添加分组", "plus", "sidebar-add")}</nav><div class="sidebar-bottom">${button("wallpaper", "主题壁纸", "image")}${button("settings", "设置", "settings")}</div>`;
+  renderGoogleProfile();
+}
+function renderGoogleProfile() {
+  const button = $(".sidebar-profile");
+  if (!button) return;
+  button.title = googleProfile?.displayName
+    ? `${googleProfile.displayName} · Google 备份`
+    : "Google 备份";
+  const avatar = button.querySelector(".avatar");
+  avatar.innerHTML = icon("user", 22);
+  if (googleProfile?.photoURL) {
+    const img = document.createElement("img");
+    img.alt = "";
+    img.referrerPolicy = "no-referrer";
+    img.src = googleProfile.photoURL;
+    avatar.append(img);
+  }
+}
+async function refreshGoogleProfile(connected = true) {
+  const request = ++googleProfileRequest;
+  let profile = null;
+  if (connected) {
+    try {
+      profile = await getGoogleProfile();
+    } catch {
+      // 静默读取账号；未授权或离线时保留默认头像，不影响主页和备份。
+    }
+  }
+  // 断开授权或切换账号后，不允许旧请求把上一账号的头像写回来。
+  if (request !== googleProfileRequest) return;
+  googleProfile = profile;
+  renderGoogleProfile();
 }
 function renderSearch() {
   const value = $("#search-input")?.value || "",
@@ -853,6 +898,10 @@ async function initialize() {
     save,
     render,
     appearance: renderAppearance,
+    googleAccountChanged(connected, broadcast = true) {
+      void refreshGoogleProfile(connected);
+      if (broadcast) accountChannel?.postMessage({ connected });
+    },
     wallpaperPicker: () => openOriginalWidget(nativeUtility("wallpaper")),
     widgetPicker,
     editGroup,
@@ -868,6 +917,14 @@ async function initialize() {
   if (state.settings.sidebar.lastGroup === false)
     state.activeGroup = state.groups[0].id;
   render();
+  void refreshDriveConnection();
+  accountChannel?.addEventListener("message", ({ data }) => {
+    if (data?.connected === true) void refreshDriveConnection();
+    else if (data?.connected === false) clearDriveConnection();
+  });
+  globalThis.chrome?.identity?.onSignInChanged?.addListener(() => {
+    void refreshDriveConnection();
+  });
   if (!stored || recovered) await save();
   const nativeId = new URLSearchParams(location.search).get("native");
   if (nativeId) {

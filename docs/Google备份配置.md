@@ -44,9 +44,11 @@ npm run build
 
 - 备份写入 Google Drive 的隐藏应用数据目录 `appDataFolder`，普通“我的云端硬盘”列表中通常看不到。
 - 使用备份列表查看最近最多 100 条云端备份；点击恢复后会显示覆盖确认，并先保存本机快照。
+- 首次授权后，每次打开新标签页都会通过 `getAuthToken({ interactive: false })` 静默恢复连接并加载列表，备份页直接显示“Google Drive 已连接”。首次使用、授权失效或网络异常不会自动弹窗；页面保留“连接 Google”入口与错误原因。自动连接不会自动上传或恢复数据。
 - Google 令牌由 `chrome.identity.getAuthToken()` 获取和缓存，不保存到 IndexedDB、配置文件或备份 JSON。
+- 左上角显示当前授权账号的头像，通过 `about.get?fields=user(displayName,photoLink)` 读取；沿用 `drive.appdata` 权限，不需要新增个人资料权限。打开新标签页时只尝试静默获取，首次连接仍在备份页点击“连接 Google”。未授权、网络异常或图片无法加载时回退到默认头像，断开授权后已打开的主页同步清除头像。
 - 令牌过期返回 401 时，清理该令牌并重试一次；用户取消、网络异常、权限错误都会显示原因。
-- “断开本机授权”清除浏览器的本机令牌缓存。若需彻底撤销应用访问，请在 [Google 账号第三方访问管理](https://myaccount.google.com/connections) 移除应用。
+- “断开本机授权”清除浏览器的本机令牌缓存，并在扩展本机存储中关闭自动连接；刷新或重启浏览器后也不会自行重连。再次手动连接或备份并完成授权后恢复自动连接。该开关不进入主页备份。若需彻底撤销应用访问，请在 [Google 账号第三方访问管理](https://myaccount.google.com/connections) 移除应用。
 - 云端手动备份不会自动删除你的已有节点。
 
 ## 常见问题
@@ -66,6 +68,7 @@ npm run build
 - [Chrome identity API](https://developer.chrome.com/docs/extensions/reference/api/identity)
 - [Chrome 扩展 OAuth 教程](https://developer.chrome.com/docs/extensions/how-to/integrate/oauth)
 - [Drive 应用数据目录](https://developers.google.com/drive/api/guides/appdata)
+- [Drive 用户信息与适用授权范围](https://developers.google.com/workspace/drive/api/reference/rest/v3/about/get)
 - [Drive multipart 上传](https://developers.google.com/drive/api/guides/manage-uploads)
 
 本次已验证扩展加载、OAuth 未配置提示、请求格式和过期令牌重试逻辑。没有替你创建 Google Cloud 项目，也没有登录真实 Google 账号，因此**真实账号云备份尚未完成端到端验收**；完成以上配置后即可进行实际授权验证。
