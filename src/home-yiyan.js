@@ -11,7 +11,7 @@ export function renderHomeYiyan(visible) {
     return;
   }
   // 分组、布局和主题更新只保留当前挂载，避免主页重绘反复请求一言。
-  if (app || loading) return;
+  if (app || loading) return loading;
   loading = Promise.all([import("../original/home-yiyan/component.js"), hydrate()])
     .then(([{ createApp, HomeYiyan }]) => {
       if (container.hidden) return;
@@ -25,4 +25,5 @@ export function renderHomeYiyan(visible) {
       reportError(error);
     })
     .finally(() => { loading = null; });
+  return loading;
 }

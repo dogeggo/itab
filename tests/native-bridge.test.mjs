@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { initNativeBridge, flushNativeCards } from "../src/native-bridge.js";
+import { initNativeBridge, flushNativeCards, syncNativeData } from "../src/native-bridge.js";
 import { createState, makeBackup } from "../src/model.js";
 test("假期在线组件可挂载原版卡片、保存缓存及打开详情，其他在线组件不能接入宿主", (t) => {
   const previousWindow = globalThis.window, previousDocument = globalThis.document;
@@ -190,4 +190,82 @@ test("打开弹窗之前启动的延迟写入，在弹窗关闭后也不能覆�
   release();
   await pending;
   assert.deepEqual(state.nativeData.stores.notes.items, [{ content: "最新编辑" }]);
+});
+
+test("跨页组件更新保留卡片会话，异步接收不回写，重复通知和删除不重复保存", async (t) => {
+  const previousWindow = globalThis.window, previousDocument = globalThis.document;
+  t.after(() => { globalThis.window = previousWindow; globalThis.document = previousDocument; });
+  const state = createState([{ id: "g", name: "主页", items: [{
+    id: "notes", kind: "widget", type: "native", name: "便签", size: "2x2", config: { component: "notes" },
+  }] }]);
+  state.nativeData.local.notes = '[{"content":"旧摘要"}]';
+  state.nativeData.stores.notes = { items: [{ content: "旧全文" }] };
+  const child = {}, frame = { contentWindow: child, dataset: { nativeId: "notes" }, isConnected: true };
+  globalThis.window = {};
+  globalThis.document = { querySelectorAll: () => [frame] };
+  let saves = 0;
+  initNativeBridge({ getState: () => state, save: async () => { saves++; } });
+  const card = window.__itabNativeBridge.connect(child, "notes", "card");
+  const received = [];
+  card.subscribe(async (key, value) => {
+    received.push([key, value]);
+    // 模拟组件应用远端快照时产生的同步和异步 watcher 副作用。
+    card.writeText("notes", "旧视图不能回写");
+    await Promise.resolve();
+    await card.storeSet("notes", "items", [{ content: "旧数据不能覆盖" }]);
+    card.removeValue("notes");
+    await card.storeRemove("notes", "items");
+  });
+  const incoming = { local: { notes: '[{"content":"新摘要"}]' }, stores: { notes: { items: [{ content: "新全文" }] } } };
+  await syncNativeData(structuredClone(incoming));
+  assert.ok(card.active(), "状态对象和 iframe 身份保持不变");
+  assert.deepEqual(state.nativeData, incoming);
+  assert.equal(saves, 0, "接收不产生保存或广播");
+  assert.equal(received.length, 2);
+  await syncNativeData(structuredClone(incoming));
+  assert.equal(received.length, 2, "重复快照不会再次通知");
+  card.removeValue("不存在");
+  await card.storeRemove("cache", "不存在");
+  assert.equal(saves, 0);
+  await card.storeSet("notes", "items", [{ content: "接收完成后继续编辑" }]);
+  assert.equal(saves, 1);
+  assert.equal(state.nativeData.stores.notes.items[0].content, "接收完成后继续编辑");
+});
+
+test("跨页更新使已经开始编码的旧组件写入失效", async (t) => {
+  const previousWindow = globalThis.window, previousDocument = globalThis.document;
+  t.after(() => { globalThis.window = previousWindow; globalThis.document = previousDocument; });
+  const state = createState([{ id: "g", name: "主页", items: [{
+    id: "notes", kind: "widget", type: "native", name: "便签", size: "2x2", config: { component: "notes" },
+  }] }]);
+  const child = {}, frame = { contentWindow: child, dataset: { nativeId: "notes" }, isConnected: true };
+  globalThis.window = {};
+  globalThis.document = { querySelectorAll: () => [frame] };
+  let saves = 0;
+  initNativeBridge({ getState: () => state, save: async () => { saves++; } });
+  const card = window.__itabNativeBridge.connect(child, "notes", "card");
+  let release;
+  const gate = new Promise(resolve => { release = resolve; });
+  const stale = new Blob(["旧数据"]), read = stale.arrayBuffer.bind(stale);
+  stale.arrayBuffer = async () => { await gate; return read(); };
+  const pending = card.storeSet("notes", "items", stale);
+  await syncNativeData({ local: {}, stores: { notes: { items: [{ content: "另一主页的新内容" }] } } });
+  release();
+  await pending;
+  assert.equal(saves, 0);
+  assert.equal(state.nativeData.stores.notes.items[0].content, "另一主页的新内容");
+  // 不相关的天气缓存更新不能丢弃正在编码的本地便签内容。
+  let releaseOther;
+  const otherGate = new Promise(resolve => { releaseOther = resolve; });
+  const independent = new Blob(["本地新便签"]), readIndependent = independent.arrayBuffer.bind(independent);
+  independent.arrayBuffer = async () => { await otherGate; return readIndependent(); };
+  const saving = card.storeSet("notes", "items", independent);
+  const next = structuredClone(state.nativeData);
+  next.stores.cache = { weather: { value: 25 } };
+  await syncNativeData(next);
+  releaseOther();
+  await saving;
+  assert.equal(saves, 1);
+  assert.equal(await (await card.storeGet("notes", "items")).text(), "本地新便签");
+  assert.deepEqual(await card.storeGet("cache", "weather"), { value: 25 });
 });

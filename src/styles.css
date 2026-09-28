@@ -133,7 +133,9 @@ button:active {
   pointer-events: none;
 }
 #wallpaper {
-  background: url("../assets/wallpapers/default.webp") center/cover no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   z-index: -2;
   transition:
     filter 0.25s,
@@ -147,6 +149,17 @@ button:active {
   display: flex;
   flex-direction: column;
   position: relative;
+}
+/* 与原版一致的 .3s ease 淡入，在首次渲染时立即播放，壁纸与主页同时开始。 */
+:root[data-home-state="loading"] :is(#home, #sidebar, #wallpaper, #wallpaper-mask) {
+  opacity: 0;
+  pointer-events: none;
+}
+:root[data-home-state="ready"] :is(#home, #sidebar, #wallpaper, #wallpaper-mask) {
+  animation: home-fade-in 0.3s ease backwards;
+}
+@keyframes home-fade-in {
+  from { opacity: 0; }
 }
 #topbar {
   flex: none;

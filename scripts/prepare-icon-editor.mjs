@@ -99,6 +99,7 @@ const result = await build({
     builder.onLoad({ filter: /\.js$/ }, async ({ path: file }) => {
       let code = (await transform(await fs.readFile(file, "utf8"), { charset: "utf8", loader: "js" })).code;
       const custom = path.basename(file) === "CustomAdd-CYYDf8MW.js";
+      let svgChecks = 0;
       code = edit(code, node => {
         if (node.type === "ImportDeclaration" && (!node.specifiers.length ||
           custom && /ossClient|website-|stocksCache|addToDesk|vendor-dayjs|preload-helper/.test(node.source.value))) return "";
@@ -107,9 +108,17 @@ const result = await build({
           code.slice(node.start, node.end).includes('import("./save_config')) return "void 0";
         if (custom && node.type === "FunctionDeclaration" && Object.hasOwn(functions, node.id.name)) return functions[node.id.name];
         if (custom && node.type === "CallExpression" && ["Y", "G"].includes(node.callee.name)) return "undefined";
+        // 已知 SVG 直接选择，避免无跨域权限时多余的 HEAD 请求及 CORS 报错。
+        if (custom && node.type === "LogicalExpression" && node.operator === "||" &&
+          node.right.type === "CallExpression" && node.right.callee.name === "se2" &&
+          code.slice(node.left.start, node.left.end).includes('method: "HEAD"')) {
+          svgChecks++;
+          return `${code.slice(node.right.start, node.right.end)} || ${code.slice(node.left.start, node.left.end)}`;
+        }
       });
       // 编辑上传切换只在确定裁剪时提交；裁剪临时地址由会话管理并释放。
       if (custom) {
+        if (svgChecks !== 1) throw new Error("未找到唯一的 SVG 类型检查，图标编辑器提取已停止");
         code = code.replaceAll("自定义iTab桌面图标内容", "自定义NewTab桌面图标内容");
         code = code.replace("M2.value = false;", "k2.backgroundColor ||= d(); M2.value = false;");
         code = code.replace("window.URL.createObjectURL(o3)", "window.iconEditorSession.createObjectURL(o3)");

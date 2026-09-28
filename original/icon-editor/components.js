@@ -19574,7 +19574,7 @@ var te4 = { components: { VueCropper: y6, DColor: j6, ElButton: uc, ElDialog: Jb
     if (o32 == 0) k22.type = "text", k22.src = "", A22.activeIndex = o32;
     else if (e23 && o32 !== "edit" && !re22(e23)) {
       if (e23.startsWith("http")) try {
-        if ((await fetch(e23, { method: "HEAD" })).headers.get("content-type").includes("image/svg+xml") || se22(e23)) return H22.img = "", H22.base64 = "", k22.type = "icon", k22.src = e23, void (A22.activeIndex = o32);
+        if (se22(e23) || (await fetch(e23, { method: "HEAD" })).headers.get("content-type").includes("image/svg+xml")) return H22.img = "", H22.base64 = "", k22.type = "icon", k22.src = e23, void (A22.activeIndex = o32);
       } catch {
         return void (e23.includes("/itab/temp/web-icon/") || (k22.type = "icon", k22.src = e23, A22.activeIndex = o32));
       }

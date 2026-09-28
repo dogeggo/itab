@@ -28,6 +28,7 @@ import { siteFace, fitSiteText } from "./site-icon.js";
 import { openIconEditor } from "./icon-editor.js";
 import { clockParts } from "./clock.js";
 import { renderHomeYiyan } from "./home-yiyan.js";
+import { revealHome } from "./home-entry.js";
 import { widgetHTML } from "./widget-store.js";
 import {
   initSettings,
@@ -41,8 +42,10 @@ import { openWidgetStore } from "./widget-store.js";
 import {
   initNativeBridge,
   refreshNativeThemes,
+  syncNativeData,
   nativeUtility,
 } from "./native-bridge.js";
+import { homeViewChanged } from "./state-sync.js";
 import { timeFonts } from "./appearance-model.js";
 import { openOriginalWidget } from "./widget-store.js";
 let state,
@@ -854,8 +857,11 @@ document.addEventListener(
 );
 async function initialize() {
   window.addEventListener("native-widget-saved", syncNativeGrid);
-  seed = await (await fetch("./assets/seed.json")).json();
-  const stored = await read("state");
+  const [initialGroups, stored] = await Promise.all([
+    fetch("./assets/seed.json").then(response => response.json()),
+    read("state"),
+  ]);
+  seed = initialGroups;
   let recovered = false;
   try {
     state = stored ? validateState(stored) : createState(clone(seed));
@@ -898,6 +904,7 @@ async function initialize() {
   if (state.settings.sidebar.lastGroup === false)
     state.activeGroup = state.groups[0].id;
   render();
+  revealHome();
   void refreshDriveConnection();
   accountChannel?.addEventListener("message", ({ data }) => {
     if (data?.connected === true) void refreshDriveConnection();
@@ -917,21 +924,48 @@ async function initialize() {
     if (item) openOriginalWidget(item);
     else toast("该原版组件已被删除", true);
   }
-  onExternalChange(async () => {
-    if (
-      $("dialog[open]") ||
-      document.activeElement?.matches("input,textarea")
-    ) {
-      toast("其他标签页更新了主页，关闭弹窗后刷新可载入");
-      return;
+  let syncing = false, syncRequested = false, syncDeferred = false, changeNotice = false;
+  async function syncExternalState() {
+    syncRequested = true;
+    if (syncing) return;
+    syncing = true;
+    try {
+      // 合并密集通知、串行读取最新快照，避免多个异步接收回调交叉重绘。
+      while (syncRequested) {
+        syncRequested = false;
+        await flush();
+        const stored = await read("state");
+        if (!stored) continue;
+        const incoming = validateState(stored);
+        const changed = homeViewChanged(state, incoming);
+        if ($("dialog[open]") || document.activeElement?.matches("input,textarea,[contenteditable=true]")) {
+          syncDeferred = true;
+          if (changed && !changeNotice) {
+            toast("其他标签页更新了主页，完成编辑后自动载入");
+            changeNotice = true;
+          }
+          continue;
+        }
+        syncDeferred = changeNotice = false;
+        if (changed) {
+          state = incoming;
+          render();
+        } else {
+          state.history = incoming.history;
+          state.updatedAt = incoming.updatedAt;
+          await syncNativeData(incoming.nativeData);
+        }
+      }
+    } catch (error) {
+      console.error("主页同步失败", error);
+    } finally {
+      syncing = false;
     }
-    await flush();
-    const incoming = await read("state");
-    if (incoming && incoming.updatedAt !== state.updatedAt) {
-      state = validateState(incoming);
-      render();
-    }
-  });
+  }
+  onExternalChange(syncExternalState);
+  const resumeSync = () => { if (syncDeferred) void syncExternalState(); };
+  document.addEventListener("focusout", () => setTimeout(resumeSync, 0));
+  document.addEventListener("close", resumeSync, true);
   setInterval(updateClock, 1000);
 }
 initialize().catch((e) => {
@@ -939,4 +973,5 @@ initialize().catch((e) => {
   $("#home").innerHTML =
     '<div class="startup-error"><h1>主页加载失败</h1><p>请使用本地开发服务，或在浏览器扩展页面加载 dist 目录。</p><p id="startup-detail"></p></div>';
   $("#startup-detail").textContent = e.message;
+  revealHome();
 });

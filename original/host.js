@@ -174,6 +174,11 @@ try {
     return syncQueue;
   };
   session.subscribe((key, value) => {
+    if (key === "__preferences__") {
+      const preferences = session.preferences();
+      if (preferences.topSearch) base.value.topSearch = preferences.topSearch;
+      return;
+    }
     if (key === "__theme__") {
       applyAppearance();
       return;
@@ -188,11 +193,12 @@ try {
       const change = JSON.parse(value);
       if ((row.value.component === "notes" && change.namespace === "notes" && change.key === "items") ||
           (row.value.component === "todo" && change.namespace === "cache" && ["todo", "todoFolder"].includes(change.key))) {
-        void window.__nativeSync().catch(fail);
+        return window.__nativeSync().catch(fail);
       }
       return;
     }
   });
+  document.documentElement.dataset.nativeReady = "true";
   session.ready();
 } catch (error) {
   fail(error);

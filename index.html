@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-home-state="loading">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -16,8 +16,8 @@
   <body>
     <div id="wallpaper" aria-hidden="true"></div>
     <div id="wallpaper-mask" aria-hidden="true"></div>
-    <aside id="sidebar" aria-label="导航分组"></aside>
-    <main id="home">
+    <aside id="sidebar" aria-label="导航分组" inert></aside>
+    <main id="home" aria-busy="true" inert>
       <header id="topbar"></header>
       <button id="clock" title="点击切换极简模式" aria-label="切换极简模式">
         <time id="clock-time"></time><span id="clock-date"></span>

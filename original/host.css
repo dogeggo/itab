@@ -33,6 +33,22 @@ html[data-mode="card"] #native-app {
   border-radius: var(--icon-radius, 18px);
   overflow: hidden;
 }
+/* 卡片自身挂载后立即淡入，不阻塞主页，也不在后续数据更新时重播。 */
+html[data-mode="card"] body {
+  animation: none;
+}
+html[data-mode="card"][data-native-ready="true"] #native-app {
+  animation: native-card-fade-in 0.3s ease backwards;
+}
+@keyframes native-card-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-mode="card"] #native-app {
+    animation: none;
+  }
+}
 html[data-mode="dialog"] .el-overlay {
   background: transparent !important;
 }

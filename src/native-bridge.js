@@ -8,7 +8,9 @@ import {
 import { nativeComponents } from "../original/registry.js";
 import { hasNativeCard } from "./original-widgets.js";
 import { safeURL, safeGradient } from "./model.js";
+import { nativeDataChanges } from "./state-sync.js";
 let context;
+const externalStoreVersions = new Map();
 const sessions = new Set();
 const utilities = new Map();
 const editVersions = new Map();
@@ -37,9 +39,21 @@ const flatten = (state) =>
 const json = (value) => JSON.parse(JSON.stringify(value));
 export function initNativeBridge(options) {
   context = options;
+  externalStoreVersions.clear();
   sessions.clear();
   editVersions.clear();
   window.__itabNativeBridge = { connect };
+}
+export async function syncNativeData(incoming) {
+  const state = context.getState();
+  const changes = nativeDataChanges(nativeData(state), incoming);
+  if (!changes.length) return;
+  for (const [key, value] of changes) {
+    if (key === "__store__") externalStoreVersions.set(value, (externalStoreVersions.get(value) || 0) + 1);
+  }
+  state.nativeData = incoming;
+  // 保留 state 及卡片会话，接收方只更新视图，不把收到的数据再次保存/广播。
+  await Promise.all([...sessions].filter(s => s.active()).map(s => s.receive(changes)));
 }
 function connect(frameWindow, id, mode) {
   for (const session of sessions)
@@ -58,13 +72,13 @@ function connect(frameWindow, id, mode) {
     throw new Error("原版组件宿主参数无效");
   const originalState = context.getState();
   const component = item.config.component;
-  let disposed = false;
+  let disposed = false, receiving = 0;
   if (mode === "dialog")
     editVersions.set(component, (editVersions.get(component) || 0) + 1);
   const active = () =>
     !disposed && element.isConnected && context.getState() === originalState;
   // 弹窗编辑期间同类卡片继续显示、计时，但不得用旧快照覆盖弹窗数据。
-  const writable = () => active() && (mode !== "card" ||
+  const writable = () => !receiving && active() && (mode !== "card" ||
     ![...sessions].some((s) => s.active() && s.mode === "dialog" && s.component === component));
   const read = () => nativeData(context.getState());
   const persist = () => {
@@ -100,7 +114,15 @@ function connect(frameWindow, id, mode) {
       sessions.delete(session);
     },
     notify: (key, value) =>
-      subscribers.forEach((callback) => callback(key, value)),
+      [...subscribers].map((callback) => callback(key, value)),
+    async receive(changes) {
+      receiving++;
+      try {
+        await Promise.all(changes.flatMap(([key, value]) => session.notify(key, value)));
+      } finally {
+        receiving--;
+      }
+    },
     active,
     mode,
     component,
@@ -239,8 +261,9 @@ function connect(frameWindow, id, mode) {
         }
         if (beforeGroups === JSON.stringify(context.getState().groups)) return;
       } else {
+        value = String(value);
         if (read().local[key] === value) return;
-        read().local[key] = String(value);
+        read().local[key] = value;
       }
       persist();
       emit(key, value);
@@ -248,6 +271,7 @@ function connect(frameWindow, id, mode) {
     removeValue(key) {
       if (!writable()) return;
       if (deniedNativeKeys.test(key)) return;
+      if (!Object.hasOwn(read().local, key)) return;
       delete read().local[key];
       persist();
       emit(key, null);
@@ -261,8 +285,11 @@ function connect(frameWindow, id, mode) {
       if (!dataNamespaces.has(namespace)) throw new Error("未知组件数据空间");
       if (!writable()) return;
       const version = editVersions.get(component);
+      const dataKey = JSON.stringify({ namespace, key });
+      const externalVersion = externalStoreVersions.get(dataKey);
       const encoded = await encodeNative(value);
-      if (!writable() || (mode === "card" && version !== editVersions.get(component))) return;
+      if (!writable() || externalVersion !== externalStoreVersions.get(dataKey) ||
+          (mode === "card" && version !== editVersions.get(component))) return;
       if (
         JSON.stringify(read().stores[namespace]?.[key]) ===
         JSON.stringify(encoded)
@@ -275,6 +302,7 @@ function connect(frameWindow, id, mode) {
     async storeRemove(namespace, key) {
       if (!dataNamespaces.has(namespace)) throw new Error("未知组件数据空间");
       if (!writable()) return;
+      if (!Object.hasOwn(read().stores[namespace] || {}, key)) return;
       delete read().stores[namespace]?.[key];
       await persist();
       emit("__store__", JSON.stringify({ namespace, key }));
