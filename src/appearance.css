@@ -85,6 +85,20 @@
   border-radius: 0;
   overflow: visible;
   box-shadow: 0 0 30px #0002;
+  transform: translateX(calc(100% + 40px));
+  /* 保留关闭时的显示和顶层状态，让原生 close()/Esc 也能完成滑出。 */
+  transition:
+    transform 240ms ease-out,
+    display 240ms allow-discrete,
+    overlay 240ms allow-discrete;
+}
+#settings[open] {
+  transform: translateX(0);
+}
+@starting-style {
+  #settings[open] {
+    transform: translateX(calc(100% + 40px));
+  }
 }
 #settings::backdrop {
   background: transparent;

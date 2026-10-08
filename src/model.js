@@ -300,6 +300,8 @@ export function validateState(input) {
         throw new Error("原版内置组件类型无效");
       if (i.image && !safeURL(i.image, { image: true }))
         throw new Error("图标图片无效");
+      if (i.imageFit !== undefined && !["contain", "cover"].includes(i.imageFit))
+        throw new Error("图标图片适配方式无效");
       if (i.kind === "folder") items(i.children, depth + 1);
     }
   }

@@ -72,6 +72,16 @@ test("无 SVG 扩展名的地址仍可通过响应类型识别", async () => {
   assert.equal(e.crop.img, "");
 });
 
+test("本地缓存的 SVG 候选图标直接选中，保留矢量图片且不进入位图裁剪", async () => {
+  const source = "data:image/svg+xml;base64," + Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"/>').toString("base64");
+  const e = editor(async () => { throw Error("本地图标不应发出网络请求"); });
+  await e.select(source, 1);
+  assert.equal(e.item.src, source);
+  assert.equal(e.item.type, "icon");
+  assert.equal(e.state.activeIndex, 1);
+  assert.equal(e.crop.img, "");
+});
+
 test("远程位图仍进入裁剪，确认后才选中裁剪结果", async () => {
   const url = "https://example.com/icon.png";
   const e = editor(async () => new Response(null, { headers: { "content-type": "image/png" } }));

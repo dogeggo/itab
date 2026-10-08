@@ -35,6 +35,7 @@ import {
 } from "./chunk-LEVEZLTX.js";
 import "./chunk-5MDIDYN5.js";
 import {
+  V,
   u
 } from "./chunk-AFECQBGL.js";
 import "./chunk-YQ4PBQUM.js";
@@ -82,6 +83,8 @@ import {
 var a2 = r("outline", "history", "History", [["path", { d: "M12 8l0 4l2 2", key: "svg-0" }], ["path", { d: "M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5", key: "svg-1" }]]);
 
 // output/native-current/Content-BYGd8DLC.js
+// 翻译弹窗运行在独立 iframe 中，历史记录不能依赖其他组件注册日期插件。
+u.extend(V);
 var X = class {
   constructor() {
     this.synth = window.speechSynthesis, this.utterance = null, this.voices = [], this.isSupported = "speechSynthesis" in window, this.speaking = !1, this.isSupported && (this._loadVoices(), this.synth.onvoiceschanged !== void 0 && this.synth.addEventListener("voiceschanged", () => this._loadVoices()));

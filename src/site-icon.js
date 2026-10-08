@@ -1,6 +1,7 @@
 import { esc } from "./ui.js";
 import { normalizeURL, safeURL, uid } from "./model.js";
 import { containedImages } from "../original/icon-editor/image-fit.js";
+import { iconImageAttributes, hydrateIconImages } from "./icon-cache.js";
 
 export function iconColor(value) {
   if (typeof value !== "string") return "#1681ff";
@@ -29,19 +30,25 @@ export function siteFromEditor(data, item) {
   if (data.type !== "text" && !image) throw new Error("请选择图标或上传图片");
   const text = iconText(data.iconText);
   if (data.type === "text" && !text.trim()) throw new Error("请输入图标文字");
-  return {
+  const result = {
     ...item, id: item?.id || uid(), kind: "site", name, url,
     image, iconText: text, color: iconColor(data.backgroundColor),
     size: item?.size || "1x1",
   };
+  if (image !== item?.image) delete result.imageFit;
+  return result;
+}
+
+export function siteImageFit(item) {
+  if (["contain", "cover"].includes(item.imageFit)) return item.imageFit;
+  // 对应原版 Icon 的官方图片 contain 规则，本地资源使用提取时的来源清单。
+  return (containedImages.has(item.image) || /^data:image\/|\/icons\/|\/tools-icon\/|user-website-icon-v2/.test(item.image || "")) && item.color ? "contain" : "cover";
 }
 
 export function siteFace(item) {
-  const color = iconColor(item.color);
-  // 对应原版 Icon 的官方图片 contain 规则，本地资源使用提取时的来源清单。
-  const fit = (containedImages.has(item.image) || /^data:image\/|\/icons\/|\/tools-icon\/|user-website-icon-v2/.test(item.image || "")) && item.color ? "contain" : "cover";
+  const color = iconColor(item.color), fit = siteImageFit(item);
   const text = item.iconText || (item.name || "?").slice(0, 2);
-  return `<span class="site-face${item.image ? "" : " text-site-face"}" style="background:${esc(color)};--icon-fit:${fit}">${item.image ? `<img src="${esc(item.image)}" alt="" draggable="false" data-icon-fallback="${esc(text)}">` : `<span class="letter-icon">${esc(text)}</span>`}${item.badge ? `<span class="site-badge">${esc(item.badge)}</span>` : ""}</span>`;
+  return `<span class="site-face${item.image ? "" : " text-site-face"}" style="background:${esc(color)};--icon-fit:${fit}">${item.image ? `<img ${iconImageAttributes(item.image)} alt="" draggable="false" data-icon-fallback="${esc(text)}">` : `<span class="letter-icon">${esc(text)}</span>`}${item.badge ? `<span class="site-badge">${esc(item.badge)}</span>` : ""}</span>`;
 }
 
 // 原版 d-text-icon 的宽度缩放公式，同时应用于主页、文件夹和预览缩略图。
@@ -66,4 +73,5 @@ export function fitSiteText(root = document) {
     img.replaceWith(text);
     textObserver.observe(parent);
   };
+  hydrateIconImages(root);
 }

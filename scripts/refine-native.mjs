@@ -39,6 +39,18 @@ for(const name of fs.readdirSync(raw)) {
    // 重新导入原包时保留扩展上下文失效防护。
    s=fs.readFileSync('original/tomato-badge.js','utf8');
  }
+ if(name==='d-tabs-VYJV0PEe.js') {
+   // nextTick 执行前组件可能已卸载，须在回调内检查 DOM 引用。
+   const callback='n(()=>{const e=g.value.querySelector(".d-tabs-item.active")';
+   if(!s.includes(callback))throw new Error('原版标签容器回调结构不匹配');
+   s=s.replace(callback,'n(()=>{const tabs=g.value;if(!tabs)return;const e=tabs.querySelector(".d-tabs-item.active")').replaceAll('g.value.style.setProperty(', 'tabs.style.setProperty(');
+ }
+ if(name==='Content-BYGd8DLC.js') {
+   // 翻译历史的 toNow 依赖 relativeTime；每个组件 iframe 都必须自行注册。
+   const dateImport='import{a as i}from"./vendor-dayjs-D25YbOr3.js";';
+   if(!s.includes(dateImport))throw new Error('原版翻译日期依赖结构不匹配');
+   s=s.replace(dateImport,'import{a as i,r as nativeRelativeTime}from"./vendor-dayjs-D25YbOr3.js";i.extend(nativeRelativeTime);');
+ }
  if(name==='stocksCache-CNvbf2yR.js') {
    s=constValue(s,'f','values');s='import {values} from "../data.js";'+s;
    s=replaceFn(s,'b',`const key=String(l(e)); const initial=values.get(key); const state=o(initial ?? (typeof t==='function'?t():t)); let receiving=false; r(state,value=>{if(!receiving)values.set(key,value)},{deep:true,flush:'sync'}); window.__nativeSession.subscribe((changed,value)=>{if(changed===key){receiving=true;state.value=value===null?null:JSON.parse(value);queueMicrotask(()=>receiving=false)}}); return state;`);
@@ -199,6 +211,4 @@ fs.writeFileSync('assets/native-catalog.json',JSON.stringify(catalog,null,2)+'\n
 fs.writeFileSync('original/registry.js',`export const nativeComponents=new Set(${JSON.stringify([...allowed])});\nexport const nativeCardComponents=new Set(${JSON.stringify([...allowedCards])});\nexport const componentStyles=${JSON.stringify(componentStyles)};\n`);
 fs.writeFileSync('output/native-build-meta.json',JSON.stringify(result.metafile,null,2));
 console.log(`已生成 ${allowed.size} 项原版内置组件；${result.outputFiles.length} 个运行模块。`);
-
-
 

@@ -24,7 +24,8 @@ import {
   closeModal,
   confirmDialog,
 } from "./ui.js";
-import { siteFace, fitSiteText } from "./site-icon.js";
+import { siteFace, fitSiteText, siteImageFit } from "./site-icon.js";
+import { localizeStateIcons } from "./icon-cache.js";
 import { openIconEditor } from "./icon-editor.js";
 import { clockParts } from "./clock.js";
 import { renderHomeYiyan } from "./home-yiyan.js";
@@ -76,8 +77,25 @@ function findItem(id) {
   }
   return null;
 }
+let iconLocalization, iconLocalizationRequested = false;
+function localizeIcons() {
+  iconLocalizationRequested = true;
+  if (iconLocalization) return;
+  iconLocalization = (async () => {
+    while (iconLocalizationRequested) {
+      iconLocalizationRequested = false;
+      const count = await localizeStateIcons(() => state, { fit: siteImageFit });
+      if (count) await saveState(state);
+    }
+  })().catch(error => {
+    console.error("本地图标保存失败", error);
+  }).finally(() => {
+    iconLocalization = null;
+    if (iconLocalizationRequested) localizeIcons();
+  });
+}
 function save() {
-  return saveState(state).catch((e) => {
+  return saveState(state).then(() => localizeIcons()).catch((e) => {
     toast("保存失败：" + e.message, true);
     throw e;
   });
@@ -327,6 +345,8 @@ function syncNativeGrid() {
     element.querySelector(".item-label").textContent = item.name;
     element.querySelector(".tile").setAttribute("aria-label", item.name);
   }
+  fitSiteText();
+  localizeIcons();
   sizeGrid();
 }
 function sizeGrid() {
@@ -363,6 +383,7 @@ function render() {
   renderSearch();
   renderGrid();
   updateClock();
+  localizeIcons();
 }
 function renderAppearance() {
   applyTheme();

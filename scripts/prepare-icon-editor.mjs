@@ -119,6 +119,18 @@ const result = await build({
       // 编辑上传切换只在确定裁剪时提交；裁剪临时地址由会话管理并释放。
       if (custom) {
         if (svgChecks !== 1) throw new Error("未找到唯一的 SVG 类型检查，图标编辑器提取已停止");
+        let localSvgChecks = 0;
+        code = edit(code, node => {
+          if (node.type !== "IfStatement" || node.test.type !== "CallExpression" ||
+            node.test.callee.property?.name !== "startsWith" || node.test.arguments[0]?.value !== "http" ||
+            node.consequent.type !== "TryStatement" || !code.slice(node.start, node.end).includes('method: "HEAD"')) return;
+          const selection = node.consequent.block.body.find(child => child.type === "IfStatement" && child.consequent.type === "ReturnStatement");
+          if (!selection) throw new Error("SVG 选择分支结构不匹配");
+          localSvgChecks++;
+          const src = code.slice(node.test.callee.object.start, node.test.callee.object.end);
+          return `if (se2(${src})) ${code.slice(selection.consequent.start, selection.consequent.end)}\n${code.slice(node.start, node.end)}`;
+        });
+        if (localSvgChecks !== 1) throw new Error("未找到唯一的本地 SVG 选择分支，图标编辑器提取已停止");
         code = code.replaceAll("自定义iTab桌面图标内容", "自定义NewTab桌面图标内容");
         code = code.replace("M2.value = false;", "k2.backgroundColor ||= d(); M2.value = false;");
         code = code.replace("window.URL.createObjectURL(o3)", "window.iconEditorSession.createObjectURL(o3)");

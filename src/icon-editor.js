@@ -1,6 +1,7 @@
 import { modal, closeModal, toast } from "./ui.js";
 import { normalizeURL, safeURL } from "./model.js";
-import { iconColor, siteFromEditor } from "./site-icon.js";
+import { iconColor, siteFromEditor, siteImageFit } from "./site-icon.js";
+import { isRemoteIcon, localIcon, requestIconAccess } from "./icon-cache.js";
 
 export async function lookupSiteIcons(value) {
   const url = normalizeURL(value);
@@ -14,9 +15,10 @@ export async function lookupSiteIcons(value) {
   const official = Number(data.type) === 1 ? [data.imgSrc || data.src] : [];
   const icons = [...new Set([...official, ...(Array.isArray(data.icon) ? data.icon : [])])]
     .map(src => safeURL(src, { image: true })).filter(Boolean).slice(0, 12);
+  const localIcons = await Promise.all(icons.map(src => localIcon(src).catch(() => src)));
   return {
-    name: String(data.name || new URL(url).hostname), icons,
-    official: official.filter(src => icons.includes(src)),
+    name: String(data.name || new URL(url).hostname), icons: localIcons,
+    official: icons.flatMap((src, index) => official.includes(src) ? [localIcons[index]] : []),
     backgroundColor: iconColor(data.backgroundColor || "transparent"),
   };
 }
@@ -49,6 +51,7 @@ export function openIconEditor({ item, onSave }) {
     close: () => closeModal(),
     async save(data, keepOpen) {
       if (!active) throw new Error("图标编辑会话已关闭");
+      const access = data.type !== "text" ? requestIconAccess(data.src).catch(() => false) : Promise.resolve();
       const next = { ...data };
       if (next.type !== "text" && next.src?.startsWith("blob:")) {
         if (!urls.has(next.src)) throw new Error("图片已失效，请重新上传");
@@ -61,8 +64,15 @@ export function openIconEditor({ item, onSave }) {
         });
       }
       if (next.src?.startsWith(rootURL + "assets/")) next.src = next.src.slice(rootURL.length);
+      const edited = siteFromEditor(next, item);
+      if (isRemoteIcon(edited.image)) {
+        await access;
+        edited.imageFit = siteImageFit(edited);
+        try { edited.image = await localIcon(edited.image, { retry: true }); }
+        catch { throw new Error("图标无法保存到本地，请允许读取图标网站后再次保存，或上传本地图片"); }
+      }
       if (!active) throw new Error("图标编辑会话已关闭");
-      await onSave(siteFromEditor(next, item));
+      await onSave(edited);
       toast("图标已保存");
       if (!keepOpen) await closeModal();
     },

@@ -1,5 +1,6 @@
 import { esc, icon, modal, closeModal, toast } from "./ui.js";
 import { nativeFrameURL, flushNativeCards } from "./native-bridge.js";
+import { iconImageAttributes, hydrateIconImages } from "./icon-cache.js";
 import {
   fetchOriginalCatalog,
   newOriginalWidget,
@@ -59,9 +60,10 @@ export function openWidgetStore(addOriginal) {
           rows
             .map(
               (w) =>
-                `<button type="button" data-component="${esc(w.component)}" ${w.available ? "" : "disabled"}><span class="catalog-icon">${w.image ? `<img src="${esc(w.image)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : icon("grid", 28)}</span><div><strong>${esc(w.name)}</strong><small>${esc(w.description || "原版小组件")}</small><em>${w.runtime === "native" ? "原版内置组件" : w.available ? "原版在线组件" : "暂不可用"}</em></div><span class="catalog-add">${w.available ? "＋" : "—"}</span></button>`,
+                `<button type="button" data-component="${esc(w.component)}" ${w.available ? "" : "disabled"}><span class="catalog-icon">${w.image ? `<img ${iconImageAttributes(w.image)} alt="" loading="lazy" referrerpolicy="no-referrer">` : icon("grid", 28)}</span><div><strong>${esc(w.name)}</strong><small>${esc(w.description || "原版小组件")}</small><em>${w.runtime === "native" ? "原版内置组件" : w.available ? "原版在线组件" : "暂不可用"}</em></div><span class="catalog-add">${w.available ? "＋" : "—"}</span></button>`,
             )
             .join("") || '<p class="muted">没有找到匹配的组件</p>';
+        hydrateIconImages(list);
       }
       search.oninput = draw;
       available.onchange = draw;
@@ -128,7 +130,7 @@ export function widgetHTML(item) {
       return `<iframe class="native-widget-card" data-native-id="${esc(item.id)}" title="${esc(item.name)}原版卡片" src="${esc(nativeFrameURL(item))}" loading="lazy"></iframe>`;
   }
   if(item.type === "original") {
-      return `<div class="original-widget-icon">${item.image ? `<img src="${esc(item.image)}" alt="" draggable="false" referrerpolicy="no-referrer">` : icon("grid", 30)}</div>`;
+      return `<div class="original-widget-icon">${item.image ? `<img ${iconImageAttributes(item.image)} alt="" draggable="false" referrerpolicy="no-referrer">` : icon("grid", 30)}</div>`;
   }
   throw new Error("未知原版组件");
 }

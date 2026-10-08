@@ -14,6 +14,10 @@
     "notifications",
     "tabs"
   ],
+  "optional_host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
   "host_permissions": [
     "https://base.itab.link/*",
     "https://www.googleapis.com/*"

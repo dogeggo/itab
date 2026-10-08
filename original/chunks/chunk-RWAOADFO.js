@@ -22,8 +22,10 @@ var y = { class: "d-tabs-active" }, f = ["name", "onClick"], v = { style: { "lin
   let k = b2, g = Et(null), h = Et(!0), V = m2;
   return Fr(() => V.modelValue, (e2) => {
     on(() => {
-      let e3 = g.value.querySelector(".d-tabs-item.active") || { offsetTop: 0, clientHeight: 0 }, { offsetTop: a2, clientHeight: t2 } = e3;
-      h.value = t2 != 0, g.value.style.setProperty("--target-top", a2 + "px"), g.value.style.setProperty("--height", (t2 || 0) + "px");
+      const tabs = g.value;
+      if (!tabs) return;
+      let e3 = tabs.querySelector(".d-tabs-item.active") || { offsetTop: 0, clientHeight: 0 }, { offsetTop: a2, clientHeight: t2 } = e3;
+      h.value = t2 != 0, tabs.style.setProperty("--target-top", a2 + "px"), tabs.style.setProperty("--height", (t2 || 0) + "px");
     });
   }, { immediate: !0 }), (e2, a2) => (Zr(), eo("ul", { class: "d-tabs relative", ref_key: "dTabsRef", ref: g }, [yn(io("span", y, null, 512), [[di, h.value]]), (Zr(!0), eo(Hr, null, Es(V.data, (a3, l2) => (Zr(), eo("li", { class: W(["d-tabs-item", { active: m2.modelValue === a3[m2.keyId] }]), key: l2, name: a3.name, onClick: (e3) => ((e4, a4) => {
     k("update:modelValue", e4[V.keyId]), k("tab-click", e4, a4);
